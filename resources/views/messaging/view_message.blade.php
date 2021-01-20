@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-    Plebbit: {{$messages[0]['subject']}}
+    Pabble: {{$messages[0]['subject']}}
 @endsection
 
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <link rel="stylesheet" href="{{ asset('css/messages.css') }}">
 @endsection
 

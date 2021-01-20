@@ -15,18 +15,18 @@ class Subscription extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'sub_plebbit_id'
+        'user_id', 'sub_pabble_id'
     ];
 
-    public function subscribed($user_id, $sub_plebbit_id)
+    public function subscribed($user_id, $sub_pabble_id)
     {
-        return $this->where('user_id', $user_id)->where('sub_plebbit_id', $sub_plebbit_id)->first();
+        return $this->where('user_id', $user_id)->where('sub_pabble_id', $sub_pabble_id)->first();
     }
 
     public function subscriptions($user_id)
     {
-        return $this->select('user_id', 'sub_plebbit_id', 'name')
-            ->join('sub_plebbits', 'subscriptions.sub_plebbit_id', '=', 'sub_plebbits.id')
+        return $this->select('user_id', 'sub_pabble_id', 'name')
+            ->join('sub_pabbles', 'subscriptions.sub_pabble_id', '=', 'sub_pabbles.id')
             ->where('user_id', $user_id)->get();
     }
 

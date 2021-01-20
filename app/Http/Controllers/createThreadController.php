@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Moderator;
 use Embed\Exceptions\InvalidUrlException;
 use Illuminate\Http\Request;
-use App\subPlebbit;
+use App\subPabble;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Intervention\Image\Exception\NotReadableException;
@@ -28,22 +28,22 @@ class createThreadController extends Controller
         $this->middleware('auth');
 
         $validationFactory->extend(
-            'subplebbit',
+            'subpabble',
             function ($attribute, $value, $parameters) {
-                $plebbit = new subPlebbit();
+                $pabble = new subPabble();
                 $mod = new Moderator();
-                $plebbit = $plebbit->select('id', 'name')->where('name', $value)->first();
-                if (!$plebbit) {
+                $pabble = $pabble->select('id', 'name')->where('name', $value)->first();
+                if (!$pabble) {
                     return false;
                 } else {
-                    if ($plebbit->name == env('OFFICIAL_SUB_PLEBBIT') && !$mod->isMod(Auth::user()->id, $plebbit)) {
+                    if ($pabble->name == env('OFFICIAL_SUB_PABBLE') && !$mod->isMod(Auth::user()->id, $pabble)) {
                         return false;
                     } else {
                         return true;
                     }
                 }
             },
-            'This subplebbit does not exist'
+            'This subpabble does not exist'
         );
         $validationFactory->extend(
             'safe_url',
@@ -70,7 +70,7 @@ class createThreadController extends Controller
         return view('submitThread', array('name' => $name));
     }
 
-    public function postCreateThread(Request $request, subPlebbit $subPlebbit)
+    public function postCreateThread(Request $request, subPabble $subPabble)
     {
         if (env('USE_CURL_PROXY') == 'yes') {
             $dispatcher = new CurlDispatcher([
@@ -81,7 +81,7 @@ class createThreadController extends Controller
                 CURLOPT_SSL_VERIFYHOST => false,
                 CURLOPT_ENCODING => '',
                 CURLOPT_AUTOREFERER => false,
-                CURLOPT_USERAGENT => 'Plebbit bot',
+                CURLOPT_USERAGENT => 'Pabble bot',
                 CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
                 CURLOPT_PROXY => env('CURL_PROXY')
             ]);
@@ -94,14 +94,14 @@ class createThreadController extends Controller
                 CURLOPT_SSL_VERIFYHOST => false,
                 CURLOPT_ENCODING => '',
                 CURLOPT_AUTOREFERER => false,
-                CURLOPT_USERAGENT => 'Plebbit bot',
+                CURLOPT_USERAGENT => 'Pabble bot',
                 CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
             ]);
         }
 
         $validator = Validator::make($request->all(), [
             'title' => "required|min:5:max:100",
-            'subplebbit' => 'subplebbit',
+            'subpabble' => 'subpabble',
             'url' => 'safe_url',
             'post' => 'max:100000'
         ]);
@@ -131,12 +131,12 @@ class createThreadController extends Controller
 
         $thread = new Thread();
 
-        $subPlebbit = $subPlebbit->where('name', $request->input('subplebbit'))->first();
+        $subPabble = $subPabble->where('name', $request->input('subpabble'))->first();
 
         $thread->code = $thread->getCode();
         $thread->title = $request->input('title');
         $thread->poster_id = Auth::user()->id;
-        $thread->sub_plebbit_id = $subPlebbit->id;
+        $thread->sub_pabble_id = $subPabble->id;
         if ($request->input('type') == 'link') {
             $thread->type = 'link';
             $thread->link = $link;
@@ -166,10 +166,10 @@ class createThreadController extends Controller
                 } else {
                     $extension = substr($orig, 0, strpos($orig, '?'));
                 }
-                $newName = 'images/plebbits/thumbnails/' . str_random(10) . '.' .  $extension;
+                $newName = 'images/pabbles/thumbnails/' . str_random(10) . '.' .  $extension;
                 if (File::exists($newName)) {
                     $imageToken = substr(sha1(mt_rand()), 0, 5);
-                    $newName = 'images/plebbits/thumbnails/' . str_random(10) . '-' . $imageToken . ".{$extension}";
+                    $newName = 'images/pabbles/thumbnails/' . str_random(10) . '-' . $imageToken . ".{$extension}";
                 }
                 try {
                     $image = Image::make($link)->fit(78, 78)->save($newName);
@@ -186,10 +186,10 @@ class createThreadController extends Controller
                 } else {
                     $extension = substr($orig, 0, strpos($orig, '?'));
                 }
-                $newName =  'images/plebbits/thumbnails/' . str_random(8) . ".{$extension}";
+                $newName =  'images/pabbles/thumbnails/' . str_random(8) . ".{$extension}";
                 if (File::exists($newName)) {
                     $imageToken = substr(sha1(mt_rand()), 0, 5);
-                    $newName = 'images/plebbits/thumbnails/' . str_random(8) . '-' . $imageToken . ".{$extension}";
+                    $newName = 'images/pabbles/thumbnails/' . str_random(8) . '-' . $imageToken . ".{$extension}";
                 }
                 try {
                     $image = Image::make($info->image)->fit(78, 78)->save($newName);
@@ -223,7 +223,7 @@ class createThreadController extends Controller
         $thread->save();
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $thread->title)));
 
-        return Redirect('/p/' . $subPlebbit->name . '/comments/' . $thread->code . '/' . str_slug($slug));
+        return Redirect('/p/' . $subPabble->name . '/comments/' . $thread->code . '/' . str_slug($slug));
     }
 
 }

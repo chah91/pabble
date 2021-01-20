@@ -8,7 +8,7 @@ use App\Moderator;
 use App\Thread;
 use App\Post;
 use Illuminate\Support\Facades\Auth;
-use App\subPlebbit;
+use App\subPabble;
 
 class moderationController extends Controller
 {
@@ -18,7 +18,7 @@ class moderationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deleteThread($code, Request $request, Thread $thread, subPlebbit $subPlebbit, Moderator $moderator)
+    public function deleteThread($code, Request $request, Thread $thread, subPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::guard('api')->user();
 
@@ -30,19 +30,19 @@ class moderationController extends Controller
             ], 200);
         }
 
-        $sub_plebbit = $subPlebbit->select('id', 'owner_id')->where('id', $thread->sub_plebbit_id)->first();
-        if (!$subPlebbit) {
+        $sub_pabble = $subPabble->select('id', 'owner_id')->where('id', $thread->sub_pabble_id)->first();
+        if (!$subPabble) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'SubPlebbit not found'
+                'message' => 'subPabble not found'
             ], 200);
         }
 
-        $mod = $moderator->isMod($user->id, $sub_plebbit);
+        $mod = $moderator->isMod($user->id, $sub_pabble);
         if (!$mod) {
             return response()->json([
                'status' => 'error',
-               'message' => "You are not allowed to moderate this subplebbit"
+               'message' => "You are not allowed to moderate this subPabble"
             ]);
         }
 
@@ -58,7 +58,7 @@ class moderationController extends Controller
         ]);
     }
 
-    public function deleteComment($id,  Request $request, Post $post, subPlebbit $subPlebbit, Moderator $moderator, Thread $thread)
+    public function deleteComment($id,  Request $request, Post $post, subPabble $subPabble, Moderator $moderator, Thread $thread)
     {
         $user = Auth::guard('api')->user();
 
@@ -71,19 +71,19 @@ class moderationController extends Controller
         }
         $thread = $thread->where('id', $post->thread_id)->first();
 
-        $sub_plebbit = $subPlebbit->select('id', 'owner_id')->where('id', $thread->sub_plebbit_id)->first();
-        if (!$subPlebbit) {
+        $sub_pabble = $subPabble->select('id', 'owner_id')->where('id', $thread->sub_pabble_id)->first();
+        if (!$subPabble) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'SubPlebbit not found'
+                'message' => 'subPabble not found'
             ], 200);
         }
 
-        $mod = $moderator->isMod($user->id, $sub_plebbit);
+        $mod = $moderator->isMod($user->id, $sub_pabble);
         if (!$mod) {
             return response()->json([
                 'status' => 'error',
-                'message' => "You are not allowed to moderate this subplebbit"
+                'message' => "You are not allowed to moderate this subPabble"
             ]);
         }
 

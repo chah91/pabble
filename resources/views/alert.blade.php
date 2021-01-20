@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Post stolen memes here @endsection
+@section('title') Pabble: Post stolen memes here @endsection
 
 @section('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css') }}">
     <style>
         #stripe {

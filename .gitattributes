@@ -4,6 +4,6 @@
 *.js linguist-vendored
 CHANGELOG.md export-ignore
 public/media*
-public/images/plebbits/headers*
+public/images/pabbles/headers*
 .DS_Store
 resources/views* linguist-vendored

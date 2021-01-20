@@ -15,7 +15,7 @@ class Thread extends Model
      * @var array
      */
     protected $fillable = [
-        'code', 'title', 'poster_id', 'reply_count', 'upvotes', 'downvotes', 'score', 'sub_plebbit_id', 'type', 'link', 'media_type', 'thumbnail', 'post', 'sticky'
+        'code', 'title', 'poster_id', 'reply_count', 'upvotes', 'downvotes', 'score', 'sub_pabble_id', 'type', 'link', 'media_type', 'thumbnail', 'post', 'sticky'
     ];
 
     public function getCode()
@@ -28,9 +28,9 @@ class Thread extends Model
         return $math->toBase($last->id + 1000000 + 1);
     }
 
-    public function subPlebbit()
+    public function subPabble()
     {
-        return $this->hasOne('App\subPlebbit', 'id', 'sub_plebbit_id');
+        return $this->hasOne('App\subPabble', 'id', 'sub_pabble_id');
     }
 
     public function threadsByUser($id, $sort, $skip, $amount)

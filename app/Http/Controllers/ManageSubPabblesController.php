@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\subPlebbit;
+use App\subPabble;
 use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Validation\Factory as ValidationFactory;
 use Validator;
 use Image;
 
-class ManageSubPlebbitsController extends Controller
+class ManageSubPabblesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -55,77 +55,77 @@ class ManageSubPlebbitsController extends Controller
     }
 
 
-    public function getNewSubPlebbit()
+    public function getNewSubPabble()
     {
-        return view('subPlebbits.newSubPlebbit');
+        return view('subPabbles.newSubPabble');
     }
 
-    public function postNewSubPlebbit(Request $request)
+    public function postNewSubPabble(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:sub_plebbits|max:60|regex:/(^[A-Za-z0-9\.\,\+\-\?\! ]+$)+/|min:3|alpha_dash',
+            'name' => 'required|unique:sub_pabbles|max:60|regex:/(^[A-Za-z0-9\.\,\+\-\?\! ]+$)+/|min:3|alpha_dash',
             'title' => 'required|min:3|max:100',
             'description' => 'required|max:2000',
             'social_description' => 'max:200',
         ]);
 
-        $plebbit = new subPlebbit();
-        $plebbit->name = $request->input('name');
-        $plebbit->title = $request->input('title');
-        $plebbit->description = preg_replace("/(\r?\n){2,}/", "\n\n",$request->input('description'));
+        $pabble = new subPabble();
+        $pabble->name = $request->input('name');
+        $pabble->title = $request->input('title');
+        $pabble->description = preg_replace("/(\r?\n){2,}/", "\n\n",$request->input('description'));
         if (!empty($request->input('social_description'))) {
-            $plebbit->description_social = $request->input('social_description');
+            $pabble->description_social = $request->input('social_description');
         }
-        $plebbit->header_type = 'repeat';
-        $plebbit->owner_id = Auth::user()->id;
-        $plebbit->save();
+        $pabble->header_type = 'repeat';
+        $pabble->owner_id = Auth::user()->id;
+        $pabble->save();
 
         (new \App\Moderator)->create([
             'user_id' => $request->user()->id,
-            'sub_plebbit_id' => $plebbit->id
+            'sub_pabble_id' => $pabble->id
         ]);
 
-        return redirect('/p/'.$plebbit->name);
+        return redirect('/p/'.$pabble->name);
     }
 
-    public function getEditPlebbit($name, Request $request, subPlebbit $subPlebbit, Moderator $moderator)
+    public function getEditPabble($name, Request $request, subPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::user();
-        $plebbit = $subPlebbit->where('name', $name)->first();
-        if (!$plebbit) {
-            flash("This subplebbit does not exist therefore you can't edit it", 'danger');
+        $pabble = $subPabble->where('name', $name)->first();
+        if (!$pabble) {
+            flash("This subpabble does not exist therefore you can't edit it", 'danger');
             return redirect('/');
         }
 
         $check = env('ADMIN_ID') == $user->id;
 
-        if (!$check && $plebbit->owner_id !== $user->id) {
-            flash("You are not allowed to edit /p/".$plebbit->name, 'danger');
+        if (!$check && $pabble->owner_id !== $user->id) {
+            flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
 
-        $mods = $moderator->getBySubPlebbitId($plebbit->id);
+        $mods = $moderator->getBySubPabbleId($pabble->id);
         $mods_string = '';
         foreach ($mods as $mod) {
             $mods_string.=$mod->username . ',';
         }
 
-        return view('subPlebbits.editSubPlebbit', array('plebbit' => $plebbit, 'mods' => $mods_string));
+        return view('subPabbles.editSubPabble', array('pabble' => $pabble, 'mods' => $mods_string));
     }
 
-    public function postEditPlebbit($name, Request $request, subPlebbit $subPlebbit, Moderator $moderator)
+    public function postEditPabble($name, Request $request, subPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::user();
-        $plebbit = $subPlebbit->where('name', $name)->first();
-        if (!$plebbit) {
-            flash("This subplebbit does not exist therefore you can't edit it", 'danger');
+        $pabble = $subPabble->where('name', $name)->first();
+        if (!$pabble) {
+            flash("This subpabble does not exist therefore you can't edit it", 'danger');
             return redirect('/');
         }
 
         $check = env('ADMIN_ID') == $user->id;
 
-        if (!$check && $plebbit->owner_id !== $user->id) {
-            flash("You are not allowed to edit /p/".$plebbit->name, 'danger');
+        if (!$check && $pabble->owner_id !== $user->id) {
+            flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
 
@@ -143,55 +143,55 @@ class ManageSubPlebbitsController extends Controller
 
         if ($validator->fails())
         {
-            return redirect('/p/'.$plebbit->name . '/edit')->withErrors($validator)->withInput();
+            return redirect('/p/'.$pabble->name . '/edit')->withErrors($validator)->withInput();
         }
 
         $header = $request->file('header');
         if ($header) {
-            if ($plebbit->header) {
-                unlink('images/plebbits/headers/' . $plebbit->header);
+            if ($pabble->header) {
+                unlink('images/pabbles/headers/' . $pabble->header);
             }
-            $newName = $plebbit->name . '-' . str_random(4) . '.' . $header->getClientOriginalExtension();
-            $header->move('images/plebbits/headers/', $newName);
-            $plebbit->header = $newName;
+            $newName = $pabble->name . '-' . str_random(4) . '.' . $header->getClientOriginalExtension();
+            $header->move('images/pabbles/headers/', $newName);
+            $pabble->header = $newName;
         }
         $icon = $request->file('icon');
         if ($icon) {
-            if ($plebbit->icon) {
-                unlink('images/plebbits/icons/' . $plebbit->icon);
+            if ($pabble->icon) {
+                unlink('images/pabbles/icons/' . $pabble->icon);
             }
             $randomHash =  substr($icon->getClientOriginalName(), 0, 10) . str_random(40);
-            $newName = 'images/plebbits/icons/' . $randomHash . '.png';
+            $newName = 'images/pabbles/icons/' . $randomHash . '.png';
             Image::make($icon->getRealPath())->fit(107, 59)->save($newName);
-            $plebbit->icon = $randomHash . '.png';
+            $pabble->icon = $randomHash . '.png';
         }
 
         if ($request->input('delete_header') == 'on') {
-            if ($plebbit->header) {
-                unlink('images/plebbits/headers/' . $plebbit->header);
+            if ($pabble->header) {
+                unlink('images/pabbles/headers/' . $pabble->header);
             }
-            $plebbit->header = null;
+            $pabble->header = null;
         }
         if ($request->input('delete_icon') == 'on') {
-            if ($plebbit->icon) {
-                unlink('images/plebbits/icons/' . $plebbit->icon);
+            if ($pabble->icon) {
+                unlink('images/pabbles/icons/' . $pabble->icon);
             }
-            $plebbit->icon = null;
+            $pabble->icon = null;
         }
         if ($request->input('header_type') == 'on') {
-            $plebbit->header_type = 'fit';
+            $pabble->header_type = 'fit';
         } else {
-            $plebbit->header_type = 'repeat';
+            $pabble->header_type = 'repeat';
         }
 
         if (!empty($request->input('title'))) {
-            $plebbit->title = $request->input('title');
+            $pabble->title = $request->input('title');
         }
         if (!empty($request->input('description'))) {
-            $plebbit->description = preg_replace("/(\r?\n){2,}/", "\n\n", $request->input('description'));
+            $pabble->description = preg_replace("/(\r?\n){2,}/", "\n\n", $request->input('description'));
         }
         if (!empty($request->input('social_description'))) {
-            $plebbit->description_social = $request->input('social_description');
+            $pabble->description_social = $request->input('social_description');
         }
         if (!empty($request->input('moderator'))) {
             $mods = explode(',', $request->input('moderator'));
@@ -199,57 +199,57 @@ class ManageSubPlebbitsController extends Controller
             foreach ($mods as $m) {
                 $user = User::where('username', $m)->first();
                 array_push($user_ids, $user->id);
-                $added = $moderator->where('user_id', $user->id)->where('sub_plebbit_id', $plebbit->id)->first();
+                $added = $moderator->where('user_id', $user->id)->where('sub_pabble_id', $pabble->id)->first();
                 if (!$added) {
                     $mod = new Moderator();
                     $mod->user_id = $user->id;
-                    $mod->sub_plebbit_id = $plebbit->id;
+                    $mod->sub_pabble_id = $pabble->id;
                     $mod->save();
                 }
             }
-            $moderator->whereNotIn('user_id', $user_ids)->where('sub_plebbit_id', $plebbit->id)->delete();
+            $moderator->whereNotIn('user_id', $user_ids)->where('sub_pabble_id', $pabble->id)->delete();
         }
         if (!empty($request->input('header_color'))) {
-            $plebbit->header_color = '#' . $request->input('header_color');
+            $pabble->header_color = '#' . $request->input('header_color');
         }
         if (!empty($request->input('color'))) {
-            $plebbit->color = '#' . $request->input('color');
+            $pabble->color = '#' . $request->input('color');
         }
-        $plebbit->save();
+        $pabble->save();
 
-        return redirect('/p/' . $plebbit->name . '/edit');
+        return redirect('/p/' . $pabble->name . '/edit');
     }
 
-    public function getEditPlebbitCss($name, Request $request, subPlebbit $subPlebbit)
+    public function getEditPabbleCss($name, Request $request, subPabble $subPabble)
     {
         $user = Auth::user();
-        $plebbit = $subPlebbit->where('name', $name)->first();
-        if (!$plebbit) {
-            flash("This subplebbit does not exist therefore you can't edit it", 'danger');
+        $pabble = $subPabble->where('name', $name)->first();
+        if (!$pabble) {
+            flash("This subpabble does not exist therefore you can't edit it", 'danger');
             return redirect('/');
         }
         $check = env('ADMIN_ID') == $user->id;
 
-        if (!$check && $plebbit->owner_id !== $user->id) {
-            flash("You are not allowed to edit /p/".$plebbit->name, 'danger');
+        if (!$check && $pabble->owner_id !== $user->id) {
+            flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
 
-        return view('subPlebbits.edit_css', array('plebbit' => $plebbit));
+        return view('subPabbles.edit_css', array('pabble' => $pabble));
     }
 
-    public function postEditPlebbitCss($name, Request $request, subPlebbit $subPlebbit)
+    public function postEditPabbleCss($name, Request $request, subPabble $subPabble)
     {
         $user = Auth::user();
-        $plebbit = $subPlebbit->where('name', $name)->first();
-        if (!$plebbit) {
-            flash("This subplebbit does not exist therefore you can't edit it", 'danger');
+        $pabble = $subPabble->where('name', $name)->first();
+        if (!$pabble) {
+            flash("This subpabble does not exist therefore you can't edit it", 'danger');
             return redirect('/');
         }
         $check = env('ADMIN_ID') == $user->id;
 
-        if (!$check && $plebbit->owner_id !== $user->id) {
-            flash("You are not allowed to edit /p/".$plebbit->name, 'danger');
+        if (!$check && $pabble->owner_id !== $user->id) {
+            flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
 
@@ -259,22 +259,22 @@ class ManageSubPlebbitsController extends Controller
             $urls = $this->getExternalSources($css);
             if ($this->getCharsets($css) !== false) {
                 flash("@charset not allowed", 'danger');
-                return redirect('/p/' . $plebbit->name . '/edit/css');
+                return redirect('/p/' . $pabble->name . '/edit/css');
             }
             if ($this->getImport($css) !== false) {
                 flash("@import not allowed", 'danger');
-                return redirect('/p/' . $plebbit->name . '/edit/css');
+                return redirect('/p/' . $pabble->name . '/edit/css');
             }
             if ($this->getNamespace($css) !== false) {
                 flash("@namespace not allowed", 'danger');
-                return redirect('/p/' . $plebbit->name . '/edit/css');
+                return redirect('/p/' . $pabble->name . '/edit/css');
             }
         } else {
             flash("Exceeded maximum of 1mil characters", 'danger');
-            return redirect('/p/' . $plebbit->name . '/edit/css');
+            return redirect('/p/' . $pabble->name . '/edit/css');
         }
 
-        $allowed_hosts = array('i.imgur.com', 'imgur.com', 'plebbit.net');
+        $allowed_hosts = array('i.imgur.com', 'imgur.com', 'pabble.co');
         $badurls = array();
 
         foreach ($urls as $url) {
@@ -290,27 +290,27 @@ class ManageSubPlebbitsController extends Controller
 
         if (count($badurls) > 0) {
             flash("External css resources from non whitelisted hosts not allowed", 'danger');
-            return redirect('/p/'.$plebbit->name.'/edit/css');
+            return redirect('/p/'.$pabble->name.'/edit/css');
         }
 
-        $plebbit->custom_css = htmlspecialchars($css);
+        $pabble->custom_css = htmlspecialchars($css);
         try {
-            $plebbit->save();
+            $pabble->save();
         } catch (QueryException $e) {
             flash("Exceeded maximum of 16mil characters", 'danger');
-            return redirect('/p/'.$plebbit->name.'/edit/css');
+            return redirect('/p/'.$pabble->name.'/edit/css');
         }
         flash("Custom CSS saved", 'success');
-        return redirect('/p/'.$plebbit->name.'/edit/css');
+        return redirect('/p/'.$pabble->name.'/edit/css');
     }
 
-    public function loadcss($name, Request $request, Response $response, subPlebbit $subPlebbit)
+    public function loadcss($name, Request $request, Response $response, subPabble $subPabble)
     {
-        $subPlebbit = $subPlebbit->select('custom_css')->where('name', $name)->first();
-        if (!$subPlebbit) {
+        $subPabble = $subPabble->select('custom_css')->where('name', $name)->first();
+        if (!$subPabble) {
             return response('', 404);
         }
-        return response($subPlebbit->custom_css, 200)
+        return response($subPabble->custom_css, 200)
             ->header('Content-Type', 'text/css');
     }
 

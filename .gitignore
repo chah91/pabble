@@ -12,6 +12,6 @@ yarn-error.log
 .env
 .DS_Store
 /public/media/*
-/public/images/plebbits/headers/*
-/public/images/plebbits/icons/*
-/public/images/plebbits/thumbnails/*
+/public/images/pabbles/headers/*
+/public/images/pabbles/icons/*
+/public/images/pabbles/thumbnails/*

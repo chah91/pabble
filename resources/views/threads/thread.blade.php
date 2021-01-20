@@ -5,55 +5,55 @@
 @include('layouts.partials.twitter_cards')
 
 @section('stylesheets')
-    <link rel="amphtml" href="{{ url('/') }}/amp/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
+    <link rel="amphtml" href="{{ url('/') }}/amp/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
 
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css') }}">
     <style>
         .header {
-            @if($subPlebbit->header)
-            background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/images/plebbits/headers/{{$subPlebbit->header}}");
+            @if($subPabble->header)
+            background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/images/pabbles/headers/{{$subPabble->header}}");
             @endif            background-position: center;
-            @if($subPlebbit->header_type == 'fit')
+            @if($subPabble->header_type == 'fit')
             background-size: cover;
             @endif
             width: 100%;
-            @if(!$subPlebbit->header)
-            background: {{$subPlebbit->header_color}};
+            @if(!$subPabble->header)
+            background: {{$subPabble->header_color}};
             @else
             margin-top: 0;
             @endif
             }
         #stripe {
-            background-color: @if($subPlebbit->header_color) {{ $subPlebbit->header_color }} @else grey @endif;
+            background-color: @if($subPabble->header_color) {{ $subPabble->header_color }} @else grey @endif;
             height: 20px;
             width: 100%;
             position: sticky;
             z-index: 1;
         }
-        @if($subPlebbit->header_color)
+        @if($subPabble->header_color)
                 #header_name {
-            color: {{$subPlebbit->color}};
+            color: {{$subPabble->color}};
         }
         #header_title {
-            color: {{$subPlebbit->color}};
+            color: {{$subPabble->color}};
         }
         @endif
     </style>
-    @if($subPlebbit->custom_css)
-        <link rel="stylesheet" href="{{asset('cdn/css/'.$subPlebbit->name.'.css')}}">
+    @if($subPabble->custom_css)
+        <link rel="stylesheet" href="{{asset('cdn/css/'.$subPabble->name.'.css')}}">
     @endif
 @endsection
 
 @section('content')
 
-    @if($subPlebbit->header)
+    @if($subPabble->header)
         <div id="stripe" data-spy="affix"></div>
     @endif
     <div class="header">
-        <h1 id="header_name">{{$subPlebbit->name}}</h1>
-        <p id="header_title">{{ $subPlebbit->title }}</p>
+        <h1 id="header_name">{{$subPabble->name}}</h1>
+        <p id="header_title">{{ $subPabble->title }}</p>
     </div>
 
     <div class="container">
@@ -80,7 +80,7 @@
                             $postername = $user->select('username')->where('id', $thread->poster_id)->first();
                         @endphp
                         <p class="overflow" style="margin-bottom: -5px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
-                            <a href="/p/{{$subPlebbit->name}}">{{$subPlebbit->name}}</a></p>
+                            <a href="/p/{{$subPabble->name}}">{{$subPabble->name}}</a></p>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Register @endsection
+@section('title') Pabble: Register @endsection
 
 @php $twitter_title = 'Register'; @endphp
 @include('layouts.partials.twitter_cards')
@@ -66,7 +66,7 @@
                         </div>
 
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 {!! Recaptcha::render() !!}
 
@@ -76,7 +76,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

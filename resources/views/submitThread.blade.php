@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Create a new post @endsection
+@section('title') Pabble: Create a new post @endsection
 
 @section('stylesheets')
     <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
@@ -74,15 +74,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('subplebbit') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('subpabble') ? ' has-error' : '' }}">
                         <div class="container">
-                            <h4>Subplebbit <span style="color:red">*</span></h4>
+                            <h4>Subpabble <span style="color:red">*</span></h4>
                         </div>
                         <div class="col-md-6">
-                            <input autocomplete="off" type="text" id="subplebbit" class="form-control" name="subplebbit" placeholder="Subplebbit" value="@if (!empty(old('subplebbit'))){{old('subplebbit')}}@elseif(isset($name)){{$name}}@endif">
-                            @if ($errors->has('subplebbit'))
+                            <input autocomplete="off" type="text" id="subpabble" class="form-control" name="subpabble" placeholder="Subpabble" value="@if (!empty(old('subpabble'))){{old('subpabble')}}@elseif(isset($name)){{$name}}@endif">
+                            @if ($errors->has('subpabble'))
                                 <span class="help-block">
-                                        <strong>{{ $errors->first('subplebbit') }}</strong>
+                                        <strong>{{ $errors->first('subpabble') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -145,16 +145,16 @@
                         </div>
                     </div>
 
-                    <div class="form-group{{ $errors->has('subplebbit') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('subpabble') ? ' has-error' : '' }}">
                         <div class="container">
-                            <h4>Subplebbit <span style="color:red">*</span></h4>
+                            <h4>Subpabble <span style="color:red">*</span></h4>
                         </div>
                         <div class="col-md-6">
-                            <input autocomplete="off" style="max-width: 100%;" id="subplebbit2" class="form-control" name="subplebbit" placeholder="subplebbit" value="@if (!empty(old('subplebbit'))){{old('subplebbit')}}@elseif(isset($name)){{$name}}@endif">
+                            <input autocomplete="off" style="max-width: 100%;" id="subpabble2" class="form-control" name="subpabble" placeholder="subpabble" value="@if (!empty(old('subpabble'))){{old('subpabble')}}@elseif(isset($name)){{$name}}@endif">
 
-                            @if ($errors->has('subplebbit'))
+                            @if ($errors->has('subpabble'))
                                 <span class="help-block">
-                                        <strong>{{ $errors->first('subplebbit') }}</strong>
+                                        <strong>{{ $errors->first('subpabble') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -205,7 +205,7 @@
         var options = {
 
             url: function(phrase) {
-                return "api/subplebbits/search/"+phrase;
+                return "api/subpabbles/search/"+phrase;
             },
 
             getValue: function(element) {
@@ -228,8 +228,8 @@
             requestDelay: 400
         };
 
-        $("#subplebbit").easyAutocomplete(options);
-        $("#subplebbit2").easyAutocomplete(options);
+        $("#subpabble").easyAutocomplete(options);
+        $("#subpabble2").easyAutocomplete(options);
         $('div.easy-autocomplete').removeAttr('style');
     </script>
 @endsection
