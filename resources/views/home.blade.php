@@ -35,7 +35,7 @@
 
         @php
             $first = true;
-            $user = new \App\User();
+            $user = new \App\Models\User();
         @endphp
         <div class="row">
 
@@ -63,7 +63,7 @@
            <div class="col-sm-8 col-sm-pull-4">
                 @foreach($threads as $thread)
                     @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
-                    @php $pabble = \App\subPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first(); @endphp
+                    @php $pabble = \App\Models\subPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first(); @endphp
 
                     <div class="thread @if($first) first  @php $first = false @endphp @endif">
                         <div style="min-width: 40px;" class="votes col-xs-1">

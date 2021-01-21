@@ -22,6 +22,24 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    {{-- Google Recaptcha v3 Handler --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script type="text/javascript">
+        function callbackThen(response){
+            response.json().then(function(data){
+                // handle if low score
+            });
+        }
+        function callbackCatch(error){
+            console.error('Error:', error)
+        }
+    </script>
+    {!! htmlScriptTagJsApi([
+        'action' => 'homepage',
+        'callback_then' => 'callbackThen',
+        'callback_catch' => 'callbackCatch'
+    ]) !!}
+
     @if(env('APP_ENV') == 'production')
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

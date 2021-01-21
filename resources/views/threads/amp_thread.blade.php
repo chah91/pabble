@@ -205,7 +205,7 @@
     </nav>
 
     @php
-        $user = new \App\User();
+        $user = new \App\Models\User();
         $postername = $user->select('username')->where('id', $thread->poster_id)->first();
     @endphp
 
@@ -275,7 +275,7 @@
         <div class="container">
             <div class="row">
                 @php
-                    $comment = new \App\Post();
+                    $comment = new \App\Models\Post();
                     $comments = $comment->where('thread_id', $thread->id)->select('user_id', 'thread_id', 'upvotes', 'downvotes', 'score', 'comment', 'username', 'posts.created_at')
                     ->leftJoin('users', 'posts.user_id', '=', 'users.id')
                     ->where('parent_id', null)
@@ -301,7 +301,7 @@
     <div class="container">
         <div class="row">
             @php
-            $thread = new \App\Thread();
+            $thread = new \App\Models\Thread();
             $top_posts = $thread->where('sub_pabble_id', $subPabble->id)->orderBy('score', 'desc')->take(5)->get();
             @endphp
 

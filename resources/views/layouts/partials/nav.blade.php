@@ -12,7 +12,7 @@
 
             @if(Auth::check())
                 @php
-                    $alerts = new \App\Alert();
+                    $alerts = new \App\Models\Alert();
                     $alerts = $alerts->getAlertsByUser(Auth::user()->id);
                 @endphp
                 <span id="alerts_mobile" class="dropdown" style="float: right">
@@ -67,7 +67,7 @@
 
             @if(Auth::check())
                 @php
-                    $subscriptions = new \App\Subscription();
+                    $subscriptions = new \App\Models\Subscription();
                     $subscribed = $subscriptions->subscriptions(Auth::user()->id);
                 @endphp
                 <ul class="nav navbar-nav navbar">

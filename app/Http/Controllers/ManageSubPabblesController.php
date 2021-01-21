@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\subPabble;
-use App\User;
+use App\Models\subPabble;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Moderator;
+use App\Models\Moderator;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Validator;
 use Image;
@@ -80,7 +80,7 @@ class ManageSubPabblesController extends Controller
         $pabble->owner_id = Auth::user()->id;
         $pabble->save();
 
-        (new \App\Moderator)->create([
+        (new \App\Models\Moderator)->create([
             'user_id' => $request->user()->id,
             'sub_pabble_id' => $pabble->id
         ]);
