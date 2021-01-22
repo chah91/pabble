@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Alert;
-use App\Post;
-use App\Vote;
-use App\Thread;
+use App\Models\Alert;
+use App\Models\Post;
+use App\Models\Vote;
+use App\Models\Thread;
 
 class AlertsController extends Controller
 {

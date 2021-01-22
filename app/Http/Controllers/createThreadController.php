@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Moderator;
+use App\Models\Moderator;
 use Embed\Exceptions\InvalidUrlException;
 use Illuminate\Http\Request;
-use App\subPabble;
+use App\Models\subPabble;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Intervention\Image\Exception\NotReadableException;
@@ -13,7 +13,7 @@ use Validator;
 use Image;
 use Embed\Embed;
 use File;
-use App\Thread;
+use App\Models\Thread;
 use Embed\Http\CurlDispatcher;
 
 class createThreadController extends Controller

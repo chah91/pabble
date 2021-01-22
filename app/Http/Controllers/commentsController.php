@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Thread;
-use App\Vote;
+use App\Models\Thread;
+use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
-use App\subPabble;
+use App\Models\subPabble;
 use GrahamCampbell\Markdown\Facades\Markdown;
-use App\Moderator;
+use App\Models\Moderator;
 
 class commentsController extends Controller
 {

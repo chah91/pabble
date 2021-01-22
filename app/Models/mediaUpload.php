@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Vote extends Model
+class mediaUpload extends Model
 {
-    protected $table = 'votes';
+    protected $table = 'media_upload';
 
     /**
      * The attributes that are mass assignable.
@@ -14,8 +14,7 @@ class Vote extends Model
      * @var array
      */
     protected $fillable = [
-        'vote', 'user_id', 'thread_id', 'post_id'
+        'file', 'delete_key', 'valid_until'
     ];
-
 
 }

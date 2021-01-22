@@ -98,7 +98,7 @@
 
             @php
                 $first = true;
-                $user = new \App\User();
+                $user = new \App\Models\User();
             @endphp
             <div class="row">
 

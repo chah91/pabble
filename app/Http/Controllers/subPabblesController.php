@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Moderator;
+use App\Models\Moderator;
 use Illuminate\Http\Request;
-use App\subPabble;
-use App\Thread;
-use App\Vote;
+use App\Models\subPabble;
+use App\Models\Thread;
+use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
-use App\Subscription;
+use App\Models\Subscription;
 
 class subPabblesController extends Controller
 {

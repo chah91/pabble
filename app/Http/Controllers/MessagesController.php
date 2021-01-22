@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Messaging;
+use App\Models\Messaging;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Intervention\Image\Exception\NotReadableException;
 use Validator;

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use App\Subscription;
+use App\Models\Post;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
-use App\Thread;
-use App\Vote;
+use App\Models\Thread;
+use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Models\User;
 
 class userProfileController extends Controller
 {

@@ -38,14 +38,14 @@
 
         @php
             $first = true;
-            $user = new \App\User();
+            $user = new \App\Models\User();
         @endphp
         <div class="row">
             @if($subpabbles->count() > 0)
                 <div class="col-sm-12">
                     <h3>Subpabbles</h3>
                     @foreach($subpabbles as $pabble)
-                        @php $readers = \App\Subscription::where('sub_pabble_id', $pabble->id)->count(); @endphp
+                        @php $readers = \App\Models\Subscription::where('sub_pabble_id', $pabble->id)->count(); @endphp
                         <div style="padding-left: 10px; margin-bottom: 10px;" class="panel">
                             <h4><a href="/p/{{$pabble->name}}">{{$pabble->name}}</a></h4>
                             <p style="font-size: 12px;">{{$readers}} {{str_plural('subscriber', $readers)}}, this subpabble was created {{Carbon\Carbon::parse($pabble->created_at)->diffForHumans()}}</p>
@@ -84,7 +84,7 @@
                     <h3>Threads</h3>
                     @foreach($threads as $thread)
                         @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
-                        @php $pabble = \App\subPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first(); @endphp
+                        @php $pabble = \App\Models\subPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first(); @endphp
                         <div style="margin-bottom: 10px;" class="panel">
                             <div style="margin-top: -12px;" class="thread @if($first) first  @php $first = false @endphp @endif">
                                 <div style="min-width: 40px;" class="votes col-xs-1">

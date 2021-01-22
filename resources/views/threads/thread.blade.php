@@ -76,7 +76,7 @@
                     <div style="margin-top: -4px;" class="col-xs-10 col-sm-11">
                         <h4><a href="@if($thread->link){{$thread->link}}@else @endif">{{$thread->title}}</a></h4>
                         @php
-                            $user = new \App\User();
+                            $user = new \App\Models\User();
                             $postername = $user->select('username')->where('id', $thread->poster_id)->first();
                         @endphp
                         <p class="overflow" style="margin-bottom: -5px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
