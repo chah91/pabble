@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class subPabble extends Model
+class SubPabble extends Model
 {
     protected $table = 'sub_pabbles';
 

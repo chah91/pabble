@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Thread;
-use Illuminate\Support\Facades\Auth;
-use App\Vote;
-use App\Post;
-use App\User;
 
-class votesController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\Thread;
+use App\Models\Vote;
+use App\Models\Post;
+use App\Models\User;
+
+class VotesController extends Controller
 {
 
     /**

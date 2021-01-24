@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Moderator;
-use App\Thread;
-use App\Post;
 use Illuminate\Support\Facades\Auth;
-use App\subPabble;
 
-class moderationController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\Moderator;
+use App\Models\Thread;
+use App\Models\Post;
+use App\Models\SubPabble;
+
+class ModerationController extends Controller
 {
 
     /**
@@ -18,7 +20,7 @@ class moderationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deleteThread($code, Request $request, Thread $thread, subPabble $subPabble, Moderator $moderator)
+    public function deleteThread($code, Request $request, Thread $thread, SubPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::guard('api')->user();
 
@@ -58,7 +60,7 @@ class moderationController extends Controller
         ]);
     }
 
-    public function deleteComment($id,  Request $request, Post $post, subPabble $subPabble, Moderator $moderator, Thread $thread)
+    public function deleteComment($id,  Request $request, Post $post, SubPabble $subPabble, Moderator $moderator, Thread $thread)
     {
         $user = Auth::guard('api')->user();
 

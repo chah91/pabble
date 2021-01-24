@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GrahamCampbell\Markdown\Facades\Markdown;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Thread;
 use App\Models\Vote;
-use Illuminate\Support\Facades\Auth;
-use App\Models\subPabble;
-use GrahamCampbell\Markdown\Facades\Markdown;
+use App\Models\SubPabble;
 use App\Models\Moderator;
 
-class commentsController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,9 +28,13 @@ class commentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($name, $code, Request $request, Thread $thread, Vote $vote, subPabble $pabble, Moderator $moderator)
+    public function index($name, $code, Request $request, Vote $vote, SubPabble $pabble, Moderator $moderator)
     {
-        $thread = $thread->where('code', $code)->first();
+        $thread = Thread::where('code', $code)->first();
+        if ($thread){
+            $thread->updated_at = \Carbon\Carbon::now();
+            $thread->save();
+        }
         $subPabble = $pabble->where('name', $name)->first();
         $mod = false;
 

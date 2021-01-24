@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\subPabble;
 
-class searchSubPabblesController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\SubPabble;
+
+class SearchSubPabblesController extends Controller
 {
 
     /**
@@ -14,7 +16,7 @@ class searchSubPabblesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search($query, subPabble $subPabble)
+    public function search($query, SubPabble $subPabble)
     {
         $results = $subPabble->searchByName($query)->toArray();
 

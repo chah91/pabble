@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\subPabble;
-use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Moderator;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Validator;
 use Image;
+
+use App\Models\SubPabble;
+use App\Models\User;
+use App\Models\Moderator;
 
 class ManageSubPabblesController extends Controller
 {
@@ -69,7 +70,7 @@ class ManageSubPabblesController extends Controller
             'social_description' => 'max:200',
         ]);
 
-        $pabble = new subPabble();
+        $pabble = new SubPabble();
         $pabble->name = $request->input('name');
         $pabble->title = $request->input('title');
         $pabble->description = preg_replace("/(\r?\n){2,}/", "\n\n",$request->input('description'));
@@ -88,7 +89,7 @@ class ManageSubPabblesController extends Controller
         return redirect('/p/'.$pabble->name);
     }
 
-    public function getEditPabble($name, Request $request, subPabble $subPabble, Moderator $moderator)
+    public function getEditPabble($name, Request $request, SubPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::user();
         $pabble = $subPabble->where('name', $name)->first();
@@ -113,7 +114,7 @@ class ManageSubPabblesController extends Controller
         return view('subPabbles.editSubPabble', array('pabble' => $pabble, 'mods' => $mods_string));
     }
 
-    public function postEditPabble($name, Request $request, subPabble $subPabble, Moderator $moderator)
+    public function postEditPabble($name, Request $request, SubPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::user();
         $pabble = $subPabble->where('name', $name)->first();
@@ -220,7 +221,7 @@ class ManageSubPabblesController extends Controller
         return redirect('/p/' . $pabble->name . '/edit');
     }
 
-    public function getEditPabbleCss($name, Request $request, subPabble $subPabble)
+    public function getEditPabbleCss($name, Request $request, SubPabble $subPabble)
     {
         $user = Auth::user();
         $pabble = $subPabble->where('name', $name)->first();
@@ -238,7 +239,7 @@ class ManageSubPabblesController extends Controller
         return view('subPabbles.edit_css', array('pabble' => $pabble));
     }
 
-    public function postEditPabbleCss($name, Request $request, subPabble $subPabble)
+    public function postEditPabbleCss($name, Request $request, SubPabble $subPabble)
     {
         $user = Auth::user();
         $pabble = $subPabble->where('name', $name)->first();
@@ -304,7 +305,7 @@ class ManageSubPabblesController extends Controller
         return redirect('/p/'.$pabble->name.'/edit/css');
     }
 
-    public function loadcss($name, Request $request, Response $response, subPabble $subPabble)
+    public function loadcss($name, Request $request, Response $response, SubPabble $subPabble)
     {
         $subPabble = $subPabble->select('custom_css')->where('name', $name)->first();
         if (!$subPabble) {

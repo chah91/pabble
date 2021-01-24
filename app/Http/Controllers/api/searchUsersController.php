@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
-use App\subPabble;
-use App\Subscription;
 use Illuminate\Support\Facades\Auth;
 
-class searchUsersController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\User;
+use App\Models\Subscription;
+
+class SearchUsersController extends Controller
 {
 
     /**

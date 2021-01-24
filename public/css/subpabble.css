@@ -34,6 +34,16 @@
 .thread {
     font-family: roboto;
     font-weight: 300;
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.thread.even{
+    background: #f5f3f3;
+}
+
+.thread_title{
+    margin-top: 10px;
 }
 
 .stack {
@@ -57,28 +67,35 @@
     vertical-align: bottom;
     margin: 0;
     margin-top: 3px;
+    display: flex;
 }
 
 .tabmenu li {
-    padding: 5px;
+    padding: 3px 5px;
     display: inline;
     background-color: white;
-    border: 1px solid #5f99cf;
-    border-top: 1px solid white;
-    z-index: -2;
+    margin-right: 5px;
+}
+.tabmenu li:hover{
+    background-color: #f5f3f3 !important;
+}
+.tabmenu li a{
+    width: 55px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+    font-size: 9pt;
 }
 
 .selected {
-    font-weight: bold;
-    padding-bottom: 10px !important;
-}
-.selected a {
-    margin-top: 10px;
-    padding: 12px;
+    border: 2px solid #c0bdbd;
+    border-radius: 3px;
 }
 
 .vote {
     cursor: pointer;
+    font-size: 28pt;
 }
 
 #looks_like {
@@ -86,13 +103,6 @@
 }
 
 @media screen and (max-width: 560px) {
-    .tabmenu {
-        position: absolute;
-        left: -20px;
-    }
-    /*.first {*/
-        /*margin-top: 80px;*/
-    /*}*/
     .rightmenu {
         margin-top: 40px;
     }

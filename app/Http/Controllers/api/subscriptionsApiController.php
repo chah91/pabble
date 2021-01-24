@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\subPabble;
-use App\Subscription;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-class subscriptionsApiController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\SubPabble;
+use App\Models\Subscription;
+
+class SubscriptionsApiController extends Controller
 {
 
     /**
@@ -16,7 +18,7 @@ class subscriptionsApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function subscribe($name, Request $request, subPabble $subPabble, Subscription $subscription)
+    public function subscribe($name, Request $request, SubPabble $subPabble, Subscription $subscription)
     {
         $subPabble = $subPabble->select('name', 'id')->where('name', $name)->first();
         if (!$subPabble) {
@@ -41,7 +43,7 @@ class subscriptionsApiController extends Controller
         ], 200);
     }
 
-    public function unsubscribe($name, Request $request, subPabble $subPabble, Subscription $subscription)
+    public function unsubscribe($name, Request $request, SubPabble $subPabble, Subscription $subscription)
     {
         $subPabble = $subPabble->select('name', 'id')->where('name', $name)->first();
         if (!$subPabble) {

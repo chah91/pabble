@@ -7,16 +7,6 @@
 
 @section('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
-    <style>
-        #stripe {
-            background-color:#2779A8;
-            /*background-color:#2D8CC2;*/
-            height: 20px;
-            width: 100%;
-            position: sticky;
-            z-index: 3;
-        }
-    </style>
 @endsection
 
 @section('content')
@@ -85,20 +75,20 @@
                     @foreach($threads as $thread)
                         @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
                         @php $pabble = \App\Models\subPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first(); @endphp
-                        <div style="margin-bottom: 10px;" class="panel">
-                            <div style="margin-top: -12px;" class="thread @if($first) first  @php $first = false @endphp @endif">
-                                <div style="min-width: 40px;" class="votes col-xs-1">
-                                    <div style="margin-bottom: -5px; font-size: 20px;" class="row stack">
+                        <div style="margin-top: 10px;" class="panel">
+                            <div class="thread">
+                                <div style="min-width: 40px;border-right: 2px solid #3097d1;margin-right:10px;padding-right:10px;margin-top:6px;" class="votes col-xs-1">
+                                    <div style="margin-bottom: -15px;margin-top:8px" class="row stack">
                                         <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
                                     </div>
                                     <div class="row stack">
                                         <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
                                     </div>
-                                    <div style="margin-top: -5px; font-size: 20px;" class="row stack">
+                                    <div style="margin-top: -15px;" class="row stack">
                                         <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
                                     </div>
                                 </div>
-                                <div style="min-width: 90px;" class="image col-xs-1">
+                                <div style="min-width: 90px;margin-top:10px;" class="image col-xs-1">
                                     <div class="row">
                                         <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
                                     </div>
@@ -106,7 +96,7 @@
                                 <div class="thread_info">
                                     <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
                                     <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
-                                        <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a></p>
+                                        <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a> (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )</p>
                                     <a href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                                 </div>
                             </div>

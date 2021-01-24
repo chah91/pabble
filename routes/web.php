@@ -24,10 +24,10 @@ Route::post('/activate/resend', 'Auth\ActivationController@resend');
 Route::get('/subpabbles/create', 'ManageSubPabblesController@getNewSubPabble')->name('subpabble.create');
 Route::post('/subpabbles/create', 'ManageSubPabblesController@postNewSubPabble');
 
-Route::get('/submit', 'createThreadController@getCreateThread');
-Route::post('/submit', 'createThreadController@postCreateThread');
-Route::get('/p/{name}/submit', 'createThreadController@getCreateThread');
-Route::post('/p/{name}/submit', 'createThreadController@postCreateThread');
+Route::get('/submit', 'CreateThreadController@getCreateThread');
+Route::post('/submit', 'CreateThreadController@postCreateThread');
+Route::get('/p/{name}/submit', 'CreateThreadController@getCreateThread');
+Route::post('/p/{name}/submit', 'CreateThreadController@postCreateThread');
 
 Route::get('/p/{name}/edit', 'ManageSubPabblesController@getEditPabble');
 Route::post('/p/{name}/edit', 'ManageSubPabblesController@postEditPabble');
@@ -38,17 +38,17 @@ Route::group(['prefix' => '', 'middleware' => 'throttle:30,5'], function () {
     Route::get('/cdn/css/{name}.css', 'ManageSubPabblesController@loadcss');
 });
 
-Route::get('/p/{name}', 'subPabblesController@subPabble');
-Route::get('/p/{name}/{sort}', 'subPabblesController@subPabble');
+Route::get('/p/{name}', 'SubPabblesController@subPabble');
+Route::get('/p/{name}/{sort}', 'SubPabblesController@subPabble');
 
-Route::get('/p/{name}/comments/{code}', 'commentsController@index');
-Route::get('/p/{name}/comments/{code}/{title}', 'commentsController@index');
+Route::get('/p/{name}/comments/{code}', 'CommentsController@index');
+Route::get('/p/{name}/comments/{code}/{title}', 'CommentsController@index');
 
-Route::get('/amp/p/{name}/comments/{code}/{title}', 'commentsController@index');
-Route::get('/amp/p/{name}/comments/{code}', 'commentsController@index');
+Route::get('/amp/p/{name}/comments/{code}/{title}', 'CommentsController@index');
+Route::get('/amp/p/{name}/comments/{code}', 'CommentsController@index');
 
-Route::get('/u/{name}', 'userProfileController@index');
-Route::get('/u/{name}/{sort}', 'userProfileController@index');
+Route::get('/u/{name}', 'UserProfileController@index');
+Route::get('/u/{name}/{sort}', 'UserProfileController@index');
 
 Route::get('/search', 'SearchController@search');
 Route::get('/search/{subpabbles}', 'SearchController@search');

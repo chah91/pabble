@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\subPabble;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\SubPabble;
 use App\Models\Thread;
 use App\Models\Vote;
-use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
-    public function search($subpabble = null, Request $request, subPabble $subPabble, Thread $thread, Vote $vote)
+    public function search($subpabble = null, Request $request, SubPabble $subPabble, Thread $thread, Vote $vote)
     {
         $page = $request->input('page');
         if (!is_numeric($page)) {
@@ -63,7 +64,7 @@ class SearchController extends Controller
         if ($type == 'all' || $type == 'subpabbles') {
             $subpabbles = $subPabble->select('id', 'name', 'title', 'created_at')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name', 'asc')->skip($skip)->take($take)->get();
         } else {
-            $subpabbles = collect(new subPabble());
+            $subpabbles = collect(new SubPabble());
         }
         if ($type == 'all' || $type == 'posts') {
             $threads = $thread->where('title', 'LIKE', '%' . $query . '%')->orderBy('title', 'asc')->skip($skip)->take($take)->get();

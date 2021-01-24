@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Moderator;
 use Embed\Exceptions\InvalidUrlException;
 use Illuminate\Http\Request;
-use App\Models\subPabble;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Intervention\Image\Exception\NotReadableException;
@@ -13,10 +11,13 @@ use Validator;
 use Image;
 use Embed\Embed;
 use File;
-use App\Models\Thread;
 use Embed\Http\CurlDispatcher;
 
-class createThreadController extends Controller
+use App\Models\Moderator;
+use App\Models\SubPabble;
+use App\Models\Thread;
+
+class CreateThreadController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,7 +31,7 @@ class createThreadController extends Controller
         $validationFactory->extend(
             'subpabble',
             function ($attribute, $value, $parameters) {
-                $pabble = new subPabble();
+                $pabble = new SubPabble();
                 $mod = new Moderator();
                 $pabble = $pabble->select('id', 'name')->where('name', $value)->first();
                 if (!$pabble) {
@@ -70,7 +71,7 @@ class createThreadController extends Controller
         return view('submitThread', array('name' => $name));
     }
 
-    public function postCreateThread(Request $request, subPabble $subPabble)
+    public function postCreateThread(Request $request, SubPabble $subPabble)
     {
         if (env('USE_CURL_PROXY') == 'yes') {
             $dispatcher = new CurlDispatcher([
@@ -166,10 +167,14 @@ class createThreadController extends Controller
                 } else {
                     $extension = substr($orig, 0, strpos($orig, '?'));
                 }
-                $newName = 'images/pabbles/thumbnails/' . str_random(10) . '.' .  $extension;
+                $save_path = 'images/pabbles/thumbnails/';
+                if (!file_exists(public_path($save_path))) {
+                    mkdir(public_path($save_path), 777, true);
+                }
+                $newName = $save_path . str_random(10) . '.' .  $extension;
                 if (File::exists($newName)) {
                     $imageToken = substr(sha1(mt_rand()), 0, 5);
-                    $newName = 'images/pabbles/thumbnails/' . str_random(10) . '-' . $imageToken . ".{$extension}";
+                    $newName = $save_path . str_random(10) . '-' . $imageToken . ".{$extension}";
                 }
                 try {
                     $image = Image::make($link)->fit(78, 78)->save($newName);
@@ -186,10 +191,14 @@ class createThreadController extends Controller
                 } else {
                     $extension = substr($orig, 0, strpos($orig, '?'));
                 }
-                $newName =  'images/pabbles/thumbnails/' . str_random(8) . ".{$extension}";
+                $save_path = 'images/pabbles/thumbnails/';
+                if (!file_exists(public_path($save_path))) {
+                    mkdir(public_path($save_path), 777, true);
+                }
+                $newName =  $save_path . str_random(8) . ".{$extension}";
                 if (File::exists($newName)) {
                     $imageToken = substr(sha1(mt_rand()), 0, 5);
-                    $newName = 'images/pabbles/thumbnails/' . str_random(8) . '-' . $imageToken . ".{$extension}";
+                    $newName = $save_path . str_random(8) . '-' . $imageToken . ".{$extension}";
                 }
                 try {
                     $image = Image::make($info->image)->fit(78, 78)->save($newName);

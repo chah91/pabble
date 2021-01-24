@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
-use App\Thread;
-use App\Vote;
 use Illuminate\Http\Request;
-use App\mediaUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Post;
-use App\Alert;
 
-class commentsController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\Thread;
+use App\Models\Vote;
+use App\Models\Post;
+use App\Models\Alert;
+
+class CommentsController extends Controller
 {
 
     /**
@@ -20,7 +21,7 @@ class commentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addComment(Request $request, Thread $thread, Post $post)
+    public function addComment(Request $request)
     {
         $user = Auth::guard('api')->user();
 
@@ -31,7 +32,7 @@ class commentsController extends Controller
             ], 200);
         }
 
-        $last_comment = $post->where('user_id', $user->id)->orderBy('timestamp', 'desc')->first();
+        $last_comment = Post::where('user_id', $user->id)->orderBy('timestamp', 'desc')->first();
 
         if ($last_comment) {
             if (time() - 60 < $last_comment->timestamp) {
@@ -44,7 +45,7 @@ class commentsController extends Controller
 
         $comment = preg_replace("/(\r?\n){2,}/", "\n\n", $comment);
 
-        $thread = $thread->where('id', $request->input('thread'))->first();
+        $thread = Thread::where('id', $request->input('thread'))->first();
         if (!$thread) {
             return Response()->json([
                 'error' => 'thread not found'

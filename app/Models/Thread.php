@@ -30,7 +30,7 @@ class Thread extends Model
 
     public function subPabble()
     {
-        return $this->hasOne('App\subPabble', 'id', 'sub_pabble_id');
+        return $this->hasOne('App\Models\SubPabble', 'id', 'sub_pabble_id');
     }
 
     public function threadsByUser($id, $sort, $skip, $amount)
@@ -56,6 +56,10 @@ class Thread extends Model
         } else {
             return false;
         }
+    }
+
+    public static function getLastViewdThreadsLast24Hours(){
+        return Thread::where('updated_at', '>=', \Carbon\Carbon::now()->subDay(1))->orderBy('updated_at', 'DESC')->get();
     }
 
 }
