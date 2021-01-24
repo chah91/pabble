@@ -44,6 +44,8 @@
 
 .thread_title{
     margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .stack {
@@ -61,24 +63,21 @@
 }
 
 .tabmenu {
-    list-style-type: none;
     white-space: nowrap;
     display: inline-block;
     vertical-align: bottom;
-    margin: 0;
-    margin-top: 3px;
     display: flex;
 }
 
 .tabmenu li {
-    padding: 3px 5px;
+    border-radius: 5px;
+    border: 1px solid #bebebe;
+    background-color: #e7e7e7;
+    padding: 3px 3px;
     display: inline;
-    background-color: white;
     margin-right: 5px;
 }
-.tabmenu li:hover{
-    background-color: #f5f3f3 !important;
-}
+
 .tabmenu li a{
     width: 55px;
     display: block;
@@ -88,9 +87,13 @@
     font-size: 9pt;
 }
 
+.tabmenu li a:hover{
+    color: #5f99cf;
+}
+
 .selected {
-    border: 2px solid #c0bdbd;
-    border-radius: 3px;
+    color: #5f99cf;
+    font-weight: bold;
 }
 
 .vote {

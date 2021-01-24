@@ -17,10 +17,6 @@
     <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
     <style>
-        .profile_padding {
-            margin-top: 20px;
-            margin-left: 25px;
-        }
         .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
             background: white;
         }
@@ -36,14 +32,13 @@
 @section('content')
     <div id="stripe" data-spy="affix"></div>
 
-    <div class="container">
+    <div class="container" style="margin-top: 15px; width: 80%;">
         @if($user)
         <ul class="tabmenu">
             <li @if($sort == 'new') class="selected" @endif><a href="/u/{{$user->username}}/new">new</a></li>
             <li @if($sort == 'popular') class="selected" @endif><a href="/u/{{$user->username}}/popular">popular</a></li>
             <li @if($sort == 'top') class="selected" @endif><a href="/u/{{$user->username}}/top">top</a></li>
         </ul>
-
 
         <div class="row profile_padding">
             <div class="col-md-12">

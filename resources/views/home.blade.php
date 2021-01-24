@@ -10,10 +10,10 @@
 
 @section('content')
 
-    <div class="container panel panel-default" style="margin-top: 15px">
+    <div class="container panel panel-default" style="margin-top: 15px; width: 80%;">
         <div class="row">
-            <div class="col-sm-4 col-sm-push-8">
-                <div style="padding-bottom: 20px;background:#fafafa" class="well search_box">
+            <div class="col-sm-3 col-sm-push-9">
+                <div style="padding-top: 10px;padding-bottom: 20px;background:#fafafa" class="well search_box">
                     <h4 style="color:#3097D1;margin-bottom:3px;">Search Pabble</h4>
                     <hr style="margin-top: 3px;margin-bottom:7px;border-top:1px solid #b6b6b6">
                     <form method="GET" action="/search">
@@ -33,8 +33,8 @@
                 <a href="/submit?type=text" class="btn btn-primary" style="width:100%;margin-top:15px">Discuss</a>
                 <a href="/subpabbles/create" class="btn btn-default" style="width:100%;margin-top:15px">Create your own subpabble</a>
 
-                <div style="padding-bottom: 20px;background:#fafafa" class="well search_box">
-                    <h5 style="color:#3097D1;margin-bottom:3px;">Most viewed int the past 24 hours</h5>
+                <div style="padding-top: 10px;padding-bottom: 20px;background:#fafafa" class="well search_box">
+                    <h5 style="color:#3097D1;margin-bottom:3px;">Most viewed in the past 24 hours</h5>
                     <hr style="margin-top: 3px;margin-bottom:7px;border-top:1px solid #b6b6b6">
                     @php $last_threads = \App\Models\Thread::getLastViewdThreadsLast24Hours(); @endphp
                     @foreach ($last_threads as $thread)
@@ -49,7 +49,7 @@
                 $user = new \App\Models\User();
                 $even = true;
             @endphp
-            <div class="col-sm-8 col-sm-pull-4">
+            <div class="col-sm-9 col-sm-pull-3">
                 <div class="page-info">
                     <span class="title">
                         HOME
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="thread_info">
-                            <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
+                            <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title">{{$thread->title}}</h3></a>
                             <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                             <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a> (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )</p>
                             <a href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{$thread->reply_count < 1 ? 'comment' : str_plural('comment', $thread->reply_count)}}</strong></p></a>

@@ -56,7 +56,7 @@
         <p id="header_title">{{ $subPabble->title }}</p>
     </div>
 
-    <div class="container">
+    <div class="container" style="margin-top: 15px; width: 80%;">
         <div class="panel">
             <div class="modal-header">
                 <div class="row">

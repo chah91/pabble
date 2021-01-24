@@ -1,7 +1,7 @@
 <nav id="nav" class="navbar navbar-default navbar-static-top">
     <div class="pabble-topbar">
+        @if(Auth::check())
         <div class="my-subpabbles">
-            @if(Auth::check())
                 @php
                     $subscriptions = new \App\Models\Subscription();
                     $subscribed = $subscriptions->subscriptions(Auth::user()->id);
@@ -24,18 +24,13 @@
                         </ul>
                     </li>
                 </ul>
-            @endif
+            
         </div>
-        <div class="flex">
-            <a href="/" style="margin-right: 15px">
-                HOME
-            </a>
-            <a href="/" style="margin-right: 15px">
-                POPULAR
-            </a>
-            <a href="/">
-                ALL
-            </a>
+        @endif
+        <div class="main-links">
+            <a href="/">HOME</a>
+            <a href="/">POPULAR</a>
+            <a href="/">ALL</a>
         </div>
         @php
         $allSubPabbles = \App\Models\SubPabble::get();
@@ -120,10 +115,7 @@
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <div class="join-nav">
-                        want to join?&nbsp;
-                        <a href="{{ route('login') }}">login</a>&nbsp;or&nbsp;
-                        <a href="{{ route('register') }}">register</a>&nbsp;
-                        in seconds
+                        Want to join? <a href="{{ route('login') }}">Login</a> or <a href="{{ route('register') }}">register</a> in seconds
                     </div>
                 @else
                     <li id="alerts_desktop" class="dropdown">
@@ -153,7 +145,7 @@
                             @if(count($alerts) < 1)
                                 <li>
                                     <a>
-                                        No alerts for now
+                                        There are no new alerts
                                     </a>
                                 </li>
                             @endif
@@ -167,26 +159,11 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="/u/{{Auth::user()->username}}">My profile</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('messages.inbox') }}">Private messages</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('subpabble.create') }}">Create subpabble</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
+                            <li><a href="/u/{{Auth::user()->username}}">My profile</a></li>
+                            <li><a href="{{ route('messages.inbox') }}">Private messages</a></li>
+                            <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                                
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
                         </ul>
                     </li>
                 @endif

@@ -47,9 +47,9 @@
 
     @if($subPabble)
 
-        <div class="container  panel panel-default" style="margin-top: 15px">
+        <div class="container  panel panel-default" style="margin-top: 15px; width: 80%;">
             <div class="row">
-                <div class="col-sm-4 col-sm-push-8">
+                <div class="col-sm-3 col-sm-push-9">
                     <div class="well search_box">
                         <h4 class="overflow">Search in <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a></h4>
                         <form method="GET" action="/search/{{$subPabble->name}}">
@@ -98,7 +98,7 @@
                     $even = true;
                     $user = new \App\Models\User();
                 @endphp
-                <div class="col-sm-8 col-sm-pull-4">
+                <div class="col-sm-9 col-sm-pull-3">
 
                     @if($threads)
                     <div class="page-info">
