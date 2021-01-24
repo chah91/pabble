@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class mediaUpload extends Model
+class MediaUpload extends Model
 {
     protected $table = 'media_upload';
 

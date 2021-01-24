@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Models\Messaging;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Intervention\Image\Exception\NotReadableException;
+use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\User;
+use App\Models\Messaging;
 
 class MessagesController extends Controller
 {

@@ -8,13 +8,6 @@
 @section('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <style>
-        #stripe {
-            background-color:#2779A8;
-            height: 20px;
-            width: 100%;
-            position: sticky;
-            z-index: 3;
-        }
         .tabmenu li {
             border: 1px solid #5f99cf;
         }

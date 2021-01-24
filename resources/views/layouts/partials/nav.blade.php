@@ -1,4 +1,51 @@
 <nav id="nav" class="navbar navbar-default navbar-static-top">
+    <div class="pabble-topbar">
+        <div class="my-subpabbles">
+            @if(Auth::check())
+                @php
+                    $subscriptions = new \App\Models\Subscription();
+                    $subscribed = $subscriptions->subscriptions(Auth::user()->id);
+                @endphp
+                <ul class="nav navbar">
+                    <li class="dropdown">
+                        <a style="margin-top: -1px;padding:0px;color:#3097D1;margin-left:10px;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            MY SUBPABBLES <span class="caret"></span>
+                        </a>
+                        <ul style="font-size: 12px; margin:0; padding:0;left:10px" class="dropdown-menu" role="menu">
+                            <li class="subscriptions">
+                                @if($subscribed->count() < 1)
+                                    <span style="padding: 10px;">No subscriptions yet</span>
+                                @else
+                                    @foreach($subscribed as $sub)
+                                        <a class="sub" style="padding:5px 20px" href="/p/{{$sub->name}}">{{$sub->name}}</a>
+                                    @endforeach
+                                @endif
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            @endif
+        </div>
+        <div class="flex">
+            <a href="/" style="margin-right: 15px">
+                HOME
+            </a>
+            <a href="/" style="margin-right: 15px">
+                POPULAR
+            </a>
+            <a href="/">
+                ALL
+            </a>
+        </div>
+        @php
+        $allSubPabbles = \App\Models\SubPabble::get();
+        @endphp
+        <div class="all-subpabbles">
+            @foreach ($allSubPabbles as $item)
+                <a href="/p/{{$item->name}}">{{$item->name}}</a>
+            @endforeach
+        </div>
+    </div>
     <div class="container">
         <div class="navbar-header">
 
@@ -53,49 +100,31 @@
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
                 <div style="height: inherit; display: inline-block; font-family: Raleway; font-weight: 500;">
-                    {{ config('app.name', 'Pabble') }}
                     @if(isset($subPabble) && $subPabble->icon)
-                        <img style="height: 48px; margin-top: -11px;" src="/images/pabbles/icons/{{$subPabble->icon}}" alt="pabble">
+                        <img style="height: 40px; margin-top: -7px;" src="/images/pabbles/icons/{{$subPabble->icon}}" alt="pabble">
                     @else
-                        <img style="height: inherit; margin-top: -14px;" src="/images/logo.png" alt="pabble">
+                        <img style="height: 40px; margin-top: -7px;" src="/images/logo.png" alt="pabble">
                     @endif
                 </div>
             </a>
+            <div class="flex pubble-manage">
+                <a href="/submit?type=link" class="btn btn-primary">Share a link</a>
+                <a href="/submit?type=text" class="btn btn-primary">Discuss</a>
+            </div>
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
-
-            @if(Auth::check())
-                @php
-                    $subscriptions = new \App\Models\Subscription();
-                    $subscribed = $subscriptions->subscriptions(Auth::user()->id);
-                @endphp
-                <ul class="nav navbar-nav navbar">
-                    <li class="dropdown">
-                        <a style="margin-top: 0px;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            my subpabbles <span class="caret"></span>
-                        </a>
-                        <ul style="font-size: 12px; margin:0; padding:0;" class="dropdown-menu" role="menu">
-                            <li class="subscriptions">
-                                @if($subscribed->count() < 1)
-                                    <span style="padding: 10px;">No subscriptions yet</span>
-                                @else
-                                    @foreach($subscribed as $sub)
-                                        <a class="sub" href="/p/{{$sub->name}}">{{$sub->name}}</a>
-                                    @endforeach
-                                @endif
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            @endif
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
-                    <li><a href="{{ route('login') }}">Login</a></li>
-                    <li><a href="{{ route('register') }}">Register</a></li>
+                    <div class="join-nav">
+                        want to join?&nbsp;
+                        <a href="{{ route('login') }}">login</a>&nbsp;or&nbsp;
+                        <a href="{{ route('register') }}">register</a>&nbsp;
+                        in seconds
+                    </div>
                 @else
                     <li id="alerts_desktop" class="dropdown">
                         <a style="margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

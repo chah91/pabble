@@ -17,14 +17,6 @@
     <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
     <style>
-        #stripe {
-            background-color:#2779A8;
-            /*background-color:#2D8CC2;*/
-            height: 20px;
-            width: 100%;
-            position: sticky;
-            z-index: 3;
-        }
         .profile_padding {
             margin-top: 20px;
             margin-left: 25px;
@@ -85,7 +77,7 @@
                         @endif
                         @foreach($posts as $post)
                             @php $postername = $user->select('username')->where('id', $post->poster_id)->first(); @endphp
-                            @php $subpabble = \App\Models\subPabble::select('name')->where('id', $post->sub_pabble_id)->first(); if (!$subpabble) {$subpabble->name = 'removed'; } @endphp
+                            @php $subpabble = \App\Models\SubPabble::select('name')->where('id', $post->sub_pabble_id)->first(); if (!$subpabble) {$subpabble->name = 'removed'; } @endphp
                             <div style="margin-top:0; padding-bottom: 10px; margin-bottom: 10px;" class="panel">
                                 <div class="thread">
                                     <div style="min-width: 40px;" class="votes col-xs-1">
@@ -132,7 +124,7 @@
                         @endif
                         @foreach($comments as $comment)
                             @php $thread = \App\Models\Thread::select('code', 'sub_pabble_id')->where('id', $comment->thread_id)->first(); if(!$thread) { $thread->code = 'removed'; } @endphp
-                            @php $subpabble = \App\Models\subPabble::select('name')->where('id', $thread->sub_pabble_id)->first(); if (!$subpabble) {$subpabble->name = 'removed'; } @endphp
+                            @php $subpabble = \App\Models\SubPabble::select('name')->where('id', $thread->sub_pabble_id)->first(); if (!$subpabble) {$subpabble->name = 'removed'; } @endphp
                             <div id="post_panel_{{$comment->id}}" style="width:100%; min-width: 400px; padding:10px; margin-bottom: 10px;" class="col-xs-12 panel comment">
                                 <div style="width: 40px; margin-left: -20px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">
                                     <div style="margin-left: 20px;" class="wrap">

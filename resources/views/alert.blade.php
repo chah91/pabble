@@ -6,17 +6,6 @@
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
     <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ladda-themeless.min.css') }}">
-    <style>
-        #stripe {
-            background-color:#2779A8;
-            /*background-color:#2D8CC2;*/
-            height: 20px;
-            width: 100%;
-            margin-top: -22px;
-            position: sticky;
-            z-index: 3;
-        }
-    </style>
 @endsection
 
 @section('content')

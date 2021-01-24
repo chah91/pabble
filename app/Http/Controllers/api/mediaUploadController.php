@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\mediaUpload;
 use Illuminate\Support\Facades\Storage;
 
-class mediaUploadController extends Controller
+use App\Http\Controllers\Controller;
+
+use App\Models\MediaUpload;
+
+class MediaUploadController extends Controller
 {
 
     /**
@@ -19,7 +21,7 @@ class mediaUploadController extends Controller
     {
         $file = $request->file('file');
         $ext = strtolower($file->getClientOriginalExtension());
-        $size = $file->getClientSize();
+        $size = $file->getSize();
         $name = $file->getClientOriginalName();
 
         $name = explode('.'.$ext,$name)[0];
@@ -40,7 +42,7 @@ class mediaUploadController extends Controller
 
         $delete_key = str_random(40);
 
-        $mediaupload = new mediaUpload();
+        $mediaupload = new MediaUpload();
         $mediaupload->file = $newName;
         $mediaupload->delete_key = $delete_key;
         $mediaupload->valid_until = strtotime('+10 min', time());
@@ -52,7 +54,7 @@ class mediaUploadController extends Controller
         ], 200);
     }
 
-    public function deleteFile($key, Request $request, mediaUpload $mediaUpload)
+    public function deleteFile($key, Request $request, MediaUpload $mediaUpload)
     {
         $file = $mediaUpload->where('delete_key', $key)->first();
 

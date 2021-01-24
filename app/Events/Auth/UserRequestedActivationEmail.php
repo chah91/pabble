@@ -4,7 +4,7 @@ namespace App\Events\Auth;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
-use App\User;
+use App\Models\User;
 
 class UserRequestedActivationEmail
 {

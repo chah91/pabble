@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 use App\Models\Post;
 use App\Models\Subscription;
-use Illuminate\Http\Request;
 use App\Models\Thread;
 use App\Models\Vote;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-class userProfileController extends Controller
+class UserProfileController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -59,7 +60,7 @@ class userProfileController extends Controller
             $post_votes = $vote->where('user_id', $auth_user->id)->whereIn('post_id', $postsArray)->get();
             $userVotes = $thread_votes->merge($post_votes);
     }
-        
+
         return view('profile', array('sort' => $sort, 'user' => $user, 'posts' => $posts, 'comments' => $comments, 'userVotes' => $userVotes, 'page' => $page, 'subscriptions' => $subscriptions));
     }
 

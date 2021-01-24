@@ -1,3 +1,13 @@
+html, body {
+    font-family: roboto;
+}
+.btn:focus{
+    outline: none !important;
+}
+.flex{
+    display: flex;
+}
+
 .alert {
     border: 0;
     border-radius: 0;
@@ -14,8 +24,43 @@
     margin-bottom: 0;
 }
 
-html, body {
-    font-family: roboto;
+#nav .container{
+    padding-top: 5px;
+    padding-bottom: 8px;
+}
+
+.pabble-topbar{
+    height: 30px;
+    width: 100%;
+    border-bottom: 1px solid #cfcfcf;
+    display: flex;
+    padding-top: 5px;
+}
+.pabble-topbar .my-subpabbles{
+    min-width: 140px;
+    margin-right: 30px;
+}
+.pabble-topbar .all-subpabbles{
+    margin-left: 50px;
+    overflow: hidden;
+}
+.pabble-topbar .all-subpabbles a{
+    margin-right: 20px;
+    color: #777;
+}
+.navbar-right .join-nav{
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    padding: 3px 5px ;
+    margin-top: 12px;
+}
+
+.navbar-header .pubble-manage{
+    padding-left: 30px;
+    margin-top:10px;
+}
+.navbar-header .pubble-manage a{
+    margin-right: 20px;
 }
 
 #page_control {
@@ -25,28 +70,53 @@ html, body {
 }
 
 .search_box {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .navbar-default .navbar-toggle {
-    border: none; !important;
+    border: none !important;
 }
 
 .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
-    background-color: transparent; !important;
+    background-color: transparent !important;
 }
 
+.page-info{
+    border-bottom: 2px solid #3097D1;
+    padding-top: 15px;
+    padding-bottom: 7px;
+}
+.page-info .title{
+    font-size: 16pt;
+}
+
+.page-info .tabmenu{
+    float: right;
+    margin-top: 8px;
+}
+.navbar-brand{
+    padding-left: 0px;
+}
+.upvote{
+    color: #3097D1;
+}
+.downvote{
+    color: blue;
+}
 @media screen and (max-width: 560px) {
-    .search_box {
-        margin-top: 80px;
-    }
     #alerts_desktop {
+        display: none;
+    }
+    .pubble-manage{
         display: none;
     }
 }
 @media screen and (max-width: 768px) {
     #alerts_desktop {
         display: none;
+    }
+    .navbar-brand{
+        padding-left: 10px;
     }
 }
 @media screen and (min-width: 768px) {

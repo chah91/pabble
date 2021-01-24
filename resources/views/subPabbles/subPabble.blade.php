@@ -8,28 +8,6 @@
     <link rel="stylesheet" href="{{ asset('css/subpabble.css') }}">
     @if($subPabble)
         <style>
-            .header {
-                @if($subPabble->header)
-                    background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/images/pabbles/headers/{{$subPabble->header}}");
-                @endif
-                background-position: center;
-                @if($subPabble->header_type == 'fit')
-                   background-size: cover;
-                @endif
-                width: 100%;
-                @if(!$subPabble->header)
-                background: {{$subPabble->header_color}};
-                @else
-                margin-top: 0;
-                @endif
-            }
-            #stripe {
-                background-color: @if($subPabble->header_color) {{ $subPabble->header_color }} @else grey @endif;
-                height: 20px;
-                width: 100%;
-                position: sticky;
-                z-index: 3;
-            }
             @if($subPabble->header_color)
                 #header_name {
                     color: {{$subPabble->color}};
@@ -69,39 +47,8 @@
 
     @if($subPabble)
 
-        @if($subPabble->header)
-            <div id="stripe" data-spy="affix"></div>
-        @endif
-        <div class="header">
-              <h1 id="header_name">{{$subPabble->name}}</h1>
-              <p id="header_title">{{ $subPabble->title }}</p>
-        </div>
-
-        <div class="container">
-            <ul class="tabmenu">
-                <li @if(!$sort) class="selected" @endif><a href="/p/{{$subPabble->name}}">popular</a></li>
-                <li @if($sort == 'new') class="selected" @endif><a href="/p/{{$subPabble->name}}/new">new</a></li>
-                <li @if($sort == 'top') class="selected" @endif><a href="/p/{{$subPabble->name}}/top">top</a></li>
-                {{--<li @if($sort == 'shekeld') class="selected" @endif><a href="/p/{{$subPabble->name}}/shekeld">shekeld</a></li>--}}
-            </ul>
-
-            <ul class="tabmenu rightmenu">
-                <li class="selected tabmenu_bottom"><a href="/p/{{$subPabble->name}}/submit">Submit a post</a></li>
-                @if(Auth::check())
-                    @if($subPabble->owner_id == Auth::user()->id)
-                        <li class="selected tabmenu_bottom" id="edit_pabble"><a href="/p/{{$subPabble->name}}/edit">Edit subpabble</a></li>
-                    @endif
-                @endif
-                <li @if(!$subscribed) data-subscribed="no" @else data-subscribed="yes" @endif class="@if(!$subscribed) notsubscribed @else subscribed @endif selected subscribe" id="subscribebtn">@if(!$subscribed) Subscribe @else  Unsubsribe @endif</li>
-            </ul>
-
-
-            @php
-                $first = true;
-                $user = new \App\Models\User();
-            @endphp
+        <div class="container  panel panel-default" style="margin-top: 15px">
             <div class="row">
-
                 <div class="col-sm-4 col-sm-push-8">
                     <div class="well search_box">
                         <h4 class="overflow">Search in <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a></h4>
@@ -117,10 +64,17 @@
                                 </div>
                             </div>
                         </form>
+                        <button @if(!$subscribed) data-subscribed="no" @else data-subscribed="yes" @endif class="btn btn-default @if(!$subscribed) notsubscribed @else subscribed @endif selected subscribe" id="subscribebtn" style="color:#fff;width:100%;margin-top: 10px;">@if(!$subscribed) Subscribe @else  Unsubsribe @endif</button>
+                        <a href="/p/{{$subPabble->name}}/submit" class="btn btn-primary" style="width:100%;margin-top: 10px;">Submit a post</a>
                     </div>
 
                     <div style="margin-top: -8px;" class="well">
                         <a style="color: #636b6f;" data-toggle="collapse" href="#about"><h4 class="overflow">About <a data-toggle="collapse" href="#about">/p/{{$subPabble->name}}</a></h4></a>
+                        @if(Auth::check())
+                            @if($subPabble->owner_id == Auth::user()->id)
+                                <a href="/p/{{$subPabble->name}}/edit" class="btn btn-primary" style="width:100%;margin-bottom:10px;">Edit subpabble</a>
+                            @endif
+                        @endif
                         <div id="about" class="panel-collapse collapse">
                             <p>{{$readers}} {{str_plural('reader', $readers)}}</p>
                             <p style="margin:0; word-wrap: break-word">{!! nl2br(e(htmlspecialchars($subPabble->description))) !!}</p>
@@ -140,31 +94,57 @@
                     </div>
                 </div>
 
-            @if($threads)
+                @php
+                    $even = true;
+                    $user = new \App\Models\User();
+                @endphp
                 <div class="col-sm-8 col-sm-pull-4">
+
+                    @if($threads)
+                    <div class="page-info">
+                        <span>
+                            <span class="title">
+                                /p/{{$subPabble->name}}: {{ $subPabble->title }}
+                            </span>
+                            <br>
+                            a community for
+                            {{Carbon\Carbon::parse($subPabble->created_at)->diffForHumans()}}
+                            @if (isset($moderators))
+                                by
+                                <a href="/u/{{$moderator->username}}">
+                                    {{$moderators[0]->username}}
+                                </a>
+                            @endif
+                        </span>
+                        <div class="tabmenu" style="margin-top: -3px">
+                            <li @if(!$sort || $sort == 'popular') class="selected" @endif><a href="/p/{{$subPabble->name}}">POPULAR</a></li>
+                            <li @if($sort == 'new') class="selected" @endif><a href="/p/{{$subPabble->name}}/new">NEW</a></li>
+                            <li @if($sort == 'top') class="selected" @endif><a href="/p/{{$subPabble->name}}/top">TOP</a></li>
+                        </div>
+                    </div>
                     @foreach($threads as $thread)
                         @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
 
-                        <div class="thread @if($first) first  @php $first = false @endphp @endif">
-                            <div style="min-width: 40px;" class="votes col-xs-1">
-                                <div style="margin-bottom: -5px; font-size: 20px;" class="row stack">
+                        <div class="thread  @if($even) even @endif @php $even = !$even @endphp">
+                            <div style="min-width: 40px;border-right: 2px solid #3097d1;margin-right:10px;padding-right:10px;margin-top:6px;" class="votes col-xs-1">
+                                <div style="margin-bottom: -15px;margin-top:8px" class="row stack">
                                     <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
                                 </div>
                                 <div class="row stack">
                                     <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
                                 </div>
-                                <div style="margin-top: -5px; font-size: 20px;" class="row stack">
+                                <div style="margin-top: -15px;" class="row stack">
                                     <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
                                 </div>
                             </div>
-                            <div style="min-width: 90px;" class="image col-xs-1">
+                            <div style="min-width: 90px;margin-top:10px;" class="image col-xs-1">
                                 <div class="row">
                                     <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
                                 </div>
                             </div>
                             <div class="thread_info">
                                 <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
-                                <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}</p>
+                                <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )</p>
                                 <a href="{{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                             </div>
                         </div>
@@ -178,10 +158,9 @@
                             <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{Request::input('page')+1}} @endif">Next</a>
                         @endif
                     </div>
+                    @endif
+                    @php unset($thread); @endphp
                 </div>
-
-            @php unset($thread); @endphp
-            @endif
 
                 @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
                     <div class="col-sm-8 col-sm-pull-4">

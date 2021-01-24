@@ -17,26 +17,26 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => '', 'middleware' => 'throttle:50,5'], function () {
     Route::post('/login', 'api\Auth\LoginController@login');
 
-    Route::get('/media/delete/{key}', 'api\mediaUploadController@deleteFile');
+    Route::get('/media/delete/{key}', 'api\MediaUploadController@deleteFile');
 
-    Route::post('/comments/load', 'api\commentsController@loadComments');
+    Route::post('/comments/load', 'api\CommentsController@loadComments');
 
-    Route::get('/subpabbles/search/{query}', 'api\searchSubPabblesController@search');
-    Route::get('/users/search/{query}', 'api\searchUsersController@search');
+    Route::get('/subpabbles/search/{query}', 'api\SearchSubPabblesController@search');
+    Route::get('/users/search/{query}', 'api\SearchUsersController@search');
 });
 
 // Authenticated api routes
 Route::group(['prefix' => '', 'middleware' => ['throttle:50,5', 'auth:api']], function () {
-    Route::post('/upload/media', 'api\mediaUploadController@upload');
+    Route::post('/upload/media', 'api\MediaUploadController@upload');
 
-    Route::post('/vote/{code}', 'api\votesController@vote');
+    Route::post('/vote/{code}', 'api\VotesController@vote');
 
-    Route::post('/subscribe/{name}', 'api\subscriptionsApiController@subscribe');
-    Route::post('/unsubscribe/{name}', 'api\subscriptionsApiController@unsubscribe');
+    Route::post('/subscribe/{name}', 'api\SubscriptionsApiController@subscribe');
+    Route::post('/unsubscribe/{name}', 'api\SubscriptionsApiController@unsubscribe');
 
-    Route::post('/comments/add', 'api\commentsController@addComment');
-    Route::post('/comments/load/auth', 'api\commentsController@loadComments');
+    Route::post('/comments/add', 'api\CommentsController@addComment');
+    Route::post('/comments/load/auth', 'api\CommentsController@loadComments');
 
-    Route::post('/thread/delete/{code}', 'api\moderationController@deleteThread');
-    Route::post('/comment/delete/{id}', 'api\moderationController@deleteComment');
+    Route::post('/thread/delete/{code}', 'api\ModerationController@deleteThread');
+    Route::post('/comment/delete/{id}', 'api\ModerationController@deleteComment');
 });

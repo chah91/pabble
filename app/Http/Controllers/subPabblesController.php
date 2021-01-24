@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Moderator;
 use Illuminate\Http\Request;
-use App\Models\subPabble;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Moderator;
+use App\Models\SubPabble;
 use App\Models\Thread;
 use App\Models\Vote;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Subscription;
 
-class subPabblesController extends Controller
+class SubPabblesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,7 +24,7 @@ class subPabblesController extends Controller
     }
 
 
-    public function subPabble($name, Request $request, subPabble $subPabble, Thread $thread, Vote $vote, Subscription $subscription, Moderator $moderator)
+    public function subPabble($name, Request $request, SubPabble $subPabble, Thread $thread, Vote $vote, Subscription $subscription, Moderator $moderator)
     {
         $subPabble = $subPabble->where('name', $name)->first();
 

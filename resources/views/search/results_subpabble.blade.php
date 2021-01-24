@@ -67,16 +67,8 @@
 
     @if($subPabble)
 
-        @if($subPabble->header)
-            <div id="stripe" data-spy="affix"></div>
-        @endif
-        <div class="header">
-            <h1 id="header_name">{{$subPabble->name}}</h1>
-            <p id="header_title">{{ $subPabble->title }}</p>
-        </div>
-
         <div class="container">
-            <h2 style="text-align: center; font-weight: 200">Search in <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a></h2>
+            <h2 style="text-align: center; font-weight: 200">Search in <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a> : {{ $subPabble->title }}</h2>
             <form method="GET" action="/search/{{$subPabble->name}}">
                 <div id="custom-search-input">
                     <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
@@ -91,27 +83,26 @@
             </form>
 
             @php
-                $first = true;
                 $user = new \App\Models\User();
             @endphp
             <div class="row">
                 @if($threads)
                     @foreach($threads as $thread)
                         @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
-                        <div style="margin-top:0; padding-bottom: 10px; margin-bottom: 10px; @if($first) margin-top: 20px; @php $first = false @endphp @endif" class="panel">
+                        <div style="margin-top: 10px;" class="panel">
                             <div class="thread">
-                                <div style="min-width: 40px;" class="votes col-xs-1">
-                                    <div style="margin-bottom: -5px; font-size: 20px;" class="row stack">
+                                <div style="min-width: 40px;border-right: 2px solid #3097d1;margin-right:10px;padding-right:10px;margin-top:6px;" class="votes col-xs-1">
+                                    <div style="margin-bottom: -15px;margin-top:8px" class="row stack">
                                         <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
                                     </div>
                                     <div class="row stack">
                                         <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
                                     </div>
-                                    <div style="margin-top: -5px; font-size: 20px;" class="row stack">
+                                    <div style="margin-top: -15px;" class="row stack">
                                         <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
                                     </div>
                                 </div>
-                                <div style="min-width: 90px;" class="image col-xs-1">
+                                <div style="min-width: 90px;margin-top:10px;" class="image col-xs-1">
                                     <div class="row">
                                         <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
                                     </div>
@@ -166,13 +157,6 @@
 @endsection
 
 @section('scripts')
-    <script>
-        $('#stripe').affix({
-            offset: {
-                top: $('#nav').height()
-            }
-        });
-    </script>
 
     @include('layouts.partials.vote')
 
