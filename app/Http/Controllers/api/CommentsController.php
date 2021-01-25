@@ -56,7 +56,7 @@ class CommentsController extends Controller
 
         $parent = $request->input('parent');
         if ($parent) {
-            $parent = $post->where('id', $parent)->first();
+            $parent = Post::where('id', $parent)->first();
             if (!$parent) {
                 return Response()->json([
                     'error' => 'parent not found'

@@ -10,32 +10,32 @@
 
 @section('content')
 
-    <div class="container panel panel-default" style="margin-top: 15px; width: 80%;">
-        <div class="row">
-            <div class="col-sm-3 col-sm-push-9">
-                <div style="padding-top: 10px;padding-bottom: 20px;background:#fafafa" class="well search_box">
-                    <h4 style="color:#3097D1;margin-bottom:3px;">Search Pabble</h4>
-                    <hr style="margin-top: 3px;margin-bottom:7px;border-top:1px solid #b6b6b6">
+    <div class="container mt-7">
+        <div class="row panel panel-default">
+            <div class="col-md-3 col-sm-push-9">
+                <div class="well search_box">
+                    <h4>Search Pabble</h4>
+                    <hr>
                     <form method="GET" action="/search">
                         <div id="custom-search-input">
                             <div class="input-group col-md-12">
                                 <input type="text" name="q" class="search-query form-control" placeholder="Search" />
                                 <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="submit">
-                                            <span class="fa fa-search"></span>
-                                        </button>
+                                    <button class="btn btn-primary" type="submit">
+                                        <span class="fa fa-search"></span>
+                                    </button>
                                 </span>
                             </div>
                         </div>
                     </form>
                 </div>
-                <a href="/submit?type=link" class="btn btn-primary" style="width:100%">Share a link</a>
-                <a href="/submit?type=text" class="btn btn-primary" style="width:100%;margin-top:15px">Discuss</a>
-                <a href="/subpabbles/create" class="btn btn-default" style="width:100%;margin-top:15px">Create your own subpabble</a>
+                <a href="/submit?type=link" class="btn btn-primary w-full">Share a link</a>
+                <a href="/submit?type=text" class="btn btn-primary w-full mt-3">Discuss</a>
+                <a href="/subpabbles/create" class="btn btn-default w-full mt-3">Create your own subpabble</a>
 
-                <div style="padding-top: 10px;padding-bottom: 20px;background:#fafafa" class="well search_box">
-                    <h5 style="color:#3097D1;margin-bottom:3px;">Most viewed in the past 24 hours</h5>
-                    <hr style="margin-top: 3px;margin-bottom:7px;border-top:1px solid #b6b6b6">
+                <div class="well search_box">
+                    <h5>Most viewed in the past 24 hours</h5>
+                    <hr>
                     @php $last_threads = \App\Models\Thread::getLastViewdThreadsLast24Hours(); @endphp
                     @foreach ($last_threads as $thread)
                         @php $pabble = \App\Models\SubPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first();@endphp
@@ -49,7 +49,7 @@
                 $user = new \App\Models\User();
                 $even = true;
             @endphp
-            <div class="col-sm-9 col-sm-pull-3">
+            <div class="col-md-9 col-sm-pull-3">
                 <div class="page-info">
                     <span class="title">
                         HOME
@@ -66,49 +66,61 @@
                     @php $pabble = \App\Models\SubPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first();@endphp
 
                     <div class="thread @if($even) even @endif @php $even = !$even @endphp">
-                        <div style="min-width: 40px;border-right: 2px solid #3097d1;margin-right:10px;padding-right:10px;margin-top:6px;" class="votes col-xs-1">
-                            <div style="margin-bottom: -15px;margin-top:8px" class="row stack">
+                        <div class="votes col-xs-1">
+                            <div class="row stack upvote">
                                 <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
                             </div>
                             <div class="row stack">
                                 <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
                             </div>
-                            <div style="margin-top: -15px;" class="row stack">
+                            <div class="row stack downvote">
                                 <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
                             </div>
                         </div>
-                        <div style="min-width: 90px;margin-top:10px;" class="image col-xs-1">
+                        <div class="image col-xs-1">
                             <div class="row">
-                                <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
+                                <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                    <img src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}">
+                                </a>
                             </div>
                         </div>
                         <div class="thread_info">
-                            <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title">{{$thread->title}}</h3></a>
-                            <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
-                            <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a> (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )</p>
-                            <a href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{$thread->reply_count < 1 ? 'comment' : str_plural('comment', $thread->reply_count)}}</strong></p></a>
+                            <a class="title" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                <h3>{{$thread->title}}</h3>
+                            </a>
+                            <p class="overflow description">placed by
+                                <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
+                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                                <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
+                                (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )
+                            </p>
+                            <a class="comment" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
+                                <p class="overflow">
+                                    <strong>{{$thread->reply_count}} {{$thread->reply_count < 1 ? 'reply' : str_plural('reply', $thread->reply_count)}}</strong>
+                                </p>
+                            </a>
                         </div>
                     </div>
                 @endforeach
                 @endif
             </div>
-            @php unset($thread); // Unset variable so it doesn't get confused with a normal thread @endphp
+        @php unset($thread); @endphp {{-- Unset variable so it doesn't get confused with a normal thread --}}
         @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
             <div class="col-sm-8 col-sm-pull-4">
-                <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
-                    <h2 style="font-weight: lighter">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
-                    <h4 style="font-weight: lighter; text-align: center">Fill it up by subscribing to some subpabbles</h4>
-                    <p style="margin-top: 50px;">Find some communities by searching or...</p>
+                <div class="welcome thin">
+                    <h2 class="thin">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
+                    <h4 class="thin text-center">Fill it up by subscribing to some subpabbles</h4>
+                    <p>Find some communities by searching or...</p>
                 </div>
-                <div onclick="window.location.href='/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Check out what's popular</div>
+                <div onclick="window.location.href='/g/popular'" class="btn btn-primary checkout-msg">Check out what's popular</div>
             </div>
             @php $no_res = true; @endphp
         @elseif(Request::input('page') || Request::input('after'))
             @if($threads == null || $threads && $threads->count() == 0 )
                 <div class="col-sm-8 col-sm-pull-4">
-                    <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
-                        <h2 style="font-weight: lighter">No results found for that search criteria</h2>
-                        <h4 style="font-weight: lighter; text-align: center">Looks like we ran out of stolen memes</h4>
+                    <div class="welcome thin">
+                        <h2 class="thin">No results found for that search criteria</h2>
+                        <h4 class="thin text-center">Looks like we ran out of stolen memes</h4>
                         <a href="@if(Request::input('page') == '2') / @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
                     </div>
                 </div>

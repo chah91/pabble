@@ -24,13 +24,6 @@
                 margin-top: 0;
             @endif
 }
-            #stripe {
-                background-color: @if($subPabble->header_color) {{ $subPabble->header_color }} @else grey @endif;
-                height: 20px;
-                width: 100%;
-                position: sticky;
-                z-index: 3;
-            }
             @if($subPabble->header_color)
                 #header_name {
                 color: {{$subPabble->color}};
@@ -67,82 +60,94 @@
 
     @if($subPabble)
 
-        <div class="container">
-            <h2 style="text-align: center; font-weight: 200">Search in <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a> : {{ $subPabble->title }}</h2>
-            <form method="GET" action="/search/{{$subPabble->name}}">
-                <div id="custom-search-input">
-                    <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                        <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="Search" />
-                        <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit">
-                                    <span class="fa fa-search"></span>
-                                </button>
-                        </span>
+        <div class="container mt-3">
+            <div class="row panel panel-default mr-3 pb-3 pl-3 pr-3">
+                <h2 class="thin text-center">Search in <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a> : {{ $subPabble->title }}</h2>
+                <form method="GET" action="/search/{{$subPabble->name}}">
+                    <div id="custom-search-input">
+                        <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                            <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="Search" />
+                            <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">
+                                        <span class="fa fa-search"></span>
+                                    </button>
+                            </span>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
 
-            @php
-                $user = new \App\Models\User();
-            @endphp
-            <div class="row">
-                @if($threads)
-                    @foreach($threads as $thread)
-                        @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
-                        <div style="margin-top: 10px;" class="panel">
-                            <div class="thread">
-                                <div style="min-width: 40px;border-right: 2px solid #3097d1;margin-right:10px;padding-right:10px;margin-top:6px;" class="votes col-xs-1">
-                                    <div style="margin-bottom: -15px;margin-top:8px" class="row stack">
-                                        <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
+                @php
+                    $user = new \App\Models\User();
+                @endphp
+                <div class="row pl-3 pr-3">
+                    @if($threads)
+                        @foreach($threads as $thread)
+                            @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
+                            <div class="panel mt-3">
+                                <div class="thread">
+                                    <div class="votes col-xs-1">
+                                        <div class="row stack upvote">
+                                            <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
+                                        </div>
+                                        <div class="row stack">
+                                            <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
+                                        </div>
+                                        <div class="row stack downvote">
+                                            <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
+                                        </div>
                                     </div>
-                                    <div class="row stack">
-                                        <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
+                                    <div class="image col-xs-1">
+                                        <div class="row">
+                                            <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                                <img src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}">
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div style="margin-top: -15px;" class="row stack">
-                                        <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
+                                    <div class="thread_info">
+                                        <a class="title" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                            <h3>{{$thread->title}}</h3>
+                                        </a>
+                                        <p class="overflow description">
+                                            placed by
+                                            <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
+                                            {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}
+                                        </p>
+                                        <a class="comment" href="{{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
+                                            <p class="overflow">
+                                                <strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong>
+                                            </p>
+                                        </a>
                                     </div>
-                                </div>
-                                <div style="min-width: 90px;margin-top:10px;" class="image col-xs-1">
-                                    <div class="row">
-                                        <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
-                                    </div>
-                                </div>
-                                <div class="thread_info">
-                                    <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
-                                    <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}</p>
-                                    <a href="{{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                                 </div>
                             </div>
+                        @endforeach
+
+                        <div id="page_control">
+                            @if($page > 1 && $threads->count() > 0)
+                            <a href="?page={{Request::input('page')-1}}">Previous</a> -
+                            @endif
+                            @if($threads->count() > 24)
+                                <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{$page+1}} @endif">Next</a>
+                            @endif
                         </div>
-                    @endforeach
 
-                    <div id="page_control">
-                        @if($page > 1 && $threads->count() > 0)
-                        <a href="?page={{Request::input('page')-1}}">Previous</a> -
-                        @endif
-                        @if($threads->count() > 24)
-                            <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{$page+1}} @endif">Next</a>
-                        @endif
-                    </div>
-
-                    @php unset($thread); @endphp
-                @endif
-
-                @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
-                    <h2 id="looks_like" style="font-weight: lighter; text-align: center">No results found</h2>
-                    @php $no_res = true; @endphp
-                @elseif(Request::input('page') || Request::input('after'))
-                    @if($threads == null || $threads && $threads->count() == 0 )
-                        <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
-                            <h2 style="font-weight: lighter">No results found for that search criteria</h2>
-                            <h4 style="font-weight: lighter; text-align: center">Looks like we ran out of stolen memes</h4>
-                            <a href="@if(Request::input('page') == '2') /p/{{$subPabble->name}} @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
-                        </div>
+                        @php unset($thread); @endphp
                     @endif
-                @endif
+
+                    @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
+                        <h2 id="looks_like thin text-center">No results found</h2>
+                        @php $no_res = true; @endphp
+                    @elseif(Request::input('page') || Request::input('after'))
+                        @if($threads == null || $threads && $threads->count() == 0 )
+                            <div class="welcome thin">
+                                <h2 class="thin">No results found for that search criteria</h2>
+                                <h4 class="thin text-center">Looks like we ran out of stolen memes</h4>
+                                <a href="@if(Request::input('page') == '2') /p/{{$subPabble->name}} @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
+                            </div>
+                        @endif
+                    @endif
+                </div>
             </div>
-
-
         </div>
 
         @include('layouts.partials.loginModal')

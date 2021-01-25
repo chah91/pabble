@@ -64,13 +64,19 @@
     margin-right: -20px;
 }
 .msg_wrapper {
-    width: 80%;
     word-wrap: break-word;
 }
 .msg_container {
     padding: 15px;
     padding-top:5px;
     padding-bottom:5px;
+}
+.msg_send .msg_container{
+    text-align: right;
+}
+.reply_box input{
+    margin-top: -5px;
+    margin-bottom: 20px;
 }
 @media screen and (max-width: 768px) {
     .msg_wrapper {

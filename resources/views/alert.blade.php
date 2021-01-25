@@ -9,56 +9,51 @@
 @endsection
 
 @section('content')
-    <div id="stripe" data-spy="affix"></div>
 
-    <div class="container">
+    <div class="container mt-3">
 
-        <div style="margin-top: 20px;" class="panel comment" id="post_panel_{{$parent->id}}">
+        <div class="panel comment" id="post_panel_{{$parent->id}}">
             <div class="panel-body">
-                <div class="row">
-                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">
-                        <div style="margin-left: 20px;" class="wrap">
-                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">
-                                <a style="color: inherit;" href="javascript:votepost('{{$parent->id}}', 'up');"><i id="{{$parent->id}}_up_post" data-voted="no" data-vote="up" data-post="{{$parent->id}}" class="fa fa-sort-asc"></i></a>
-                             </div>
-                             <div class="row stack">
-                                <span id="{{$parent->id}}_counter_post" class="stack count">{{$parent->score}}</span>
-                             </div>
-                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">
-                                <a style="color: inherit;" href="javascript:votepost('{{$parent->id}}', 'down');"><i id="{{$parent->id}}_down_post" data-voted="no" data-vote="down" data-thread="{{$parent->thread_id}}" class="fa fa-sort-desc stack"></i></a>
-                            </div>
+                <div class="row thread">
+                    <div class="votes col-xs-2 col-sm-1 mt-0">
+                        <div class="row stack upvote mt-0">
+                            <a href="javascript:votepost('{{$parent->id}}', 'up');"><i id="{{$parent->id}}_up_post" data-voted="no" data-vote="up" data-post="{{$parent->id}}" class="fa fa-sort-asc vote"></i></a>
+                        </div>
+                        <div class="row stack">
+                            <span id="{{$parent->id}}_counter_post" class="stack count">{{$parent->score}}</span>
+                        </div>
+                        <div class="row stack downvote">
+                            <a href="javascript:votepost('{{$parent->id}}', 'down');"><i id="{{$parent->id}}_down_post" data-voted="no" data-vote="down" data-thread="{{$parent->thread_id}}" class="fa fa-sort-desc stack vote"></i></a>
                         </div>
                     </div>
                     <div class="col-xs-10 col-sm11">
                         <span><a href="/u/'+res.post.user_display_name+'">{{$parent->user_display_name}}</a> {{Carbon\Carbon::parse($parent->created_at)->diffForHumans()}}  (your comment)</span>
                         <p>{{ nl2br($parent->comment) }}</p>
-                        <div class="linkwrapper"><a style="color: grey;" href="javascript:reply('{{$parent->id}}');">Reply</a></div>
+                        <div class="linkwrapper"><a href="javascript:reply('{{$parent->id}}');">Reply</a></div>
                         <div id="comment_box_app_{{$parent->id}}"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div style="margin-top: -15px; margin-left: 20px; background: #fff7dd" class="panel comment" id="post_panel_{{$reply->id}}">
+        <div class="panel comment ml-6 reply" id="post_panel_{{$reply->id}}">
             <div class="panel-body">
-                <div class="row">
-                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">
-                        <div style="margin-left: 20px;" class="wrap">
-                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">
-                                <a style="color: inherit;" href="javascript:votepost('{{$reply->id}}', 'up');"><i id="{{$reply->id}}_up_post" data-voted="no" data-vote="up" data-post="{{$reply->id}}" class="fa fa-sort-asc"></i></a>
-                            </div>
-                            <div class="row stack">
-                                <span id="{{$reply->id}}_counter_post" class="stack count">{{$reply->score}}</span>
-                            </div>
-                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">
-                                <a style="color: inherit;" href="javascript:votepost('{{$reply->id}}', 'down');"><i id="{{$reply->id}}_down_post" data-voted="no" data-vote="down" data-thread="{{$reply->thread_id}}" class="fa fa-sort-desc stack"></i></a>
-                            </div>
+                <div class="row thread">
+                    <div class="votes col-xs-2 col-sm-1">
+                        <div class="row stack upvote">
+                            <a href="javascript:votepost('{{$reply->id}}', 'up');"><i id="{{$reply->id}}_up_post" data-voted="no" data-vote="up" data-post="{{$reply->id}}" class="fa fa-sort-asc vote"></i></a>
+                        </div>
+                        <div class="row stack">
+                            <span id="{{$reply->id}}_counter_post" class="stack count">{{$reply->score}}</span>
+                        </div>
+                        <div class="row stack downvote">
+                            <a href="javascript:votepost('{{$reply->id}}', 'down');"><i id="{{$reply->id}}_down_post" data-voted="no" data-vote="down" data-thread="{{$reply->thread_id}}" class="fa fa-sort-desc stack vote"></i></a>
                         </div>
                     </div>
                     <div class="col-xs-10 col-sm11">
                         <span><a href="/u/'+res.post.user_display_name+'">{{$reply->user_display_name}}</a> {{Carbon\Carbon::parse($reply->created_at)->diffForHumans()}} </span>
                         <p>{{ nl2br($reply->comment) }}</p>
-                        <div class="linkwrapper"><a style="color: grey;" href="javascript:reply('{{$reply->id}}');">Reply</a></div>
+                        <div class="linkwrapper"><a href="javascript:reply('{{$reply->id}}');">Reply</a></div>
                         <div id="comment_box_app_{{$reply->id}}"></div>
                     </div>
                 </div>
@@ -66,26 +61,24 @@
         </div>
 
         @if($user_reply)
-            <div style="margin-top: -15px; margin-left: 40px;" class="panel comment" id="post_panel_{{$user_reply->id}}">
+            <div class="panel comment ml-12" id="post_panel_{{$user_reply->id}}">
                 <div class="panel-body">
-                    <div class="row">
-                        <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">
-                            <div style="margin-left: 20px;" class="wrap">
-                                <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">
-                                    <a style="color: inherit;" href="javascript:votepost('{{$user_reply->id}}', 'up');"><i id="{{$user_reply->id}}_up_post" data-voted="no" data-vote="up" data-post="{{$user_reply->id}}" class="fa fa-sort-asc"></i></a>
-                                </div>
-                                <div class="row stack">
-                                    <span id="{{$reply->id}}_counter_post" class="stack count">{{$user_reply->score}}</span>
-                                </div>
-                                <div style="margin-top: -15px; font-size: 20px;" class="row stack">
-                                    <a style="color: inherit;" href="javascript:votepost('{{$user_reply->id}}', 'down');"><i id="{{$user_reply->id}}_down_post" data-voted="no" data-vote="down" data-thread="{{$user_reply->thread_id}}" class="fa fa-sort-desc stack"></i></a>
-                                </div>
+                    <div class="row thread">
+                        <div class="votes col-xs-2 col-sm-1">
+                            <div class="row stack upvote">
+                                <a href="javascript:votepost('{{$user_reply->id}}', 'up');"><i id="{{$user_reply->id}}_up_post" data-voted="no" data-vote="up" data-post="{{$user_reply->id}}" class="fa fa-sort-asc vote"></i></a>
+                            </div>
+                            <div class="row stack">
+                                <span id="{{$reply->id}}_counter_post" class="stack count">{{$user_reply->score}}</span>
+                            </div>
+                            <div class="row stack downvote">
+                                <a href="javascript:votepost('{{$user_reply->id}}', 'down');"><i id="{{$user_reply->id}}_down_post" data-voted="no" data-vote="down" data-thread="{{$user_reply->thread_id}}" class="fa fa-sort-desc stack vote"></i></a>
                             </div>
                         </div>
                         <div class="col-xs-10 col-sm11">
                             <span><a href="/u/'+res.post.user_display_name+'">{{$user_reply->user_display_name}}</a> {{Carbon\Carbon::parse($user_reply->created_at)->diffForHumans()}} </span>
                             <p>{{ nl2br($user_reply->comment) }}</p>
-                            <div class="linkwrapper"><a style="color: grey;" href="javascript:reply('{{$user_reply->id}}');">Reply</a></div>
+                            <div class="linkwrapper"><a href="javascript:reply('{{$user_reply->id}}');">Reply</a></div>
                             <div id="comment_box_app_{{$user_reply->id}}"></div>
                         </div>
                     </div>
@@ -129,11 +122,11 @@
             }
             _this.append(
                 '         <div class="commentbox" id="comment_box_'+id+'">' +
-                '                <div style="width: 300px;" class="panel-body">' +
+                '                <div class="panel-body">' +
                 '                        <textarea placeholder="comment" class="form-control" id="reply_text_'+id+'" cols="30" rows="3"></textarea>' +
-                '                        <span style="color: red;" id="comment_box_alert_'+id+'"></span>' +
-                '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" style="margin-top: 5px;" class="btn btn-primary submitpostbtn pull-right ladda-button xd" data-style="slide-up">Post comment</a>' +
-                '                        <a href="javascript:cancel_reply('+id+');" style="margin-top: 5px; margin-right: 5px;" class="btn btn-primary submitpostbtn pull-right ladda-button" data-style="slide-up">Cancel</a>' +
+                '                        <span class="red" id="comment_box_alert_'+id+'"></span>' +
+                '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" class="btn btn-primary submitpostbtn pull-right ladda-button xd mt-3" data-style="slide-up">Post comment</a>' +
+                '                        <a href="javascript:cancel_reply('+id+');" class="btn btn-primary submitpostbtn pull-right ladda-button mt-3 mr-3" data-style="slide-up">Cancel</a>' +
                 '                </div>' +
                 '            </div>');
             @else
@@ -163,26 +156,28 @@
                     created = moment(created);
                     ago = created.fromNow();
                     to_append.append('' +
-                        '                <div id="post_panel_' + res.post.id + '" style="margin-left: 20px; width:95%; min-width: 400px;" class="col-xs-12">' +
-                        '                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">' +
-                        '                        <div style="margin-left: 20px;" class="wrap">' +
-                        '                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">' +
-                        '                                <a style="color: inherit;" href="javascript:votepost(' + res.post.id + ', `up`);"><i id="' + res.post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + res.post.id + '" class="fa fa-sort-asc"></i></a>' +
-                        '                            </div>' +
-                        '                            <div class="row stack">' +
-                        '                                <span id="' + res.post.id + '_counter_post" class="stack">' + res.post.score + '</span>' +
-                        '                            </div>' +
-                        '                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">' +
-                        '                                <a style="color: inherit;" href="javascript:votepost(' + res.post.id + ', `down`);"><i id="' + res.post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + res.post.id + '" class="fa fa-sort-desc stack"></i></a>' +
-                        '                            </div>' +
-                        '                        </div>' +
-                        '                    </div>' +
-                        '                    <div class="col-xs-10 col-sm11">' +
-                        '                        <span><a href="/u/' + res.post.user_display_name + '">' + res.post.user_display_name + '</a> ' + ago + '</span>' +
-                        '                        <p>' + res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                        '                        <div style="margin-bottom:3px;" class="linkwrapper"><a style="color: grey;" href="javascript:reply(' + res.post.id + ');">Reply</a></div>' +
-                        '                        <div id="comment_box_app_' + res.post.id + '"></div>' +
-                        '                    </div>' +
+                                '        <div id="post_panel_' + res.post.id + '"class="col-xs-12 ml-6 panel comment">' +
+                                '            <div class="panel-body">' +
+                                '                <div class="row thread">' +
+                                '                    <div class="votes col-xs-2 col-sm-1">' +
+                            '                            <div class="row stack upvote">' +
+                            '                                <a href="javascript:votepost(' + res.post.id + ', `up`);"><i id="' + res.post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + res.post.id + '" class="fa fa-sort-asc vote"></i></a>' +
+                            '                            </div>' +
+                            '                            <div class="row stack">' +
+                            '                                <span id="' + res.post.id + '_counter_post" class="stack">' + res.post.score + '</span>' +
+                            '                            </div>' +
+                            '                            <div class="row stack downvote">' +
+                            '                                <a href="javascript:votepost(' + res.post.id + ', `down`);"><i id="' + res.post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + res.post.id + '" class="fa fa-sort-desc stack vote"></i></a>' +
+                            '                            </div>' +
+                                '                    </div>' +
+                                '                    <div class="col-xs-10 col-sm11">' +
+                                '                        <span><a href="/u/' + res.post.user_display_name + '">' + res.post.user_display_name + '</a> ' + ago + '</span>' +
+                                '                        <p>' + res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
+                                '                        <div class="linkwrapper"><a href="javascript:reply(' + res.post.id + ');">Reply</a></div>' +
+                                '                        <div id="comment_box_app_' + res.post.id + '"></div>' +
+                                '                    </div>' +
+                                '                </div>' +
+                               '            </div>' +
                         '                </div>'
                     );
                     l.stop();

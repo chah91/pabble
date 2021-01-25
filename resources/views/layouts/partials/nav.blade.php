@@ -8,23 +8,23 @@
                 @endphp
                 <ul class="nav navbar">
                     <li class="dropdown">
-                        <a style="margin-top: -1px;padding:0px;color:#3097D1;margin-left:10px;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             MY SUBPABBLES <span class="caret"></span>
                         </a>
-                        <ul style="font-size: 12px; margin:0; padding:0;left:10px" class="dropdown-menu" role="menu">
+                        <ul class="dropdown-menu" role="menu">
                             <li class="subscriptions">
                                 @if($subscribed->count() < 1)
-                                    <span style="padding: 10px;">No subscriptions yet</span>
+                                    <span>No subscriptions yet</span>
                                 @else
                                     @foreach($subscribed as $sub)
-                                        <a class="sub" style="padding:5px 20px" href="/p/{{$sub->name}}">{{$sub->name}}</a>
+                                        <a class="sub" href="/p/{{$sub->name}}">{{$sub->name}}</a>
                                     @endforeach
                                 @endif
                             </li>
                         </ul>
                     </li>
                 </ul>
-            
+
         </div>
         @endif
         <div class="main-links">
@@ -57,21 +57,21 @@
                     $alerts = new \App\Models\Alert();
                     $alerts = $alerts->getAlertsByUser(Auth::user()->id);
                 @endphp
-                <span id="alerts_mobile" class="dropdown" style="float: right">
-                    <a style="color: #777; margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <span style="position: absolute; left: -10px; top: 15px; font-size: 20px;" class="fa fa-bell"></span>
-                        @if(count($alerts) > 0)<span style="position:absolute; top:10px; z-index: 2; background: orangered; right: -3px;" class="badge">{{count($alerts)}}</span>@endif
+                <span id="alerts_mobile" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <span class="fa fa-bell"></span>
+                        @if(count($alerts) > 0)<span class="badge">{{count($alerts)}}</span>@endif
                     </a>
-                    <ul style="margin-top: 30px; width: 300px; left: -225px;" class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu" role="menu">
                         @php $first = true; @endphp
                         @foreach($alerts as $alert)
                             <li>
                                 @if(!$first)
-                                    <hr style="margin: 1px; padding:0">
+                                    <hr>
                                 @endif
                                 @php $first = false; @endphp
                                 @if($alert['type'] == 'mention')
-                                    <a style="white-space: normal; text-align: left" href="/alerts/{{$alert['code']}}">
+                                    <a class="mention" href="/alerts/{{$alert['code']}}">
                                         <span><strong>{{$alert['user_display_name']}}</strong> replied <strong>{{substr($alert['comment'], 0, 43)}}</strong> on {{substr($alert['thread_title'], 0, 20)}}</span>
                                     </a>
                                 @else
@@ -94,11 +94,11 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                <div style="height: inherit; display: inline-block; font-family: Raleway; font-weight: 500;">
+                <div>
                     @if(isset($subPabble) && $subPabble->icon)
-                        <img style="height: 40px; margin-top: -7px;" src="/images/pabbles/icons/{{$subPabble->icon}}" alt="pabble">
+                        <img src="/images/pabbles/icons/{{$subPabble->icon}}" alt="pabble">
                     @else
-                        <img style="height: 40px; margin-top: -7px;" src="/images/logo.png" alt="pabble">
+                        <img src="/images/logo.png" alt="pabble">
                     @endif
                 </div>
             </a>
@@ -119,20 +119,20 @@
                     </div>
                 @else
                     <li id="alerts_desktop" class="dropdown">
-                        <a style="margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <span style="position: absolute; left: -10px; top: 15px; font-size: 22px;" class="fa fa-bell"></span>
-                            @if(count($alerts) > 0)<span style="position:absolute; top:10px; z-index: 2; background: orangered; right: -3px;" class="badge">{{count($alerts)}}</span>@endif
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="fa fa-bell"></span>
+                            @if(count($alerts) > 0)<span class="badge">{{count($alerts)}}</span>@endif
                         </a>
-                        <ul style="margin-top: 30px; width: 300px;" class="dropdown-menu" role="menu">
+                        <ul class="dropdown-menu" role="menu">
                             @php $first = true; @endphp
                             @foreach($alerts as $alert)
                                 <li>
                                     @if(!$first)
-                                    <hr style="margin: 1px; padding:0">
+                                    <hr>
                                     @endif
                                     @php $first = false; @endphp
                                     @if($alert['type'] == 'mention')
-                                        <a style="white-space: normal; text-align: left" href="/alerts/{{$alert['code']}}">
+                                        <a class="mention" href="/alerts/{{$alert['code']}}">
                                             <span><strong>{{$alert['user_display_name']}}</strong> replied <strong>{{substr($alert['comment'], 0, 43)}}</strong> on {{substr($alert['thread_title'], 0, 20)}}</span>
                                         </a>
                                     @else
@@ -162,8 +162,8 @@
                             <li><a href="/u/{{Auth::user()->username}}">My profile</a></li>
                             <li><a href="{{ route('messages.inbox') }}">Private messages</a></li>
                             <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-                                
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">{{ csrf_field() }}</form>
                         </ul>
                     </li>
                 @endif

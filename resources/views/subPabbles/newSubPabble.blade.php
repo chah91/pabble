@@ -3,11 +3,11 @@
 @section('title') Pabble: Create subpabble @endsection
 
 @section('content')
-    <div style="margin-top: 22px;" class="container">
+    <div class="container mt-7">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel">
                 <div class="panel-heading">
-                    <h2 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">You are creating /p/<span id="is_creating">{{ old('name') }}</span></h2>
+                    <h2 class="overflow">You are creating /p/<span id="is_creating">{{ old('name') }}</span></h2>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" action="" method="post">
@@ -42,7 +42,7 @@
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-2 control-label">Description</label>
                             <div class="col-md-9">
-                                <textarea style="max-width: 100%;" placeholder="Description" id="description" class="form-control" name="description">{{ old('description') }}</textarea>
+                                <textarea placeholder="Description" id="description" class="form-control w-full" name="description">{{ old('description') }}</textarea>
 
                                 @if ($errors->has('description'))
                                     <span class="help-block">
@@ -55,7 +55,7 @@
                         <div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
                             <label for="SocialDescription" class="col-md-2 control-label">Social Description</label>
                             <div class="col-md-9">
-                                <textarea style="max-width: 100%;" placeholder="Social Description" id="SocialDescription" class="form-control" name="social_description">{{ old('social_description') }}</textarea>
+                                <textarea placeholder="Social Description" id="SocialDescription" class="form-control w-full" name="social_description">{{ old('social_description') }}</textarea>
 
                                 @if ($errors->has('social_description'))
                                     <span class="help-block">

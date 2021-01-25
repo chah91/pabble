@@ -26,10 +26,10 @@
             {{ csrf_field() }}
             <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }}">
                 <div class="container">
-                    <h4>Subject <span style="color:red">*</span></h4>
+                    <h4>Subject <span class="red">*</span></h4>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" style="max-width: 100%;" id="subject" class="form-control" name="subject" placeholder="Subject" cols="30" rows="2" value="@if (!$errors->has('subject')){{old('subject')}}@endif" />
+                    <input type="text" id="subject" class="form-control" name="subject" placeholder="Subject" cols="30" rows="2" value="@if (!$errors->has('subject')){{old('subject')}}@endif" />
 
                     @if ($errors->has('subject'))
                         <span class="help-block">
@@ -41,10 +41,10 @@
 
             <div class="form-group{{ $errors->has('message') ? ' has-error' : '' }}">
                 <div class="container">
-                    <h4>Message <span style="color:red">*</span></h4>
+                    <h4>Message <span class="red">*</span></h4>
                 </div>
                 <div class="col-md-6">
-                    <textarea style="max-width: 100%;" id="message" class="form-control" name="message" placeholder="Message" cols="30" rows="2">@if (!$errors->has('message')){{old('message')}}@endif</textarea>
+                    <textarea id="message" class="form-control" name="message" placeholder="Message" cols="30" rows="2">@if (!$errors->has('message')){{old('message')}}@endif</textarea>
 
                     @if ($errors->has('message'))
                         <span class="help-block">
@@ -57,7 +57,7 @@
 
             <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }}">
                 <div class="container">
-                    <h4>To <span style="color:red">*</span></h4>
+                    <h4>To <span class="red">*</span></h4>
                 </div>
                 <div class="col-md-6">
                     <input autocomplete="off" type="text" id="subpabble" class="form-control" name="to" placeholder="To" @if (!$errors->has('to') && $username) value="{{$username}}" @endif @if (!$errors->has('to')) value="{{old('to')}}"@endif>
@@ -70,9 +70,9 @@
             </div>
 
 
-            <div style="margin-top: 20px; margin-bottom: 50px;" class="form-group">
+            <div class="form-group mt-7">
                 <div class="col-md-6">
-                    <button style="width: 130px;" id="submit_link" class="btn btn-primary pull-right">Send message</button>
+                    <button id="submit_link" class="btn btn-primary pull-right">Send message</button>
                 </div>
             </div>
 

@@ -19,7 +19,7 @@
 
 @section('content')
 
-    <div style="margin-top: 22px;" class="container">
+    <div class="container mt-7">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel">
                 <div class="panel-heading">
@@ -45,7 +45,7 @@
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-2 control-label">Description</label>
                             <div class="col-md-9">
-                                <textarea style="max-width: 100%;" name="description" id="description" placeholder="description" cols="30" rows="5" class="form-control">@if (!empty(old('description'))) {{ old('description') }} @else{{$pabble->description}}@endif</textarea>
+                                <textarea name="description" id="description" placeholder="description" cols="30" rows="5" class="form-control w-full">@if (!empty(old('description'))) {{ old('description') }} @else{{$pabble->description}}@endif</textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
@@ -57,7 +57,7 @@
                         <div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-2 control-label">Social description</label>
                             <div class="col-md-9">
-                                <textarea style="max-width: 100%;" name="social_description" id="social_description" placeholder="Social description" cols="30" rows="5" class="form-control">@if (!empty(old('social_description'))) {{ old('social_description') }} @else{{$pabble->description_social}}@endif</textarea>
+                                <textarea name="social_description" id="social_description" placeholder="Social description" cols="30" rows="5" class="form-control w-full">@if (!empty(old('social_description'))) {{ old('social_description') }} @else{{$pabble->description_social}}@endif</textarea>
                                 @if ($errors->has('social_description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('social_description') }}</strong>
@@ -83,11 +83,11 @@
                             <div class="form-group">
                                 <label for="header" class="col-md-2 control-label">Current Header</label>
                                 <div class="col-md-10">
-                                    <img style="max-height: 100px;" src="/images/pabbles/headers/{{$pabble->header}}" alt="{{$pabble->title}}">
-                                    <label style="position: absolute; bottom:25px; margin-left: 10px;" class="checkbox-inline">
+                                    <img class="w-full" src="/images/pabbles/headers/{{$pabble->header}}" alt="{{$pabble->title}}">
+                                    <label class="checkbox-inline">
                                         <input @if($pabble->header_type == 'fit') checked @endif type="checkbox" name="header_type"> Stretch header to full width
                                     </label>
-                                    <label style="position: absolute; bottom:0; margin-left: 10px;" class="checkbox-inline">
+                                    <label class="checkbox-inline">
                                         <input type="checkbox" name="delete_header"> Delete header image
                                     </label>
                                 </div>
@@ -111,8 +111,8 @@
                             <div class="form-group">
                                 <label for="icon" class="col-md-2 control-label">Current Icon</label>
                                 <div class="col-md-10">
-                                    <img style="max-height: 100px;" src="/images/pabbles/icons/{{$pabble->icon}}" alt="{{$pabble->title}}">
-                                    <label style="position: absolute; bottom:0; margin-left: 10px;" class="checkbox-inline">
+                                    <img class="max-h-100" src="/images/pabbles/icons/{{$pabble->icon}}" alt="{{$pabble->title}}">
+                                    <label class="checkbox-inline">
                                         <input type="checkbox" name="delete_icon"> Delete icon
                                     </label>
                                 </div>
