@@ -106,18 +106,20 @@
             </div>
         @php unset($thread); @endphp {{-- Unset variable so it doesn't get confused with a normal thread --}}
         @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
-            <div class="col-sm-8 col-sm-pull-4">
+            <div class="col-sm-9 col-sm-pull-3">
                 <div class="welcome thin">
-                    <h2 class="thin">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
+                    <h2 class="thin">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif This is your homepage</h2>
                     <h4 class="thin text-center">Fill it up by subscribing to some subpabbles</h4>
                     <p>Find some communities by searching or...</p>
                 </div>
+                <center>
                 <div onclick="window.location.href='/g/popular'" class="btn btn-primary checkout-msg">Check out what's popular</div>
+                </center>
             </div>
             @php $no_res = true; @endphp
         @elseif(Request::input('page') || Request::input('after'))
             @if($threads == null || $threads && $threads->count() == 0 )
-                <div class="col-sm-8 col-sm-pull-4">
+                <div class="col-sm-9 col-sm-pull-3">
                     <div class="welcome thin">
                         <h2 class="thin">No results found for that search criteria</h2>
                         <h4 class="thin text-center">Looks like we ran out of stolen memes</h4>
