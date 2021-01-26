@@ -190,14 +190,14 @@
                 </div>
 
                 @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
-                    <div class="col-sm-8 col-sm-pull-4">
+                    <div class="col-sm-9 col-sm-pull-3">
                         <h2 id="looks_like" class="thin text-center">Looks like this subpabble is still empty.</h2>
                         <h4 class="thin text-center">Go <a href="/p/{{$subPabble->name}}/submit">submit</a> something awesome.</h4>
                     </div>
                     @php $no_res = true; @endphp
                 @elseif(Request::input('page') || Request::input('after'))
                     @if($threads == null || $threads && $threads->count() == 0 )
-                        <div class="col-sm-8 col-sm-pull-4">
+                        <div class="col-sm-9 col-sm-pull-3">
                             <div class="welcome thin">
                                 <h2 class="thin">No results found for that search criteria</h2>
                                 <h4 class="thin text-center">Looks like we ran out of stolen memes</h4>
