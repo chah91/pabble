@@ -16,7 +16,7 @@
                             <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                                 {{ csrf_field() }}
                                 <input id="username" type="text" class="form-control" name="username" placeholder="Username" required autofocus>
-                                <input style="margin-top: 10px;" id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+                                <input id="password" type="password" class="form-control mt-3" name="password" placeholder="Password" required>
                                 <input type="hidden" name="redirect" value="{{Request::url()}}">
                                 <div class="checkbox">
                                     <label>
@@ -32,9 +32,9 @@
                             <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                                 {{ csrf_field() }}
                                 <input id="name" type="text" class="form-control" name="username" placeholder="Username" required autofocus>
-                                <input style="margin-top: 10px;" id="email" type="email" class="form-control" name="email" placeholder="Email" required>
-                                <input style="margin-top: 10px;" id="password" type="password" class="form-control" name="password" placeholder="Password" required>
-                                <input style="margin-top: 10px;" id="password-confirm" type="password" class="form-control" placeholder="Verify password" name="password_confirmation" required>
+                                <input id="email" type="email" class="form-control mt-3" name="email" placeholder="Email" required>
+                                <input id="password" type="password" class="form-control mt-3" name="password" placeholder="Password" required>
+                                <input id="password-confirm" type="password" class="form-control mt-3" placeholder="Verify password" name="password_confirmation" required>
                                 <input type="submit" value="Register" class="btn btn-primary pull-right">
                             </form>
                         </div>

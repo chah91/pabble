@@ -18,11 +18,6 @@
             margin-bottom: 0;
             margin-top: 2px;
         }
-        .envelope {
-            font-size: 20px;
-            margin-top: 10px;
-            margin-left: 10px;
-        }
         .time {
             margin-right: -40px;
         }
@@ -30,6 +25,8 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
+            padding-top: 10px;
+            padding-left: 30px;
         }
         .read {
             background-color: #f9f9f9;
@@ -48,6 +45,28 @@
         }
         #submit:hover {
             text-decoration: underline;
+        }
+        .rightmenu{
+            white-space: nowrap;
+            vertical-align: bottom;
+            display: flex;
+        }
+        .rightmenu li{
+            border-radius: 5px;
+            border: 1px solid #bebebe;
+            background-color: #e7e7e7;
+            padding: 3px 3px;
+            display: inline;
+            margin-right: 5px;
+        }
+        .envelope{
+            width: 20px;
+            font-size: 25px;
+            padding-left: 10px;
+        }
+        .time_wrap .time{
+            float: right;
+            margin-top: 10px;
         }
         @media screen and (max-width: 560px) {
             .rightmenu {
@@ -90,15 +109,13 @@
 @endsection
 
 @section('content')
-    <div id="stripe" data-spy="affix"></div>
-
-    <div style="margin-bottom: 20px;" class="container">
+    <div class="container mt-7">
         <!-- <ul style="float: left; padding: 0; margin-top: 10px; position: absolute">
             <h4>Unread</h4>
         </ul> -->
         <form action="{{ route('messages.mark_read') }}" method="post">
             {{ csrf_field()  }}
-            <ul style="margin-top: 10px;" class="tabmenu rightmenu">
+            <ul class="rightmenu mt-3">
                 <li class="selected tabmenu_bottom"><button id="submit" type="submit">Mark all as read</button></li>
                 <li class="selected tabmenu_bottom"><a href="{{ route('messages.send') }}">Send a pm</a></li>
             </ul>
@@ -112,18 +129,18 @@
         @endif
 
         @foreach($messages as $pm)
-            <a style="color: inherit;" href="{{ route('message.view', $pm->code) }}">
+            <a href="{{ route('message.view', $pm->code) }}">
                 <div class="panel @if($pm->active == 0) read @endif pm">
                     <div class="row">
-                        <div style="width: 20px;" class="col-xs-1">
+                        <div class="envelope col-xs-1">
                             <i class="fa @if($pm->active) fa-envelope-o @else fa-envelope-open-o @endif envelope" aria-hidden="true"></i>
                         </div>
-                        <div class="col-xs-9 thing_wrap">
+                        <div class="col-xs-9 thing_wrap flex">
                             <h4 class="pm_padding subject overflow">{{$pm->subject}}</h4>
-                                <a href="/u/{{$pm->from}}" class="pm_padding">{{$pm->from}}</a>
+                            <span href="/u/{{$pm->from}}" class="pm_padding">{{$pm->from}}</span>
                         </div>
                         <div class="col-xs-2 time_wrap">
-                            <p class="time" style="float: right; margin-top: 10px;">{{Carbon\Carbon::parse($pm->created_at)->diffForHumans()}}</p>
+                            <p class="time">{{Carbon\Carbon::parse($pm->created_at)->diffForHumans()}}</p>
                         </div>
                     </div>
                 </div>
@@ -141,17 +158,5 @@
         @endif
 
     </div>
-
-@endsection
-
-@section('scripts')
-
-    <script>
-        $('#stripe').affix({
-            offset: {
-                top: $('#nav').height()
-            }
-        });
-    </script>
 
 @endsection

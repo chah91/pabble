@@ -18,7 +18,7 @@
 
 .comment {
     /*overflow-x: scroll;*/
-    overflow-x: auto;
+    overflow-x: hidden;
     white-space: nowrap;
 }
 
@@ -29,4 +29,9 @@
 .post img {
     max-width: 100%;
     max-height: 600px;
+}
+
+.commentbox .panel-body{
+    width: 400px;
+    padding-top: 10px;
 }

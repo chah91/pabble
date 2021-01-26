@@ -29,16 +29,16 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <p style="color: white; margin-top: 10px;">Allowed hosts for external resources: i.imgur.com, imgur.com, pabble.co <br>You may also not use import, charset, and namespace</p>
+                <p class="text-white mt-3">Allowed hosts for external resources: i.imgur.com, imgur.com, pabble.co <br>You may also not use import, charset, and namespace</p>
             </div>
             <div class="col-xs-10">
-                <h1 style="color: white;">Editing css of {{$pabble->name}}</h1>
+                <h1 class="text-white">Editing css of {{$pabble->name}}</h1>
             </div>
             <div class="col-xs-2">
                 <form id="save_css" method="post" action="">
                     {{csrf_field()}}
-                    <textarea style="display: none" name="custom_css" id="custom_css" cols="30" rows="10"></textarea>
-                    <input id="click_me" style="margin-top: 25px;" type="submit" class="btn btn-primary pull-right" value="Save css">
+                    <textarea class="hidden" name="custom_css" id="custom_css" cols="30" rows="10"></textarea>
+                    <input id="click_me" type="submit" class="btn btn-primary pull-right mt-7" value="Save css">
                 </form>
             </div>
         </div>

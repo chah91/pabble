@@ -14,7 +14,8 @@
         .header {
             @if($subPabble->header)
             background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/images/pabbles/headers/{{$subPabble->header}}");
-            @endif            background-position: center;
+            @endif
+            background-position: center;
             @if($subPabble->header_type == 'fit')
             background-size: cover;
             @endif
@@ -25,15 +26,8 @@
             margin-top: 0;
             @endif
             }
-        #stripe {
-            background-color: @if($subPabble->header_color) {{ $subPabble->header_color }} @else grey @endif;
-            height: 20px;
-            width: 100%;
-            position: sticky;
-            z-index: 1;
-        }
         @if($subPabble->header_color)
-                #header_name {
+        #header_name {
             color: {{$subPabble->color}};
         }
         #header_title {
@@ -48,38 +42,33 @@
 
 @section('content')
 
-    @if($subPabble->header)
-        <div id="stripe" data-spy="affix"></div>
-    @endif
     <div class="header">
         <h1 id="header_name">{{$subPabble->name}}</h1>
         <p id="header_title">{{ $subPabble->title }}</p>
     </div>
 
-    <div class="container" style="margin-top: 15px; width: 80%;">
-        <div class="panel">
-            <div class="modal-header">
-                <div class="row">
-                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">
-                        <div style="margin-left: 20px;" class="wrap">
-                            <div style="margin-bottom: -5px; font-size: 20px;" class="row stack">
-                                <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
-                            </div>
-                            <div class="row stack">
-                                <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
-                            </div>
-                            <div style="margin-top: -5px; font-size: 20px;" class="row stack">
-                                <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
-                            </div>
+    <div class="container mt-3">
+        <div class="row panel">
+            <div class="panel-body">
+                <div class="thread row">
+                    <div class="votes col-xs-2 col-sm-1 mt-0">
+                        <div class="row stack upvote mt-0">
+                            <i id="{{$thread->id}}_up" data-voted="no" data-vote="up" data-thread="{{$thread->code}}" class="fa fa-sort-asc vote"></i>
+                        </div>
+                        <div class="row stack">
+                            <span id="{{$thread->id}}_counter" class="stack count">{{$thread->upvotes - $thread->downvotes}}</span>
+                        </div>
+                        <div class="row stack downvote">
+                            <i id="{{$thread->id}}_down" data-voted="no" data-vote="down" data-thread="{{$thread->code}}" class="fa fa-sort-desc stack vote"></i>
                         </div>
                     </div>
-                    <div style="margin-top: -4px;" class="col-xs-10 col-sm-11">
+                    <div class="col-xs-10 col-sm-11">
                         <h4><a href="@if($thread->link){{$thread->link}}@else @endif">{{$thread->title}}</a></h4>
                         @php
                             $user = new \App\Models\User();
                             $postername = $user->select('username')->where('id', $thread->poster_id)->first();
                         @endphp
-                        <p class="overflow" style="margin-bottom: -5px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                        <p class="overflow">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                             <a href="/p/{{$subPabble->name}}">{{$subPabble->name}}</a></p>
                     </div>
                 </div>
@@ -90,54 +79,54 @@
                         @if($thread->media_type == 'image')
                             <div class="row">
                                 <div class="col-md-8">
-                                    <img style="max-width: 100%; max-height: 600px;" src="{{$thread->link}}" alt="{{$thread->title}}">
+                                    <img class="max-w-full max-h-600" src="{{$thread->link}}" alt="{{$thread->title}}">
                                 </div>
                             </div>
                         @elseif($thread->media_type == 'video')
                             <div class="row">
                                 <div class="col-md-8">
-                                    <video style="max-width: 100%; max-height: 600px;" controls src="{{$thread->link}}" autoplay></video>
+                                    <video class="max-w-full max-h-600" controls src="{{$thread->link}}" autoplay></video>
                                 </div>
                             </div>
                         @elseif($thread->media_type == 'youtube')
                             @php preg_match("#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+(?=\?)|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#", $thread->link, $matches); @endphp
                             <div class="row">
                                 <div class="col-md-8">
-                                    <iframe style="max-width: 100%;" width="800" height="413" src="https://www.youtube.com/embed/{{$matches[0]}}" frameborder="0" allowfullscreen></iframe>
+                                    <iframe class="max-w-full" width="800" height="413" src="https://www.youtube.com/embed/{{$matches[0]}}" frameborder="0" allowfullscreen></iframe>
                                 </div>
                             </div>
                         @elseif($thread->media_type == 'vimeo')
                             @php $vimeoId = (int) substr(parse_url($thread->link, PHP_URL_PATH), 1); @endphp
                             <div class="row">
                                 <div class="col-md-8">
-                                    <iframe style="max-width: 100%;" width="800" height="413" src="https://player.vimeo.com/video/{{$vimeoId}}" frameborder="0" allowfullscreen></iframe>
+                                    <iframe class="max-w-full" width="800" height="413" src="https://player.vimeo.com/video/{{$vimeoId}}" frameborder="0" allowfullscreen></iframe>
                                 </div>
                             </div>
                         @else
                             <div class="row">
                                 <div class="col-md-8">
-                                    <a style="word-wrap: break-word;" href="{{$thread->link}}">{{$thread->link}}</a>
+                                    <a href="{{$thread->link}}">{{$thread->link}}</a>
                                 </div>
                             </div>
                         @endif
                     @endif
-                    
+
                     @if($thread->post)
                        {!! $thread->post !!}
                     @endif
                 </div>
             @endif
             @if($mod)
-                <p style="padding-left: 10px; margin-bottom: 5px;"><a href="javascript:deleteThread()">Delete</a></p>
+                <p class="pl-3 mb-0"><a href="javascript:deleteThread()">Delete</a></p>
             @endif
         </div>
 
-        <div style="margin-top: -10px;" class="panel">
+        <div class="row panel">
             <div class="panel-body">
                 <div class="col-md-5">
                     <h5>Place a comment</h5>
                     <textarea data-thread="{{$thread->id}}" placeholder="Comment" name="comment" id="comment" cols="30" rows="4" class="form-control commentbox"></textarea>
-                    <button style="margin-top: 5px;" class="btn btn-primary submitpostbtn pull-right ladda-button" data-style="slide-up">Post comment</button>
+                    <button class="btn btn-primary submitpostbtn pull-right ladda-button mt-3" data-style="slide-up">Post comment</button>
                     <div class="errors"></div>
                 </div>
             </div>
@@ -150,7 +139,7 @@
         </select>
 
         <div class="mynewcomments"></div>
-        <div class="comments panel-body"></div>
+        <div class="comments"></div>
 
     </div>
 
@@ -166,11 +155,6 @@
     @include('layouts.partials.vote')
 
     <script>
-        $('#stripe').affix({
-            offset: {
-                top: $('#nav').height()
-            }
-        });
         // Post comments
         var thread = {{$thread->id}};
 
@@ -199,24 +183,22 @@
                         $('.mynewcomments').append(
                             '        <div class="panel comment" id="post_panel_'+res.post.id+'">' +
                             '            <div class="panel-body">' +
-                            '                <div class="row">' +
-                            '                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">' +
-                            '                        <div style="margin-left: 20px;" class="wrap">' +
-                            '                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">' +
-                            '                                <a style="color: inherit;" href="javascript:votepost('+res.post.id+', `up`);"><i id="'+ res.post.id +'_up_post" data-voted="no" data-vote="up" data-post="'+res.post.id+'" class="fa fa-sort-asc"></i></a>' +
-                            '                            </div>' +
-                            '                            <div class="row stack">' +
-                            '                                <span id="'+res.post.id+'_counter_post" class="stack">'+res.post.score+'</span>' +
-                            '                            </div>' +
-                            '                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">' +
-                            '                                <a style="color: inherit;" href="javascript:votepost('+res.post.id+', `down`);"><i id="'+res.post.id+'_down_post" data-voted="no" data-vote="down" data-thread="'+ res.post.id +'" class="fa fa-sort-desc stack"></i></a>' +
-                            '                            </div>' +
+                            '                <div class="row thread">' +
+                            '                    <div class="votes col-xs-2 col-sm-1">' +
+                            '                        <div class="row stack upvote">' +
+                            '                            <a href="javascript:votepost('+res.post.id+', `up`);"><i id="'+ res.post.id +'_up_post" data-voted="no" data-vote="up" data-post="'+res.post.id+'" class="fa fa-sort-asc vote"></i></a>' +
+                            '                        </div>' +
+                            '                        <div class="row stack">' +
+                            '                            <span id="'+res.post.id+'_counter_post" class="stack">'+res.post.score+'</span>' +
+                            '                        </div>' +
+                            '                        <div class="row stack downvote">' +
+                            '                            <a href="javascript:votepost('+res.post.id+', `down`);"><i id="'+res.post.id+'_down_post" data-voted="no" data-vote="down" data-thread="'+ res.post.id +'" class="fa fa-sort-desc stack vote"></i></a>' +
                             '                        </div>' +
                             '                    </div>' +
-                            '                    <div class="col-xs-10 col-sm11">' +
+                            '                    <div class="col-xs-10 col-sm-11">' +
                             '                        <span><a href="/u/'+ username +'">'+username+'</a> '+ago+'</span>' +
                             '                        <p>'+res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />')+'</p>' +
-                            '                        <div class="linkwrapper"><a style="color: grey;" href="javascript:reply('+res.post.id+');">Reply</a></div>' +
+                            '                        <div class="linkwrapper"><a href="javascript:reply('+res.post.id+');">Reply</a></div>' +
                             '                        <div id="comment_box_app_'+res.post.id+'"></div>' +
                             '                    </div>' +
                             '                </div>' +
@@ -273,26 +255,24 @@
                         }
 
                         $('.comments').append(
-                            '        <div style="margin-top: -10px;" class="panel comment row" id="post_panel_' + post.id + '">' +
+                            '        <div class="panel comment row mb-3 mt-3" id="post_panel_' + post.id + '">' +
                             '            <div class="panel-body">' +
-                            '                <div class="row">' +
-                            '                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">' +
-                            '                        <div style="margin-left: 20px;" class="wrap">' +
-                            '                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">' +
-                            '                                <a style="color: inherit;" href="javascript:votepost(' + post.id + ', `up`);"><i id="' + post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + post.id + '" class="fa fa-sort-asc"></i></a>' +
+                            '                <div class="row thread">' +
+                            '                    <div class="votes col-xs-2 col-sm-1 mt-0">' +
+                            '                            <div class="row stack upvote mt-0">' +
+                            '                                <a href="javascript:votepost(' + post.id + ', `up`);"><i id="' + post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + post.id + '" class="fa fa-sort-asc vote"></i></a>' +
                             '                            </div>' +
                             '                            <div class="row stack">' +
                             '                                <span id="' + post.id + '_counter_post" class="stack">' + format_score + '</span>' +
                             '                            </div>' +
-                            '                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">' +
-                            '                                <a style="color: inherit;" href="javascript:votepost(' + post.id + ', `down`);"><i id="' + post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + post.id + '" class="fa fa-sort-desc stack"></i></a>' +
+                            '                            <div class="row stack downvote">' +
+                            '                                <a href="javascript:votepost(' + post.id + ', `down`);"><i id="' + post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + post.id + '" class="fa fa-sort-desc vote stack"></i></a>' +
                             '                            </div>' +
-                            '                        </div>' +
                             '                    </div>' +
-                            '                    <div class="col-xs-10 col-sm11">' +
+                            '                    <div class="col-xs-10 col-sm-11">' +
                             '                        <span><a href="/u/' + post.user_display_name + '">' + post.user_display_name + '</a> ' + ago + '</span>' +
                             '                        <p>' + post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                            '                        <div class="linkwrapper"><a style="color: grey;" href="javascript:reply(' + post.id + ');">Reply</a>@if($mod)<a style="margin-left:5px;" href="javascript:deleteComment('+post.id+')">Delete</a>@endif </div>' +
+                            '                        <div class="linkwrapper"><a href="javascript:reply(' + post.id + ');">Reply</a>@if($mod)<a class="pl-3" href="javascript:deleteComment('+post.id+')">Delete</a>@endif </div>' +
                             '                        <div id="comment_box_app_' + post.id + '"></div>' +
                             '                    </div>' +
                             '                </div>' +
@@ -323,27 +303,29 @@
                         }
 
                         to_append.append('' +
-                            '                <div id="post_panel_' + post.id + '" style="margin-left: 20px; width:95%; min-width: 400px;" class="col-xs-12">' +
-                            '                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">' +
-                            '                        <div style="margin-left: 20px;" class="wrap">' +
-                            '                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">' +
-                            '                                <a style="color: inherit;" href="javascript:votepost(' + post.id + ', `up`);"><i id="' + post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + post.id + '" class="fa fa-sort-asc"></i></a>' +
-                            '                            </div>' +
-                            '                            <div class="row stack">' +
-                            '                                <span id="' + post.id + '_counter_post" class="stack">' + format_score + '</span>' +
-                            '                            </div>' +
-                            '                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">' +
-                            '                                <a style="color: inherit;" href="javascript:votepost(' + post.id + ', `down`);"><i id="' + post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + post.id + '" class="fa fa-sort-desc stack"></i></a>' +
-                            '                            </div>' +
-                            '                        </div>' +
-                            '                    </div>' +
-                            '                    <div class="col-xs-10 col-sm11">' +
-                            '                        <span><a href="/u/' + post.user_display_name + '">' + post.user_display_name + '</a> ' + ago + '</span>' +
-                            '                        <p>' + post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                            '                        <div style="margin-bottom:3px;" class="linkwrapper"><a style="color: grey;" href="javascript:reply(' + post.id + ');">Reply</a> @if($mod)<a style="margin-left:5px;" href="javascript:deleteComment(\'+post.id+\')">Delete</a>@endif </div>' +
-                            '                        <div id="comment_box_app_' + post.id + '"></div>' +
-                            '                    </div>' +
-                            '                </div>'
+                            '                <div id="post_panel_' + post.id + '"class="col-xs-12 panel comment mb-0">' +
+                                    '            <div class="panel-body">' +
+                                    '                <div class="row thread">' +
+                                    '                    <div class="votes col-xs-2 col-sm-1 mt-0">' +
+                                    '                         <div class="row stack upvote mt-0">' +
+                                    '                             <a href="javascript:votepost(' + post.id + ', `up`);"><i id="' + post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + post.id + '" class="fa fa-sort-asc vote"></i></a>' +
+                                    '                         </div>' +
+                                    '                         <div class="row stack">' +
+                                    '                             <span id="' + post.id + '_counter_post" class="stack">' + format_score + '</span>' +
+                                    '                         </div>' +
+                                    '                         <div class="row stack downvote">' +
+                                    '                             <a href="javascript:votepost(' + post.id + ', `down`);"><i id="' + post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + post.id + '" class="fa fa-sort-desc stack vote"></i></a>' +
+                                    '                         </div>' +
+                                    '                    </div>' +
+                                    '                    <div class="col-xs-10 col-sm-11">' +
+                                    '                        <span><a href="/u/' + post.user_display_name + '">' + post.user_display_name + '</a> ' + ago + '</span>' +
+                                    '                        <p>' + post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
+                                    '                        <div class="linkwrapper"><a href="javascript:reply(' + post.id + ');">Reply</a> @if($mod)<a class="pl-3" href="javascript:deleteComment('+post.id+')">Delete</a>@endif </div>' +
+                                    '                        <div id="comment_box_app_' + post.id + '"></div>' +
+                                    '                    </div>' +
+                                    '                </div>' +
+                                    '            </div>' +
+                                    '        </div>'
                         );
                     }
                 }
@@ -376,11 +358,11 @@
                 }
                 _this.append(
                     '         <div class="commentbox" id="comment_box_'+id+'">' +
-                    '                <div style="width: 300px;" class="panel-body">' +
+                    '                <div class="panel-body">' +
                     '                        <textarea placeholder="comment" class="form-control" id="reply_text_'+id+'" cols="30" rows="3"></textarea>' +
-                    '                        <span style="color: red;" id="comment_box_alert_'+id+'"></span>' +
-                    '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" style="margin-top: 5px;" class="btn btn-primary submitpostbtn pull-right ladda-button xd" data-style="slide-up">Post comment</a>' +
-                    '                        <a href="javascript:cancel_reply('+id+');" style="margin-top: 5px; margin-right: 5px;" class="btn btn-primary submitpostbtn pull-right ladda-button" data-style="slide-up">Cancel</a>' +
+                    '                        <span class="text-red" id="comment_box_alert_'+id+'"></span>' +
+                    '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" class="btn btn-primary submitpostbtn pull-right ladda-button xd mt-3" data-style="slide-up">Post comment</a>' +
+                    '                        <a href="javascript:cancel_reply('+id+');" class="btn btn-primary submitpostbtn pull-right ladda-button mt-3 mr-3" data-style="slide-up">Cancel</a>' +
                     '                </div>' +
                     '            </div>');
             @else
@@ -424,27 +406,29 @@
                     created = moment(created);
                     ago = created.fromNow();
                     to_append.append('' +
-                        '                <div id="post_panel_' + res.post.id + '" style="margin-left: 20px; width:95%; min-width: 400px;" class="col-xs-12">' +
-                        '                    <div style="width: 40px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">' +
-                        '                        <div style="margin-left: 20px;" class="wrap">' +
-                        '                            <div style="margin-bottom: -15px; font-size: 20px;" class="row stack">' +
-                        '                                <a style="color: inherit;" href="javascript:votepost(' + res.post.id + ', `up`);"><i id="' + res.post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + res.post.id + '" class="fa fa-sort-asc"></i></a>' +
-                        '                            </div>' +
-                        '                            <div class="row stack">' +
-                        '                                <span id="' + res.post.id + '_counter_post" class="stack">' + res.post.score + '</span>' +
-                        '                            </div>' +
-                        '                            <div style="margin-top: -15px; font-size: 20px;" class="row stack">' +
-                        '                                <a style="color: inherit;" href="javascript:votepost(' + res.post.id + ', `down`);"><i id="' + res.post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + res.post.id + '" class="fa fa-sort-desc stack"></i></a>' +
-                        '                            </div>' +
-                        '                        </div>' +
-                        '                    </div>' +
-                        '                    <div class="col-xs-10 col-sm11">' +
-                        '                        <span><a href="/u/' + username + '">' + username + '</a> ' + ago + '</span>' +
-                        '                        <p>' + res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                        '                        <div style="margin-bottom:3px;" class="linkwrapper"><a style="color: grey;" href="javascript:reply(' + res.post.id + ');">Reply</a></div>' +
-                        '                        <div id="comment_box_app_' + res.post.id + '"></div>' +
-                        '                    </div>' +
-                        '                </div>'
+                        '        <div id="post_panel_' + res.post.id + '" class="col-xs-12 panel comment mb-0">' +
+                        '            <div class="panel-body">' +
+                        '                <div class="row thread">' +
+                        '                   <div class="votes col-xs-2 col-sm-1 mt-0">' +
+                        '                           <div class="row stack upvote mt-0">' +
+                        '                               <a href="javascript:votepost(' + res.post.id + ', `up`);"><i id="' + res.post.id + '_up_post" data-voted="no" data-vote="up" data-post="' + res.post.id + '" class="fa fa-sort-asc vote"></i></a>' +
+                        '                           </div>' +
+                        '                           <div class="row stack">' +
+                        '                               <span id="' + res.post.id + '_counter_post" class="stack">' + res.post.score + '</span>' +
+                        '                           </div>' +
+                        '                           <div class="row stack downvote">' +
+                        '                               <a href="javascript:votepost(' + res.post.id + ', `down`);"><i id="' + res.post.id + '_down_post" data-voted="no" data-vote="down" data-thread="' + res.post.id + '" class="fa fa-sort-desc stack vote"></i></a>' +
+                        '                           </div>' +
+                        '                   </div>' +
+                        '                   <div class="col-xs-10 col-sm-11">' +
+                        '                       <span><a href="/u/' + username + '">' + username + '</a> ' + ago + '</span>' +
+                        '                       <p>' + res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
+                        '                       <div class="linkwrapper"><a href="javascript:reply(' + res.post.id + ');">Reply</a></div>' +
+                        '                       <div id="comment_box_app_' + res.post.id + '"></div>' +
+                        '                   </div>' +
+                        '                </div>' +
+                        '            </div>' +
+                        '       </div>'
                     );
                     l.stop();
                     $('#comment_box_' + id).remove();

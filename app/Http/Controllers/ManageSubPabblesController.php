@@ -153,7 +153,11 @@ class ManageSubPabblesController extends Controller
                 unlink('images/pabbles/headers/' . $pabble->header);
             }
             $newName = $pabble->name . '-' . str_random(4) . '.' . $header->getClientOriginalExtension();
-            $header->move('images/pabbles/headers/', $newName);
+            $save_path = 'images/pabbles/headers/';
+            if (!file_exists(public_path($save_path))) {
+                mkdir(public_path($save_path), 777, true);
+            }
+            $header->move($save_path, $newName);
             $pabble->header = $newName;
         }
         $icon = $request->file('icon');
@@ -162,7 +166,11 @@ class ManageSubPabblesController extends Controller
                 unlink('images/pabbles/icons/' . $pabble->icon);
             }
             $randomHash =  substr($icon->getClientOriginalName(), 0, 10) . str_random(40);
-            $newName = 'images/pabbles/icons/' . $randomHash . '.png';
+            $save_path = 'images/pabbles/icons/';
+            if (!file_exists(public_path($save_path))) {
+                mkdir(public_path($save_path), 777, true);
+            }
+            $newName = $save_path . $randomHash . '.png';
             Image::make($icon->getRealPath())->fit(107, 59)->save($newName);
             $pabble->icon = $randomHash . '.png';
         }

@@ -11,30 +11,28 @@
 @endsection
 
 @section('content')
-    <div id="stripe" data-spy="affix"></div>
-
 
     <div class="container">
 
-        <h2 class="text_wrap" style="margin-top: 20px; margin-bottom: 20px;">{{$messages[0]['subject']}}</h2>
+        <h2 class="text_wrap mt-7">{{$messages[0]['subject']}}</h2>
 
-        <div id="msg_container" class="col-md-12">
+        <div id="msg_container" class="col-md-9">
             @foreach($messages as $pm)
                 @if($user->id == $pm->user_id)
                     <div class="msg_wrapper">
-                        <div style="margin-top: 5px;" class="msg_send">
-                            <div style="text-align: right" class="msg_container">
+                        <div class="msg_send mt-3">
+                            <div class="msg_container">
                                 <p>{{$pm->from}} ({{Carbon\Carbon::parse($pm->created_at)->diffForHumans()}})</p>
-                                <p style="margin-top: 10px;">{!! nl2br(e($pm->message)) !!}</p>
+                                <p class="mt-3">{!! nl2br(e($pm->message)) !!}</p>
                             </div>
                         </div>
                     </div>
                 @else
                     <div class="msg_wrapper">
-                        <div style="margin-top: 5px;" class="msg_received">
+                        <div class="msg_received mt-3">
                             <div class="msg_container">
                                 <p>{{$pm->from}} ({{Carbon\Carbon::parse($pm->created_at)->diffForHumans()}})</p>
-                                <p style="margin-top: 10px;">{!! nl2br(e($pm->message)) !!}</p>
+                                <p class="mt-3">{!! nl2br(e($pm->message)) !!}</p>
                             </div>
                         </div>
                     </div>
@@ -42,11 +40,11 @@
             @endforeach
         </div>
 
-        <div class="reply_box col-md-6 col-sm-8">
+        <div class="reply_box col-md-9 mt-7">
             <form action="" method="post">
                 {{ csrf_field() }}
                 <div class="form-group{{ $errors->has('reply') ? ' has-error' : '' }}">
-                    <textarea style="margin-top: 10px;" class="form-control" placeholder="Reply" name="reply" cols="30" rows="5"></textarea>
+                    <textarea class="form-control mt-3" placeholder="Reply" name="reply" cols="30" rows="5"></textarea>
                     @if ($errors->has('reply'))
                         <span class="help-block">
                             <strong>{{ $errors->first('reply') }}</strong>
@@ -63,23 +61,11 @@
                     @if($messages->currentPage() > 0 && $messages->currentPage() !== $messages->lastPage())
                         <a href="{{$messages->nextPageUrl()}}">Next</a>
                     @endif
-                    <input style="margin-top: -5px; margin-bottom: 20px;" type="submit" class="btn btn-primary pull-right" value="Send reply">
+                    <input type="submit" class="btn btn-primary pull-right" value="Send reply">
                 </div>
             </form>
         </div>
 
     </div>
-
-@endsection
-
-@section('scripts')
-
-    <script>
-        $('#stripe').affix({
-            offset: {
-                top: $('#nav').height()
-            }
-        });
-    </script>
 
 @endsection

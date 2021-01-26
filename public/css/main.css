@@ -42,6 +42,21 @@ html, body {
 .pabble-topbar .my-subpabbles{
     min-width: 110px;
 }
+.pabble-topbar .my-subpabbles .navbar .dropdown-toggle{
+    margin-top: -1px;
+    padding:0px;
+    color:#3097D1;
+    margin-left:10px;
+}
+.pabble-topbar .my-subpabbles .navbar ul{
+    font-size: 12px;
+    margin:0;
+    padding:0;
+    left:10px
+}
+.pabble-topbar .my-subpabbles .navbar ul li span{
+    padding: 10px;
+}
 .pabble-topbar .main-links{
     margin-left: 20px;
 }
@@ -51,6 +66,8 @@ html, body {
 .pabble-topbar .all-subpabbles{
     margin-left: 10px;
     overflow: hidden;
+    display: inline;
+    white-space: nowrap;
 }
 .pabble-topbar .all-subpabbles a{
     margin-right: 10px;
@@ -79,6 +96,22 @@ html, body {
 
 .search_box {
     margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    background:#fafafa
+}
+.search_box h4{
+    color:#3097D1;
+    margin-bottom:3px;
+}
+.search_box h5{
+    color:#3097D1;
+    margin-bottom:3px;
+}
+.well hr{
+    margin-top: 3px;
+    margin-bottom:7px;
+    border-top:1px solid #b6b6b6;
 }
 
 .navbar-default .navbar-toggle {
@@ -105,11 +138,168 @@ html, body {
 .navbar-brand{
     padding-left: 0px;
 }
-.upvote{
-    color: #3097D1;
+.navbar-brand div{
+    height: inherit;
+    display: inline-block;
+    font-family: Raleway;
+    font-weight: 500;
 }
-.downvote{
-    color: blue;
+.navbar-brand div img{
+    height: 40px;
+    margin-top: -7px;
+}
+
+.w-full{
+    width: 100%;
+}
+.mt-0{
+    margin-top: 0px !important;
+}
+.mt-3{
+    margin-top: 10px;
+}
+.mt-7{
+    margin-top: 20px;
+}
+.mb-0{
+    margin-bottom: 0px;
+}
+.mb-3{
+    margin-bottom: 10px;
+}
+.mr-3{
+    margin-right: 10px;
+}
+.pl-3{
+    padding-left: 10px;
+}
+.pr-3{
+    padding-right: 10px;
+}
+.pb-3{
+    padding-bottom: 10px;
+}
+.ml-6{
+    margin-left: 20px;
+}
+.ml-12{
+    margin-left: 40px;
+}
+.ml-1{
+    margin-left: 3px;
+}
+.-mt-3{
+    margin-top: -10px;
+}
+.max-w-full{
+    max-width: 100%;
+}
+.max-h-100{
+    max-height: 100px;
+}
+.max-h-600{
+    max-height: 600px;
+}
+.navbar-header #alerts_mobile {
+    float: right;
+}
+.navbar-header #alerts_mobile .dropdown-toggle{
+    color: #777;
+    margin:0;
+    padding:10px;
+    background: none;
+}
+.navbar-header #alerts_mobile .dropdown-toggle .fa-bell{
+    position: absolute;
+    left: -10px;
+    top: 15px;
+    font-size: 20px;
+}
+.navbar-header #alerts_mobile .dropdown-toggle .badge{
+    position:absolute;
+    top:10px;
+    z-index: 2;
+    background: orangered;
+    right: -3px;
+}
+.navbar-header #alerts_mobile .dropdown-menu{
+    margin-top: 30px;
+    width: 300px;
+    left: -225px;
+}
+.navbar-header #alerts_mobile .dropdown-menu hr{
+    margin: 1px;
+    padding:0
+}
+.navbar-header #alerts_mobile .dropdown-menu .mention{
+    white-space: normal;
+    text-align: left
+}
+#alerts_desktop .dropdown-toggle{
+    margin:0;
+    padding:10px;
+    background: none;
+}
+#alerts_desktop .dropdown-toggle span.fa-bell{
+    position: absolute;
+    left: -10px;
+    top: 15px;
+    font-size: 22px;
+}
+#alerts_desktop .dropdown-toggle span.badge{
+    position:absolute;
+    top:10px;
+    z-index: 2;
+    background: orangered;
+    right: -3px;
+}
+#alerts_desktop ul.dropdown-menu{
+    margin-top: 30px;
+    width: 300px;
+}
+#alerts_desktop ul.dropdown-menu hr{
+    margin: 1px;
+    padding:0
+}
+#alerts_desktop ul.dropdown-menu a.mention{
+    white-space: normal;
+    text-align: left
+}
+.navbar-nav #logout-form{
+    display: none;
+}
+.container .row.panel{
+    margin-left: -30px;
+    margin-right: -30px;
+}
+.welcome{
+    margin-top: 50px;
+    text-align: center;
+}
+.welcome p{
+    margin-top: 50px;
+}
+.welcome .checkout-msg{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:210px;
+}
+.text-center{
+    text-align: center;
+}
+.text-white{
+    color: #fff !important;
+}
+.text-red{
+    color: red;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+#subs_list{
+    max-height: 250px;
+    overflow-y: scroll
 }
 @media screen and (max-width: 560px) {
     #alerts_desktop {

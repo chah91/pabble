@@ -35,25 +35,79 @@
     font-family: roboto;
     font-weight: 300;
     display: flex;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.thread .votes{
+    width: 55px;
+    border-right: 2px solid #3097d1;
+    margin-right: 10px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+.thread .votes .upvote{
+    margin-bottom: -15px;
+    margin-top:8px
+}
+.thread .votes .downvote{
+    margin-top: -15px;
 }
 .thread.even{
     background: #f5f3f3;
 }
-
-.thread_title{
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: bold;
+.thread .image{
+    min-width: 90px;
+    margin-top:10px;
 }
-
+.thread .image img{
+    max-height: 76px;
+    max-width: 76px;
+}
 .stack {
     text-align: center;
 }
 
-.thread_info {
+.thread .thread_info {
     display: block;
+}
+.thread .thread_info .title{
+    color: #636b6f;
+}
+.thread .thread_info .title h3{
+    margin-top: 14px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.thread .thread_info .description{
+    margin-top: -7px;
+}
+.thread .thread_info .upvote{
+    color: #3097D1;
+}
+.thread .thread_info .downvote{
+    color: blue;
+}
+.thread .thread_info .comment p{
+    margin-top: -7px;
+}
+.panel.comment.reply{
+    background: #fff7dd;
+}
+.panel{
+    box-shadow:none;
+}
+.panel-body{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.upvote a{
+    color: inherit;
+}
+.downvote a{
+    color: inherit;
 }
 
 .overflow {
@@ -104,7 +158,9 @@
 #looks_like {
     margin-top: 50px;
 }
-
+.thin{
+    font-weight: lighter;
+}
 @media screen and (max-width: 560px) {
     .rightmenu {
         margin-top: 40px;
