@@ -10,6 +10,11 @@
 
 @section('content')
 
+@php
+    $user = new \App\Models\User();
+    $even = true;
+@endphp
+
     <div class="container mt-7">
         <div class="row panel panel-default">
             <div class="col-md-3 col-sm-push-9">
@@ -38,6 +43,7 @@
                     <hr>
                     @php $last_threads = \App\Models\Thread::getLastViewdThreadsLast24Hours(); @endphp
                     @foreach ($last_threads as $thread)
+                        @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
                         @php $pabble = \App\Models\SubPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first();@endphp
                         <a href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">{{$thread->title}}</a><br>
                         p/<a href="/p/{{$pabble->name}}">{{$pabble->name}}</a> | by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> | {{Carbon\Carbon::parse($thread->updated_at)->diffForHumans()}} <br>
@@ -45,10 +51,6 @@
                 </div>
             </div>
 
-            @php
-                $user = new \App\Models\User();
-                $even = true;
-            @endphp
             <div class="col-md-9 col-sm-pull-3">
                 <div class="page-info">
                     <span class="title">
@@ -88,10 +90,8 @@
                             <a class="title" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
                                 <h3>{{$thread->title}}</h3>
                             </a>
-                            <p class="overflow description">placed by
-                                <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
-                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in p/
-                                <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
+                            <p class="overflow description">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
+                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in p/<a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
                                 (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )
                             </p>
                             <a class="comment" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
