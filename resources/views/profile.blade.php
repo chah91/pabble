@@ -37,11 +37,11 @@
 @section('content')
     <div class="container mt-3">
         @if($user)
-        <ul class="tabmenu">
+<!--         <ul class="tabmenu">
             <li @if($sort == 'new') class="selected" @endif><a href="/u/{{$user->username}}/new">new</a></li>
             <li @if($sort == 'popular') class="selected" @endif><a href="/u/{{$user->username}}/popular">popular</a></li>
             <li @if($sort == 'top') class="selected" @endif><a href="/u/{{$user->username}}/top">top</a></li>
-        </ul>
+        </ul> -->
 
         <div class="row profile_padding">
             <div class="col-md-12">

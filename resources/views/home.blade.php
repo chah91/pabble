@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="well search_box">
-                    <h4>Trending Subpabbles</h4>
+                    <h4>Featured Subpabbles</h4>
                     <hr>
 
                 </div>
