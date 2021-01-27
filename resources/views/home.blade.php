@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="well search_box">
-                    <h5>Most viewed in the past 24 hours</h5>
+                    <h4>Most viewed in the past 24 hours</h4>
                     <hr>
                     @php $last_threads = \App\Models\Thread::getLastViewdThreadsLast24Hours(); @endphp
                     @foreach ($last_threads as $thread)
@@ -54,6 +54,12 @@
                         <a href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">{{$thread->title}}</a><br>
                         p/<a href="/p/{{$pabble->name}}">{{$pabble->name}}</a> | by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> | {{Carbon\Carbon::parse($thread->updated_at)->diffForHumans()}} <br>
                     @endforeach
+                </div>
+
+                <div class="well search_box">
+                    <h4>Trending Subpabbles</h4>
+                    <hr>
+
                 </div>
             </div>
 
