@@ -29,8 +29,8 @@
                         </div>
                     </form>
                 </div>
-                <a href="/submit?type=link" class="btn btn-primary w-full">Share a link</a>
-                <a href="/submit?type=text" class="btn btn-primary w-full mt-3">Discuss</a>
+                <a href="/submit?type=link" class="btn btn-primary w-full">Submit a Link</a>
+                <a href="/submit?type=text" class="btn btn-primary w-full mt-3">Submit a Post</a>
                 <a href="/subpabbles/create" class="btn btn-default w-full mt-3">Create your own subpabble</a>
 
                 <div class="well search_box">
@@ -40,7 +40,7 @@
                     @foreach ($last_threads as $thread)
                         @php $pabble = \App\Models\SubPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first();@endphp
                         <a href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">{{$thread->title}}</a><br>
-                        {{$pabble->name}} / {{Carbon\Carbon::parse($thread->updated_at)->diffForHumans()}} <br>
+                        p/<a href="/p/{{$pabble->name}}">{{$pabble->name}}</a> | by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> | {{Carbon\Carbon::parse($thread->updated_at)->diffForHumans()}} <br>
                     @endforeach
                 </div>
             </div>
@@ -90,7 +90,7 @@
                             </a>
                             <p class="overflow description">placed by
                                 <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
-                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in p/
                                 <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
                                 (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )
                             </p>

@@ -103,8 +103,8 @@
                 </div>
             </a>
             <div class="flex pubble-manage">
-                <a href="/submit?type=link" class="btn btn-primary">Share a link</a>
-                <a href="/submit?type=text" class="btn btn-primary">Discuss</a>
+                <a href="/submit?type=link" class="btn btn-primary">Submit a Link</a>
+                <a href="/submit?type=text" class="btn btn-primary">Submit a Post</a>
             </div>
         </div>
 
