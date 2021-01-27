@@ -86,6 +86,11 @@ class ManageSubPabblesController extends Controller
             'sub_pabble_id' => $pabble->id
         ]);
 
+        (new \App\Models\Subscription)->create([
+            'user_id' => $request->user()->id,
+            'sub_pabble_id' => $pabble->id
+        ]);
+
         return redirect('/p/'.$pabble->name);
     }
 

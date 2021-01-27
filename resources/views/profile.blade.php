@@ -46,6 +46,7 @@
         <div class="row profile_padding">
             <div class="col-md-12">
                 <h1 class="overflow">{{$user->username}} @if(!$user->active)<span>Account not activated yet</span>@endif</h1>
+                <a class="ml-1" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a>
             </div>
             <div id="profile" class="col-sm-4 col-md-3">
                 <ul class="list-group">
@@ -55,10 +56,10 @@
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Comment Karma</strong></span> {{$user->post_karma}}</li>
                     <li id="subs_list" class="list-group-item text-left"><span><strong>Subscribed to</strong></span>
                         @foreach($subscriptions as $sub)
-                            <br><a href="/p/{{$sub->name}}">/p/{{$sub->name}}</a>
+                            <br><a href="/p/{{$sub->name}}">p/{{$sub->name}}</a>
                         @endforeach
                     </li>
-                    <a class="ml-1" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a>
+                    
                 </ul>
             </div>
 
