@@ -98,13 +98,27 @@ html, body {
     margin-top: 20px;
     padding-top: 10px;
     padding-bottom: 20px;
-    background:#fafafa
+    background:#fafafa;
 }
 .search_box h4{
     color:#3097D1;
     margin-bottom:3px;
 }
 .search_box h5{
+    color:#3097D1;
+    margin-bottom:3px;
+}
+.search_box2 {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background:#e5e5e5;
+}
+.search_box2 h4{
+    color:#3097D1;
+    margin-bottom:3px;
+}
+.search_box2 h5{
     color:#3097D1;
     margin-bottom:3px;
 }

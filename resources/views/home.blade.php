@@ -38,6 +38,12 @@
                 <a href="/submit?type=text" class="btn btn-primary w-full mt-3">Submit a Post</a>
                 <a href="/subpabbles/create" class="btn btn-default w-full mt-3">Create your own subpabble</a>
 
+                <div class="well search_box2">
+                    <center>
+                    <a href="#"><img src="{{ asset('images/advertise.png') }}"></a>
+                    </center>
+                </div>
+
                 <div class="well search_box">
                     <h5>Most viewed in the past 24 hours</h5>
                     <hr>
