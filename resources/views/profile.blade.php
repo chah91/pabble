@@ -46,7 +46,7 @@
         <div class="row profile_padding">
             <div class="col-md-12">
                 <h1 class="overflow">{{$user->username}} @if(!$user->active)<span>Account not activated yet</span>@endif</h1>
-                <a class="ml-1" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a>
+                <a class="ml-1" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a>  |  <a href="#">Change Password</a>  |  <a href="#">Change Email</a>
             </div>
             <div id="profile" class="col-sm-4 col-md-3">
                 <ul class="list-group">
