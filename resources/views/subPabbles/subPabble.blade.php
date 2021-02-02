@@ -82,9 +82,11 @@
                         </a>
                         <hr>
                         @if(Auth::check())
-                            @if($subPabble->owner_id == Auth::user()->id)
-                                <a href="/p/{{$subPabble->name}}/edit" class="btn btn-primary w-full mb-3">Edit subpabble</a>
-                            @endif
+                            @foreach($moderators as $moderator)
+                                @if($moderator->user_id === Auth::user()->id)
+                                    <a href="/p/{{$subPabble->name}}/edit" class="btn btn-primary w-full mb-3">Edit subpabble</a>
+                                @endif
+                            @endforeach
                         @endif
                         <div id="about" class="panel-collapse collapse">
                             <p>{{$readers}} {{str_plural('reader', $readers)}}</p>

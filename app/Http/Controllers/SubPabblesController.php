@@ -83,10 +83,10 @@ class SubPabblesController extends Controller
     public function index(Request $request){
         $search = $request->input('search');
         if ($search){
-            $subpabbles = SubPabble::where('name', 'LIKE', '%' . $search . '%')->orderBy('name', 'asc')->paginate(10);
+            $subpabbles = SubPabble::where('name', 'LIKE', '%' . $search . '%')->orderBy('name', 'asc')->paginate(5);
         }
         else {
-            $subpabbles = SubPabble::orderBy('name', 'asc')->paginate(10);
+            $subpabbles = SubPabble::orderBy('name', 'asc')->paginate(5);
         }
         return view('subPabbles.all', array(
             'subpabbles' => $subpabbles
