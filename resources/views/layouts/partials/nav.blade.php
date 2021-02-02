@@ -40,6 +40,7 @@
                 <a href="/p/{{$item->name}}">{{$item->name}}</a>
             @endforeach
         </div>
+        <a href="/subpabbles" class="pl-3 mr-3">more&nbsp;»</a>
     </div>
     <div class="container">
         <div class="navbar-header">

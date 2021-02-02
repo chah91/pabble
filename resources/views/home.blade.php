@@ -16,7 +16,7 @@
 @endphp
 
     <div class="container mt-7">
-        <div class="row panel panel-default">
+        <div class="row panel panel-default pb-3">
             <div class="col-md-3 col-sm-push-9">
                 <div class="well search_box">
                     <h4>Search Pabble</h4>
@@ -24,7 +24,13 @@
                     <form method="GET" action="/search">
                         <div id="custom-search-input">
                             <div class="input-group col-md-12">
-                                <input type="text" name="q" class="search-query form-control" placeholder="Search" />
+                                <div class="input-group-prepend">
+                                    <select class="form-control" style="display: table-cell" name="searchType">
+                                        <option value="post">POST</option>
+                                        <option value="pabble">Pabble</option>
+                                    </select>
+                                </div>
+                                <input type="text" name="q" class="search-query-global form-control" placeholder="Search" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">
                                         <span class="fa fa-search"></span>
@@ -40,7 +46,7 @@
 
                 <div class="well search_box2">
                     <center>
-                    <a href="#"><img src="{{ asset('images/advertise.png') }}"></a>
+                        <a href="#"><img class="w-full" src="{{ asset('images/advertise.png') }}"></a>
                     </center>
                 </div>
 
@@ -153,6 +159,7 @@
             </div>
         @endif
 
+        </div>
     </div>
 
     @include('layouts.partials.loginModal')

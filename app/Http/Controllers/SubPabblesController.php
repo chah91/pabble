@@ -80,4 +80,17 @@ class SubPabblesController extends Controller
         );
     }
 
+    public function index(Request $request){
+        $search = $request->input('search');
+        if ($search){
+            $subpabbles = SubPabble::where('name', 'LIKE', '%' . $search . '%')->orderBy('name', 'asc')->paginate(10);
+        }
+        else {
+            $subpabbles = SubPabble::orderBy('name', 'asc')->paginate(10);
+        }
+        return view('subPabbles.all', array(
+            'subpabbles' => $subpabbles
+        ));
+    }
+
 }

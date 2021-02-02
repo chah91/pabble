@@ -31,6 +31,19 @@
             padding-bottom: 20px;
             padding-left: 0;
         }
+        .profile-manage-link{
+            font-size: 9pt;
+        }
+        .profile-manage-link .message-send{
+            max-width: 33%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .profile-manage-link *{
+            margin-right: 5px;
+            margin-left: 5px;
+        }
     </style>
 @endsection
 
@@ -44,11 +57,15 @@
         </ul> -->
 
         <div class="row profile_padding">
-            <div class="col-md-12">
+            <div class="col-md-12 pl-0">
                 <h1 class="overflow">{{$user->username}} @if(!$user->active)<span>Account not activated yet</span>@endif</h1>
-                <a class="ml-1" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a>  |  <a href="#">Change Password</a>  |  <a href="#">Change Email</a>
             </div>
-            <div id="profile" class="col-sm-4 col-md-3">
+            <div id="profile" class="col-sm-4 col-md-3 pr-0 pl-0">
+                <div class="flex profile-manage-link">
+                    <a class="message-send ml-0" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a> |
+                    <a href="{{ route('resetPasswordShow') }}">Change Password</a> |
+                    <a href="{{ route('resetEmailShow') }}" class="mr-0" href="">Change Email</a>
+                </div>
                 <ul class="list-group">
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> {{\Carbon\Carbon::createFromTimeStamp(strtotime($user->created_at))->diffForHumans()}}</li>
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Karma</strong></span> {{$user->thread_karma + $user->post_karma}}</li>
@@ -59,7 +76,6 @@
                             <br><a href="/p/{{$sub->name}}">p/{{$sub->name}}</a>
                         @endforeach
                     </li>
-                    
                 </ul>
             </div>
 

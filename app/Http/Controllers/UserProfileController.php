@@ -10,6 +10,8 @@ use App\Models\Subscription;
 use App\Models\Thread;
 use App\Models\Vote;
 use App\Models\User;
+use Validator;
+use Hash;
 
 class UserProfileController extends Controller
 {
@@ -73,5 +75,77 @@ class UserProfileController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function resetPasswordShow(){
+        return view('auth.changePassword');
+    }
+
+    public function resetPassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'current_password' => "required",
+            'new_password' => 'required',
+            'confirm_password' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->new_password !== $request->confirm_password){
+            return back()->withErrors(['new_password' => 'Confirm Password does not match'])->withInput();;
+        }
+
+        $auth_user = Auth::user();
+
+        if (Hash::check($validator->validated()['current_password'], $auth_user->password)){
+            $auth_user->password = bcrypt($request->new_password);
+            $auth_user->save();
+            flash('Password changed successfully', 'success');
+            return \redirect('/u/'.$auth_user->username);
+        }
+        else{
+            return back()->withErrors(['current_password' => 'Current Password is incorrect'])->withInput();;
+        }
+
+    }
+
+    public function resetEmailShow(){
+        return view('auth.changeEmail');
+    }
+
+    public function resetEmail(Request $request){
+        $validator = Validator::make($request->all(), [
+            'current_email' => "required",
+            'new_email' => 'required',
+            'confirm_email' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->new_email !== $request->confirm_email){
+            return back()->withErrors(['new_email' => 'Confirm Email Address does not match'])->withInput();
+        }
+
+        $auth_user = Auth::user();
+
+        if ($auth_user->email === $request['current_email']){
+            $auth_user->email = $request['new_email'];
+            if (env('EMAIL_ACTIVATION')) {
+                $auth_user->active = false;
+                // send email activation link
+            }
+            $auth_user->save();
+            flash('Email Address changed successfully', 'success');
+            return \redirect('/u/'.$auth_user->username);
+        }
+        else{
+            return back()->withErrors(['current_email' => 'Current Email Address is incorrect'])->withInput();
+        }
+
     }
 }

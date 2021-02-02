@@ -74,6 +74,24 @@
                             </span>
                         </div>
                     </div>
+                    <div class="tabmenu">
+                        @php
+                            $queries = request()->query();
+                            if (isset($queries['sort'])){
+                                unset($queries['sort']);
+                            }
+                            $current_url = url()->current().'?'.http_build_query($queries);
+                        @endphp
+                        <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'popular') class="selected" @endif>
+                            <a href="{{ $current_url.'&sort=popular' }}">POPULAR</a>
+                        </li>
+                        <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'new') class="selected" @endif>
+                            <a href="{{ $current_url.'&sort=new' }}">NEW</a>
+                        </li>
+                        <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'top') class="selected" @endif>
+                            <a href="{{ $current_url.'&sort=top' }}">TOP</a>
+                        </li>
+                    </div>
                 </form>
 
                 @php

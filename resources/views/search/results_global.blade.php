@@ -16,13 +16,37 @@
             <form class="mt-7" method="GET" action="/search">
                 <div id="custom-search-input">
                     <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                        <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="Search" />
+                        <div class="input-group-prepend">
+                            <select class="form-control" style="display: table-cell" name="searchType">
+                                <option {{ $currentSearchType === 'post' ? 'selected' : '' }} value="post">POST</option>
+                                <option {{ $currentSearchType === 'pabble'? 'selected' : '' }} value="pabble">Pabble</option>
+                            </select>
+                        </div>
+                        <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query-global form-control" placeholder="Search" />
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">
                                 <span class="fa fa-search"></span>
                             </button>
                         </span>
                     </div>
+                </div>
+                <div class="tabmenu">
+                    @php
+                        $queries = request()->query();
+                        if (isset($queries['sort'])){
+                            unset($queries['sort']);
+                        }
+                        $current_url = url()->current().'?'.http_build_query($queries);
+                    @endphp
+                    <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'popular') class="selected" @endif>
+                        <a href="{{ $current_url.'&sort=popular' }}">POPULAR</a>
+                    </li>
+                    <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'new') class="selected" @endif>
+                        <a href="{{ $current_url.'&sort=new' }}">NEW</a>
+                    </li>
+                    <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'top') class="selected" @endif>
+                        <a href="{{ $current_url.'&sort=top' }}">TOP</a>
+                    </li>
                 </div>
             </form>
 
@@ -46,22 +70,22 @@
                         @endforeach
                         @if($page == 1 && $subpabbles->count() > 4)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=2&type=subpabbles">next</a>
+                                <a href="/search?q={{$q}}&page=2&searchType=pabble">next</a>
                             </div>
                         @endif
                         @if($page == 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=1">previous</a>
+                                <a href="/search?q={{$q}}&page=1&searchType=pabble">previous</a>
                                 @if($threads->count() > 19)
-                                    - <a href="/search?q={{$q}}&page={{$page+1}}&type=subpabbles">next</a>
+                                    - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=pabble">next</a>
                                 @endif
                             </div>
                         @endif
                         @if($page > 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page={{$page-1}}&type=subpabbles">previous</a>
+                                <a href="/search?q={{$q}}&page={{$page-1}}&searchType=pabble">previous</a>
                                 @if($threads->count() > 24)
-                                    - <a href="/search?q={{$q}}&page={{$page+1}}&type=subpabbles">next</a>
+                                    - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=pabble">next</a>
                                 @endif
                             </div>
                         @endif
@@ -117,22 +141,22 @@
                         @endforeach
                         @if($page == 1 && $threads->count() > 4)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=2&type=posts">next</a>
+                                <a href="/search?q={{$q}}&page=2&searchType=post">next</a>
                             </div>
                         @endif
                         @if($page == 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=1">previous</a>
+                                <a href="/search?q={{$q}}&page=1&searchType=post">previous</a>
                                 @if($threads->count() > 19)
-                                    - <a href="/search?q={{$q}}&page={{$page+1}}&type=posts">next</a>
+                                    - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=post">next</a>
                                 @endif
                             </div>
                         @endif
                         @if($page > 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page={{$page-1}}&type=posts">previous</a>
+                                <a href="/search?q={{$q}}&page={{$page-1}}&searchType=post">previous</a>
                                 @if($threads->count() > 24)
-                                - <a href="/search?q={{$q}}&page={{$page+1}}&type=posts">next</a>
+                                - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=post">next</a>
                                 @endif
                             </div>
                         @endif
@@ -148,6 +172,7 @@
 
             </div>
         </div>
+    </div>
 
         @include('layouts.partials.loginModal')
 
