@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="col-xs-10 col-sm-11">
-                        <h4><a href="@if($thread->link){{$thread->link}}@else @endif">{{$thread->title}}</a></h4>
+                        <h4><a href="">{{$thread->title}}</a></h4>
                         @php
                             $user = new \App\Models\User();
                             $postername = $user->select('username')->where('id', $thread->poster_id)->first();

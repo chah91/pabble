@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="thread_info">
-                            <a class="title" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                            <a class="title" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
                                 <h3>{{$thread->title}}</h3>
                             </a>
                             <p class="overflow description">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
