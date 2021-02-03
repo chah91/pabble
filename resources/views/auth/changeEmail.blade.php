@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Pabble: Change Email @endsection
+@section('title') Pabble: {{ __('lang.change-email') }} @endsection
 
 @section('stylesheets')
     <style>
@@ -23,13 +23,13 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Change Email Address</div>
+                <div class="panel-heading">{{ __('lang.change-email') }}</div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('resetEmail') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('current_email') ? ' has-error' : '' }}">
-                            <label for="current_email" class="col-md-4 control-label">Current Email</label>
+                            <label for="current_email" class="col-md-4 control-label">{{ __('lang.current-email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="current_email" type="email" class="form-control" name="current_email" value="{{ old('current_email') }}" required autofocus>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('new_email') ? ' has-error' : '' }}">
-                            <label for="new_email" class="col-md-4 control-label">New Email</label>
+                            <label for="new_email" class="col-md-4 control-label">{{ __('lang.new-email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="new_email" type="email" class="form-control" name="new_email" value="{{ old('new_email') }}" required autofocus>
@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('confirm_email') ? ' has-error' : '' }}">
-                            <label for="confirm_email" class="col-md-4 control-label">Confirm New Email</label>
+                            <label for="confirm_email" class="col-md-4 control-label">{{ __('lang.confirm-new-email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="confirm_email" type="email" class="form-control" name="confirm_email" value="{{ old('confirm_email') }}" required autofocus>
@@ -73,10 +73,10 @@
                         <div class="form-group">
                             <div class="col-md-offset-4 button-group">
                                 <button type="submit" class="btn btn-primary ml-4">
-                                    Change Email
+                                    {{ __('lang.change-email') }}
                                 </button>
                                 <a class="btn btn-default ml-4 return-profile" href="/u/{{Auth::user()->username}}">
-                                    Return to Profile
+                                    {{ __('lang.return-to-profile') }}
                                 </a>
                             </div>
                         </div>

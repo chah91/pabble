@@ -27,9 +27,9 @@
         @else
         $('#loginModal').modal('show');
         if (vote === 'down') {
-            $('#loginModalMessage').text('to downvote');
+            $('#loginModalMessage').text('{{ __('lang.to-downvote') }}');
         } else {
-            $('#loginModalMessage').text('to upvote');
+            $('#loginModalMessage').text('{{ __('lang.to-upvote') }}');
         }
         @endif
     });
@@ -70,9 +70,9 @@
         @else
             $('#loginModal').modal('show');
             if (vote === 'down') {
-                $('#loginModalMessage').text('to downvote');
+                $('#loginModalMessage').text('{{ __('lang.to-downvote') }}');
             } else {
-                $('#loginModalMessage').text('to upvote');
+                $('#loginModalMessage').text('{{ __('lang.to-upvote') }}');
             }
         @endif
     }

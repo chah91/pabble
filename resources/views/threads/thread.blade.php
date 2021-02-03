@@ -68,8 +68,12 @@
                             $user = new \App\Models\User();
                             $postername = $user->select('username')->where('id', $thread->poster_id)->first();
                         @endphp
-                        <p class="overflow">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
-                            <a href="/p/{{$subPabble->name}}">{{$subPabble->name}}</a></p>
+                        <p class="overflow">
+                            {{ __('lang.placed-by') }}
+                            <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
+                            {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} {{ __("lang.in") }}
+                            <a href="/p/{{$subPabble->name}}">{{$subPabble->name}}</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -117,16 +121,16 @@
                 </div>
             @endif
             @if($mod)
-                <p class="pl-3 mb-0"><a href="javascript:deleteThread()">Delete</a></p>
+                <p class="pl-3 mb-0"><a href="javascript:deleteThread()">{{ __('lang.delete') }}</a></p>
             @endif
         </div>
 
         <div class="row panel">
             <div class="panel-body">
                 <div class="col-md-5">
-                    <h5>Place a comment</h5>
-                    <textarea data-thread="{{$thread->id}}" placeholder="Comment" name="comment" id="comment" cols="30" rows="4" class="form-control commentbox"></textarea>
-                    <button class="btn btn-primary submitpostbtn pull-right ladda-button mt-3" data-style="slide-up">Post comment</button>
+                    <h5>{{ __("lang.place-a-comment") }}</h5>
+                    <textarea data-thread="{{$thread->id}}" placeholder="{{ __('lang.comment') }}" name="comment" id="comment" cols="30" rows="4" class="form-control commentbox"></textarea>
+                    <button class="btn btn-primary submitpostbtn pull-right ladda-button mt-3" data-style="slide-up">{{ __("lang.post-comment") }}</button>
                     <div class="errors"></div>
                 </div>
             </div>
@@ -134,8 +138,8 @@
 
 
         <select onchange="sortComments($(this))" name="sortcomments">
-            <option value="popular">Popular</option>
-            <option value="new">New</option>
+            <option value="popular">{{ __('lang.popular') }}</option>
+            <option value="new">{{ __('lang.new') }}</option>
         </select>
 
         <div class="mynewcomments"></div>
@@ -198,7 +202,7 @@
                             '                    <div class="col-xs-10 col-sm-11">' +
                             '                        <span><a href="/u/'+ username +'">'+username+'</a> '+ago+'</span>' +
                             '                        <p>'+res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />')+'</p>' +
-                            '                        <div class="linkwrapper"><a href="javascript:reply('+res.post.id+');">Reply</a></div>' +
+                            '                        <div class="linkwrapper"><a href="javascript:reply('+res.post.id+');" class="text-capitalize">{{ __('lang.reply') }}</a></div>' +
                             '                        <div id="comment_box_app_'+res.post.id+'"></div>' +
                             '                    </div>' +
                             '                </div>' +
@@ -211,7 +215,7 @@
                  });
             @else
                 $('#loginModal').modal('show');
-                $('#loginModalMessage').text('to comment');
+                $('#loginModalMessage').text('{{ __('lang.to-comment') }}');
                 l.stop();
             @endif
         });
@@ -272,7 +276,7 @@
                             '                    <div class="col-xs-10 col-sm-11">' +
                             '                        <span><a href="/u/' + post.user_display_name + '">' + post.user_display_name + '</a> ' + ago + '</span>' +
                             '                        <p>' + post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                            '                        <div class="linkwrapper"><a href="javascript:reply(' + post.id + ');">Reply</a>@if($mod)<a class="pl-3" href="javascript:deleteComment('+post.id+')">Delete</a>@endif </div>' +
+                            '                        <div class="linkwrapper"><a href="javascript:reply(' + post.id + ');" class="text-capitalize">{{ __('lang.reply') }}</a>@if($mod)<a class="pl-3" href="javascript:deleteComment('+post.id+')">{{ __("lang.delete") }}</a>@endif </div>' +
                             '                        <div id="comment_box_app_' + post.id + '"></div>' +
                             '                    </div>' +
                             '                </div>' +
@@ -320,7 +324,7 @@
                                     '                    <div class="col-xs-10 col-sm-11">' +
                                     '                        <span><a href="/u/' + post.user_display_name + '">' + post.user_display_name + '</a> ' + ago + '</span>' +
                                     '                        <p>' + post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                                    '                        <div class="linkwrapper"><a href="javascript:reply(' + post.id + ');">Reply</a> @if($mod)<a class="pl-3" href="javascript:deleteComment('+post.id+')">Delete</a>@endif </div>' +
+                                    '                        <div class="linkwrapper"><a href="javascript:reply(' + post.id + ');" class="text-capitalize">{{ __('lang.reply') }}</a> @if($mod)<a class="pl-3" href="javascript:deleteComment('+post.id+')">{{ __('lang.delete') }}</a>@endif </div>' +
                                     '                        <div id="comment_box_app_' + post.id + '"></div>' +
                                     '                    </div>' +
                                     '                </div>' +
@@ -343,7 +347,7 @@
 
                 page++;
                 if (posts.length > 199) {
-                    $('.comments').append('<a id="load_more_comments" href="javascript:loadcomments(' + page + ');">Load more comments</a>');
+                    $('.comments').append('<a id="load_more_comments" href="javascript:loadcomments(' + page + ');">{{ __('lang.load-more-comments') }}</a>');
                 }
             });
         }
@@ -359,15 +363,15 @@
                 _this.append(
                     '         <div class="commentbox" id="comment_box_'+id+'">' +
                     '                <div class="panel-body">' +
-                    '                        <textarea placeholder="comment" class="form-control" id="reply_text_'+id+'" cols="30" rows="3"></textarea>' +
+                    '                        <textarea placeholder="{{ __('lang.comment') }}" class="form-control" id="reply_text_'+id+'" cols="30" rows="3"></textarea>' +
                     '                        <span class="text-red" id="comment_box_alert_'+id+'"></span>' +
-                    '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" class="btn btn-primary submitpostbtn pull-right ladda-button xd mt-3" data-style="slide-up">Post comment</a>' +
-                    '                        <a href="javascript:cancel_reply('+id+');" class="btn btn-primary submitpostbtn pull-right ladda-button mt-3 mr-3" data-style="slide-up">Cancel</a>' +
+                    '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" class="btn btn-primary submitpostbtn pull-right ladda-button xd mt-3" data-style="slide-up">{{ __('lang.post-comment') }}</a>' +
+                    '                        <a href="javascript:cancel_reply('+id+');" class="btn btn-primary submitpostbtn pull-right ladda-button mt-3 mr-3" data-style="slide-up">{{ __('lang.cancel') }}</a>' +
                     '                </div>' +
                     '            </div>');
             @else
                 $('#loginModal').modal('show');
-                $('#loginModalMessage').text('to reply');
+                $('#loginModalMessage').text('{{ __('lang.to-reply') }}');
             @endif
         }
 
@@ -423,7 +427,7 @@
                         '                   <div class="col-xs-10 col-sm-11">' +
                         '                       <span><a href="/u/' + username + '">' + username + '</a> ' + ago + '</span>' +
                         '                       <p>' + res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                        '                       <div class="linkwrapper"><a href="javascript:reply(' + res.post.id + ');">Reply</a></div>' +
+                        '                       <div class="linkwrapper"><a href="javascript:reply(' + res.post.id + ');" class="text-capitalize">{{ __('lang.reply') }}</a></div>' +
                         '                       <div id="comment_box_app_' + res.post.id + '"></div>' +
                         '                   </div>' +
                         '                </div>' +
@@ -440,26 +444,26 @@
 
         @if($mod)
             function deleteThread() {
-                if (confirm("Are you sure you want to delete this thread?") == true) {
+                if (confirm("{{ __('lang.are-you-sure-you-want-to-delete-this-thread') }}") == true) {
                     data = { api_token: '{{Auth::user()->api_token}}'};
                     $.post('/api/thread/delete/'+'{{$thread->code}}', data, function(res) {
                        if (res.status == 'error') {
                             alert(res.message);
                        } else {
-                           alert("Thread removed");
+                           alert("{{ __('lang.thread-removed') }}");
                            location.reload();
                        }
                     });
                 }
             }
             function deleteComment(id) {
-                if (confirm("Are you rusre you want to delete this comment?") == true) {
+                if (confirm("{{ __("lang.are-you-sure-you-want-to-delete-this-comment") }}") == true) {
                     data = { api_token: '{{Auth::user()->api_token}}'};
                     $.post('/api/comment/delete/'+ id, data, function(res) {
                         if (res.status == 'error') {
                             alert(res.message);
                         } else {
-                            alert("Comment removed");
+                            alert("{{ __('lang.comment-removed') }}");
                             location.reload();
                         }
                     });

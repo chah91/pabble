@@ -53,15 +53,15 @@
                 </div>
                 <div class="form-group">
                     @if($messages->currentPage() > 1)
-                        <a href="{{$messages->previousPageUrl()}}">Previous</a>
+                        <a href="{{$messages->previousPageUrl()}}">{{ __('lang.prev') }}</a>
                     @endif
                     @if($messages->currentPage() > 1 && $messages->currentPage() !== $messages->lastPage())
                         -
                     @endif
                     @if($messages->currentPage() > 0 && $messages->currentPage() !== $messages->lastPage())
-                        <a href="{{$messages->nextPageUrl()}}">Next</a>
+                        <a href="{{$messages->nextPageUrl()}}">{{ __('lang.next') }}</a>
                     @endif
-                    <input type="submit" class="btn btn-primary pull-right" value="Send reply">
+                    <input type="submit" class="btn btn-primary pull-right" value="{{ __('lang.send-reply') }}">
                 </div>
             </form>
         </div>

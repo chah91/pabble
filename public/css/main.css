@@ -353,10 +353,21 @@ html, body {
     padding: 0px;
 }
 .input-group .search-query-global{
-    padding-left: 68px;
+    padding-left: 75px;
 }
 .input-group .search-query-global:focus{
     z-index: 2;
+}
+.lang-select{
+    float:right;
+    margin-top: 13px;
+    margin-right: 20px;
+    width: auto;
+    padding: 3px;
+    height: 29px;
+}
+.text-capitalize{
+    text-transform: capitalize;
 }
 @media screen and (max-width: 560px) {
     #alerts_desktop {

@@ -72,3 +72,10 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get('/resetEmail', 'UserProfileController@resetEmailShow')->name('resetEmailShow');
     Route::post('/resetEmail', 'UserProfileController@resetEmail')->name('resetEmail');
 });
+
+Route::post('/setLang', function(){
+    $locale = request()->query()['lang'];
+    App::setLocale($locale);
+    session(['locale' => $locale]);
+    return response()->json(['success'=>1]);
+});

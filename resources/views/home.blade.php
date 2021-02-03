@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Pabble: Post stolen memes here @endsection
+@section('title') Pabble: {{ __('lang.post-stolen-memes-here') }} @endsection
 
 @include('layouts.partials.twitter_cards')
 
@@ -19,18 +19,18 @@
         <div class="row panel panel-default pb-3">
             <div class="col-md-3 col-sm-push-9">
                 <div class="well search_box">
-                    <h4>Search Pabble</h4>
+                    <h4>{{ __('lang.search-pabble') }}</h4>
                     <hr>
                     <form method="GET" action="/search">
                         <div id="custom-search-input">
                             <div class="input-group col-md-12">
                                 <div class="input-group-prepend">
-                                    <select class="form-control" style="display: table-cell" name="searchType">
-                                        <option value="post">POST</option>
-                                        <option value="pabble">Pabble</option>
+                                    <select class="form-control" name="searchType">
+                                        <option value="post">{{ __('lang.post') }}</option>
+                                        <option value="pabble">{{ __('lang.pabble') }}</option>
                                     </select>
                                 </div>
-                                <input type="text" name="q" class="search-query-global form-control" placeholder="Search" />
+                                <input type="text" name="q" class="search-query-global form-control" placeholder="{{ __('lang.search') }}" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">
                                         <span class="fa fa-search"></span>
@@ -40,9 +40,9 @@
                         </div>
                     </form>
                 </div>
-                <a href="/submit?type=link" class="btn btn-primary w-full">Submit a Link</a>
-                <a href="/submit?type=text" class="btn btn-primary w-full mt-3">Submit a Post</a>
-                <a href="/subpabbles/create" class="btn btn-default w-full mt-3">Create your own subpabble</a>
+                <a href="/submit?type=link" class="btn btn-primary w-full">{{ __('lang.submit-link') }}</a>
+                <a href="/submit?type=text" class="btn btn-primary w-full mt-3">{{ __('lang.submit-post') }}</a>
+                <a href="/subpabbles/create" class="btn btn-default w-full mt-3">{{ __('lang.create-your-own-subpabble') }}</a>
 
                 <div class="well search_box2">
                     <center>
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="well search_box">
-                    <h4>Most viewed in the past 24 hours</h4>
+                    <h4>{{ __('lang.most-viewed-in-the-past-24-hours') }}</h4>
                     <hr>
                     @php $last_threads = \App\Models\Thread::getLastViewdThreadsLast24Hours(); @endphp
                     @foreach ($last_threads as $thread)
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="well search_box">
-                    <h4>Featured Subpabbles</h4>
+                    <h4>{{ __('lang.features-subpabbles') }}</h4>
                     <hr>
 
                 </div>
@@ -72,12 +72,12 @@
             <div class="col-md-9 col-sm-pull-3">
                 <div class="page-info">
                     <span class="title">
-                        HOME
+                        {{ __("lang.home") }}
                     </span>
                     <div class="tabmenu">
-                        <li @if(!$sort || $sort == 'popular') class="selected" @endif><a href="/">POPULAR</a></li>
-                        <li @if($sort == 'new') class="selected" @endif><a href="/s/new">NEW</a></li>
-                        <li @if($sort == 'top') class="selected" @endif><a href="/s/top">TOP</a></li>
+                        <li @if(!$sort || $sort == 'popular') class="selected" @endif><a href="/">{{ __("lang.popular") }}</a></li>
+                        <li @if($sort == 'new') class="selected" @endif><a href="/s/new">{{ __("lang.new") }}</a></li>
+                        <li @if($sort == 'top') class="selected" @endif><a href="/s/top">{{ __("lang.top") }}</a></li>
                     </div>
                 </div>
                 @if($threads)
@@ -108,13 +108,13 @@
                             <a class="title" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
                                 <h3>{{$thread->title}}</h3>
                             </a>
-                            <p class="overflow description">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
-                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in p/<a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
+                            <p class="overflow description">{{ __("lang.placed-by") }} <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
+                                {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} {{ __('lang.in') }} p/<a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
                                 (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )
                             </p>
                             <a class="comment" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
                                 <p class="overflow">
-                                    <strong>{{$thread->reply_count}} {{$thread->reply_count < 1 ? 'reply' : str_plural('reply', $thread->reply_count)}}</strong>
+                                    <strong>{{$thread->reply_count}} {{$thread->reply_count < 2 ? __('lang.reply') : __('lang.replies')}}</strong>
                                 </p>
                             </a>
                         </div>
@@ -126,12 +126,12 @@
         @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
             <div class="col-sm-9 col-sm-pull-3">
                 <div class="welcome thin">
-                    <h2 class="thin">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif This is your homepage</h2>
-                    <h4 class="thin text-center">Fill it up by subscribing to some subpabbles</h4>
-                    <p>Find some communities by searching or...</p>
+                    <h2 class="thin">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif {{ __("lang.this-is-your-homepage") }}</h2>
+                    <h4 class="thin text-center">{{ __("lang.fill-it-up-by-subscribing-to-some-subpabbles") }}</h4>
+                    <p>{{ __("lang.find-some-communities-by-searching-or") }}</p>
                 </div>
                 <center>
-                <div onclick="window.location.href='/g/popular'" class="btn btn-primary checkout-msg">Check out what's popular</div>
+                <div onclick="window.location.href='/g/popular'" class="btn btn-primary checkout-msg">{{ __("lang.check-out-what-popular") }}</div>
                 </center>
             </div>
             @php $no_res = true; @endphp
@@ -139,9 +139,9 @@
             @if($threads == null || $threads && $threads->count() == 0 )
                 <div class="col-sm-9 col-sm-pull-3">
                     <div class="welcome thin">
-                        <h2 class="thin">No results found for that search criteria</h2>
-                        <h4 class="thin text-center">Looks like we ran out of stolen memes</h4>
-                        <a href="@if(Request::input('page') == '2') / @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
+                        <h2 class="thin">{{ __('lang.no-results-found-for-that-search-criteria') }}</h2>
+                        <h4 class="thin text-center">{{ __('lang.looks-like-we-ran-out-of-stolen-memes') }}</h4>
+                        <a href="@if(Request::input('page') == '2') / @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">{{ __("lang.go-back-a-page") }}</a>
                     </div>
                 </div>
                 @php $no_res = true; @endphp
@@ -151,10 +151,10 @@
         @if(!isset($no_res))
             <div  id="page_control">
                 @if(Request::input('page') > 1)
-                    <a href="?page={{Request::input('page')-1}}">Previous</a> -
+                    <a href="?page={{Request::input('page')-1}}">{{ __('lang.prev') }}</a> -
                 @endif
                 @if($threads->count() > 24)
-                    <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{$page+1}} @endif">Next</a>
+                    <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{$page+1}} @endif">{{ __('lang.next') }}</a>
                 @endif
             </div>
         @endif

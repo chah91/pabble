@@ -1,14 +1,14 @@
 <div class="footer">
     <div class="container">
         <div class="app-link mt-3">
-            <a href="#">ABOUT</a>
-            <a href="#">ADVERTISING</a>
-            <a href="#">CAREERS</a>
-            <a href="#">GUIDELINES</a>
-            <a href="#">DONATE</a>
-            <a href="#">CONTACT US</a>
+            <a href="#">{{ __('lang.about') }}</a>
+            <a href="#">{{ __('lang.advertising') }}</a>
+            <a href="#">{{ __('lang.careers') }}</a>
+            <a href="#">{{ __('lang.guidelines') }}</a>
+            <a href="#">{{ __('lang.donate') }}</a>
+            <a href="#">{{ __('lang.contact-us') }}</a>
         </div>
-        <div>Use of this site constitutes acceptance of our User Aggrement and Privacy Policy. © <?php echo date("Y"); ?> Pabble Inc. All rights reserved.</div>
-        <div>Pabble Logo is registered trademarks of Pabble Inc.</div>
+        <div>{{ __('lang.site-user-aggrement-description1') }} © <?php echo date("Y"); ?> {{ __('lang.site-user-aggrement-description2') }}</div>
+        <div>{{ __('lang.site-user-aggrement-description3') }}</div>
     </div>
 </div>

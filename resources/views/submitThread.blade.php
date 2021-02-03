@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Pabble: Create a new post @endsection
+@section('title') Pabble: {{ __('lang.create-new-post') }} @endsection
 
 @section('stylesheets')
     <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">
@@ -22,14 +22,14 @@
         <div class="row panel panel-default ml-3 mr-3 pb-3">
             <div class="col-md-12">
                 @if(isset($name))
-                    <h2>Posting in <a href="/p/{{$name}}">/p/{{$name}}</a></h2>
+                    <h2>{{ __('lang.posting-in') }} <a href="/p/{{$name}}">/p/{{$name}}</a></h2>
                 @else
-                    <h2>Post something new</h2>
+                    <h2>{{ __("lang.post-something-new") }}</h2>
                 @endif
 
                 <ul class="nav nav-tabs">
-                    <li @if(app('request')->input('type') == 'link') class="active"  @elseif(empty(app('request')->input('type'))) class="active" @endif><a data-toggle="tab" href="#link">Link</a></li>
-                    <li @if(app('request')->input('type') == 'text') class="active" @endif><a data-toggle="tab" href="#text">Text</a></li>
+                    <li @if(app('request')->input('type') == 'link') class="active"  @elseif(empty(app('request')->input('type'))) class="active" @endif><a data-toggle="tab" href="#link">{{ __('lang.link') }}</a></li>
+                    <li @if(app('request')->input('type') == 'text') class="active" @endif><a data-toggle="tab" href="#text">{{ __('lang.text') }}</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -41,8 +41,8 @@
 
                             <div class="mt-3 form-group{{ $errors->has('url') ? ' has-error' : '' }}">
                                 <div class="col-md-6">
-                                <h4>Url</h4>
-                                    <input type="text" id="url" class="form-control" name="url" placeholder="Url" value="@if (!$errors->has('url')){{old('url')}}@endif" autocomplete="off">
+                                <h4>{{ __("lang.url") }}</h4>
+                                    <input type="text" id="url" class="form-control" name="url" placeholder="{{ __("lang.url") }}" value="@if (!$errors->has('url')){{old('url')}}@endif" autocomplete="off">
                                     @if ($errors->has('url'))
                                         <span class="help-block">
                                                 <strong>{{ $errors->first('url') }}</strong>
@@ -53,8 +53,8 @@
 
                             <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                                 <div class="col-md-6">
-                                <h4>Title <span class="text-red">*</span></h4>
-                                    <textarea id="title" class="form-control w-full" name="title" placeholder="Title" cols="30" rows="2">@if (!$errors->has('title')){{old('title')}}@endif</textarea>
+                                <h4>{{ __('lang.title') }} <span class="text-red">*</span></h4>
+                                    <textarea id="title" class="form-control w-full" name="title" placeholder="{{ __('lang.title') }}" cols="30" rows="2">@if (!$errors->has('title')){{old('title')}}@endif</textarea>
 
                                     @if ($errors->has('title'))
                                         <span class="help-block">
@@ -66,8 +66,8 @@
 
                             <div class="form-group{{ $errors->has('subpabble') ? ' has-error' : '' }}">
                                 <div class="col-md-6">
-                                <h4>Subpabble <span class="text-red">*</span></h4>
-                                    <input autocomplete="off" type="text" id="subpabble" class="form-control" name="subpabble" placeholder="Subpabble" value="@if (!empty(old('subpabble'))){{old('subpabble')}}@elseif(isset($name)){{$name}}@endif">
+                                <h4>{{ __('lang.subpabble') }} <span class="text-red">*</span></h4>
+                                    <input autocomplete="off" type="text" id="subpabble" class="form-control" name="subpabble" placeholder="{{ __('lang.subpabble') }}" value="@if (!empty(old('subpabble'))){{old('subpabble')}}@elseif(isset($name)){{$name}}@endif">
                                     @if ($errors->has('subpabble'))
                                         <span class="help-block">
                                                 <strong>{{ $errors->first('subpabble') }}</strong>
@@ -83,7 +83,7 @@
                                 <div id="dropzone">
                                     <form id="drop_zone" action="/api/upload/media" class="dropzone" enctype="multipart/form-data">
                                         <input type="hidden" name="api_token" value="{{Auth::user()->api_token}}">
-                                        <div class="dz-message" data-dz-message><span>Drop your media here <br>jpg, png, gif, webm, mp4</span></div>
+                                        <div class="dz-message" data-dz-message><span>{{ __('lang.drop-your-media-here') }} <br>jpg, png, gif, webm, mp4</span></div>
                                     </form>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
 
                         <div class="mt-3 mb-3" class="form-group">
                             <div class="col-md-6">
-                                <button id="submit_link" class="btn btn-primary pull-right">&nbsp;&nbsp;&nbsp;&nbsp;Post it!&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                                <button id="submit_link" class="btn btn-primary pull-right">&nbsp;&nbsp;&nbsp;&nbsp;{{ __('lang.post-it') }}&nbsp;&nbsp;&nbsp;&nbsp;</button>
                             </div>
                         </div>
 
@@ -105,8 +105,8 @@
                             <input type="hidden" name="type" value="text">
                             <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }} mt-3">
                                 <div class="col-md-6">
-                                <h4>Title <span class="text-red">*</span></h4>
-                                    <textarea id="title" class="form-control w-full" name="title" placeholder="Title" cols="30" rows="2">@if (!$errors->has('title')){{old('title')}}@endif</textarea>
+                                <h4>{{ __('lang.title') }} <span class="text-red">*</span></h4>
+                                    <textarea id="title" class="form-control w-full" name="title" placeholder="{{ __('lang.title') }}" cols="30" rows="2">@if (!$errors->has('title')){{old('title')}}@endif</textarea>
 
                                     @if ($errors->has('title'))
                                         <span class="help-block">
@@ -118,8 +118,8 @@
 
                             <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
                                 <div class="col-md-6">
-                                <h4>Text</h4>
-                                    <textarea id="text" class="form-control w-full" name="text" placeholder="Text" cols="30" rows="10">@if (!$errors->has('text')){{old('text')}}@endif</textarea>
+                                <h4>{{ __('lang.text') }}</h4>
+                                    <textarea id="text" class="form-control w-full" name="text" placeholder="{{ __('lang.text') }}" cols="30" rows="10">@if (!$errors->has('text')){{old('text')}}@endif</textarea>
 
                                     @if ($errors->has('text'))
                                         <span class="help-block">
@@ -131,8 +131,8 @@
 
                             <div class="form-group{{ $errors->has('subpabble') ? ' has-error' : '' }}">
                                 <div class="col-md-6">
-                                <h4>Subpabble <span class="text-red">*</span></h4>
-                                    <input autocomplete="off" id="subpabble2" class="form-control w-full" name="subpabble" placeholder="subpabble" value="@if (!empty(old('subpabble'))){{old('subpabble')}}@elseif(isset($name)){{$name}}@endif">
+                                <h4>{{ __('lang.subpabble') }} <span class="text-red">*</span></h4>
+                                    <input autocomplete="off" id="subpabble2" class="form-control w-full" name="subpabble" placeholder="{{ __('lang.subpabble') }}" value="@if (!empty(old('subpabble'))){{old('subpabble')}}@elseif(isset($name)){{$name}}@endif">
 
                                     @if ($errors->has('subpabble'))
                                         <span class="help-block">
@@ -144,7 +144,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;Post it!&nbsp;&nbsp;&nbsp;&nbsp;" class="btn btn-primary pull-right">
+                                    <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;{{ __('lang.post-it') }}&nbsp;&nbsp;&nbsp;&nbsp;" class="btn btn-primary pull-right">
                                 </div>
                             </div>
                         </form>
@@ -180,7 +180,6 @@
             acceptedFiles: ".jpeg,.jpg,.png,.gif,.mp4",
             success : function(file, response){
                 key = response.key;
-                console.log(key);
                 $('#url').val(baseurl + '/media/' + response.link);
             }
         });

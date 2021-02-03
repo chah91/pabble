@@ -2,7 +2,7 @@
 
 @section('title') @if(isset($subPabble->name)) p/{{ $subPabble->name }} @else What happened? @endif @endsection
 
-@php $twitter_title = 'Search in ' . $subPabble->name; @endphp
+@php $twitter_title = __('lang.search-in') . $subPabble->name; @endphp
 @include('layouts.partials.twitter_cards')
 
 @section('stylesheets')
@@ -66,7 +66,7 @@
                 <form method="GET" action="/search/{{$subPabble->name}}">
                     <div id="custom-search-input">
                         <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                            <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="Search" />
+                            <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="{{ __('lang.search') }}" />
                             <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">
                                         <span class="fa fa-search"></span>
@@ -83,13 +83,13 @@
                             $current_url = url()->current().'?'.http_build_query($queries);
                         @endphp
                         <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'popular') class="selected" @endif>
-                            <a href="{{ $current_url.'&sort=popular' }}">POPULAR</a>
+                            <a href="{{ $current_url.'&sort=popular' }}">{{ __('lang.popular') }}</a>
                         </li>
                         <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'new') class="selected" @endif>
-                            <a href="{{ $current_url.'&sort=new' }}">NEW</a>
+                            <a href="{{ $current_url.'&sort=new' }}">{{ __('lang.new') }}</a>
                         </li>
                         <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'top') class="selected" @endif>
-                            <a href="{{ $current_url.'&sort=top' }}">TOP</a>
+                            <a href="{{ $current_url.'&sort=top' }}">{{ __('lang.top') }}</a>
                         </li>
                     </div>
                 </form>
@@ -126,13 +126,13 @@
                                             <h3>{{$thread->title}}</h3>
                                         </a>
                                         <p class="overflow description">
-                                            placed by
+                                            {{ __('lang.placed-by') }}
                                             <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
                                             {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}
                                         </p>
                                         <a class="comment" href="{{url('/')}}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
                                             <p class="overflow">
-                                                <strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong>
+                                                <strong>{{$thread->reply_count}} {{$thread->reply_count < 2 ?  __('lang.reply') :  __('lang.replies')}}</strong>
                                             </p>
                                         </a>
                                     </div>
@@ -142,10 +142,10 @@
 
                         <div id="page_control">
                             @if($page > 1 && $threads->count() > 0)
-                            <a href="?page={{Request::input('page')-1}}">Previous</a> -
+                            <a href="?page={{Request::input('page')-1}}">{{ __('lang.prev') }}</a> -
                             @endif
                             @if($threads->count() > 24)
-                                <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{$page+1}} @endif">Next</a>
+                                <a href="@if(!(Request::input('page'))) ?page=2 @else ?page={{$page+1}} @endif">{{ __('lang.next') }}</a>
                             @endif
                         </div>
 
@@ -153,14 +153,14 @@
                     @endif
 
                     @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
-                        <h2 id="looks_like thin text-center">No results found</h2>
+                        <h2 id="looks_like thin text-center">{{ __('lang.no-results-found') }}</h2>
                         @php $no_res = true; @endphp
                     @elseif(Request::input('page') || Request::input('after'))
                         @if($threads == null || $threads && $threads->count() == 0 )
                             <div class="welcome thin">
-                                <h2 class="thin">No results found for that search criteria</h2>
-                                <h4 class="thin text-center">Looks like we ran out of stolen memes</h4>
-                                <a href="@if(Request::input('page') == '2') /p/{{$subPabble->name}} @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
+                                <h2 class="thin">{{ __('lang.no-results-found-for-that-search-criteria') }}</h2>
+                                <h4 class="thin text-center">{{ __('lang.looks-like-we-ran-out-of-stolen-memes') }}</h4>
+                                <a href="@if(Request::input('page') == '2') /p/{{$subPabble->name}} @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">{{ __('lang.go-back-a-page') }}</a>
                             </div>
                         @endif
                     @endif
@@ -172,7 +172,7 @@
 
     @else
         <div class="container">
-            <p>It looks like this pabble does not exist. Make it yours!</p>
+            <p>{{ __('lang.it-looks-like-this-pabble-doesnot-exist-make-it-yours') }}</p>
         </div>
     @endif
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Pabble: Change Password @endsection
+@section('title') Pabble: {{ __('lang.change-password') }} @endsection
 
 @section('stylesheets')
     <style>
@@ -23,13 +23,13 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Change Password</div>
+                <div class="panel-heading">{{ __('lang.change-password') }}</div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('resetPassword') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('current_password') ? ' has-error' : '' }}">
-                            <label for="current_password" class="col-md-4 control-label">Current Password</label>
+                            <label for="current_password" class="col-md-4 control-label">{{ __('lang.current-password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="current_password" type="password" class="form-control" name="current_password" value="{{ old('current_password') }}" required autofocus>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('new_password') ? ' has-error' : '' }}">
-                            <label for="new_password" class="col-md-4 control-label">New Password</label>
+                            <label for="new_password" class="col-md-4 control-label">{{ __('lang.new-password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="new_password" type="password" class="form-control" name="new_password" value="{{ old('new_password') }}" required autofocus>
@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('confirm_password') ? ' has-error' : '' }}">
-                            <label for="confirm_password" class="col-md-4 control-label">Confirm New Password</label>
+                            <label for="confirm_password" class="col-md-4 control-label">{{ __('lang.confirm-new-password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="confirm_password" type="password" class="form-control" name="confirm_password" value="{{ old('confirm_password') }}" required autofocus>
@@ -73,10 +73,10 @@
                         <div class="form-group">
                             <div class="col-md-offset-4 button-group">
                                 <button type="submit" class="btn btn-primary ml-4">
-                                    Change Password
+                                    {{ __('lang.change-password') }}
                                 </button>
                                 <a class="btn btn-default ml-4 return-profile" href="/u/{{Auth::user()->username}}">
-                                    Return to Profile
+                                    {{ __('lang.return-to-profile') }}
                                 </a>
                             </div>
                         </div>

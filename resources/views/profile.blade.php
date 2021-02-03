@@ -58,20 +58,20 @@
 
         <div class="row profile_padding">
             <div class="col-md-12 pl-0">
-                <h1 class="overflow">{{$user->username}} @if(!$user->active)<span>Account not activated yet</span>@endif</h1>
+                <h1 class="overflow">{{$user->username}} @if(!$user->active)<span>{{ __('lang.account-not-activated-yet') }}</span>@endif</h1>
             </div>
             <div id="profile" class="col-sm-4 col-md-3 pr-0 pl-0">
                 <div class="flex profile-manage-link">
-                    <a class="message-send ml-0" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a> |
-                    <a href="{{ route('resetPasswordShow') }}">Change Password</a> |
-                    <a href="{{ route('resetEmailShow') }}" class="mr-0" href="">Change Email</a>
+                    <a class="message-send ml-0" href="{{ route('messages.send') }}/{{ $user->username }}">{{ __('lang.message') }} {{ $user->username }}</a> |
+                    <a href="{{ route('resetPasswordShow') }}">{{ __('lang.change-password') }}</a> |
+                    <a href="{{ route('resetEmailShow') }}" class="mr-0" href="">{{ __('lang.change-email') }}</a>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> {{\Carbon\Carbon::createFromTimeStamp(strtotime($user->created_at))->diffForHumans()}}</li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Karma</strong></span> {{$user->thread_karma + $user->post_karma}}</li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Post Karma</strong></span> {{$user->thread_karma}}</li>
-                    <li class="list-group-item text-right"><span class="pull-left"><strong>Comment Karma</strong></span> {{$user->post_karma}}</li>
-                    <li id="subs_list" class="list-group-item text-left"><span><strong>Subscribed to</strong></span>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>{{ __('lang.joined') }}</strong></span> {{\Carbon\Carbon::createFromTimeStamp(strtotime($user->created_at))->diffForHumans()}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>{{ __('lang.karma') }}</strong></span> {{$user->thread_karma + $user->post_karma}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>{{ __('lang.post-karma') }}</strong></span> {{$user->thread_karma}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>{{ __('lang.comment-karma') }}</strong></span> {{$user->post_karma}}</li>
+                    <li id="subs_list" class="list-group-item text-left"><span><strong>{{ __('lang.subscribed-to') }}</strong></span>
                         @foreach($subscriptions as $sub)
                             <br><a href="/p/{{$sub->name}}">p/{{$sub->name}}</a>
                         @endforeach
@@ -81,14 +81,14 @@
 
             <div class="col-sm-8 col-md-9">
                 <ul class="nav nav-tabs">
-                    <li @if(app('request')->input('type') == 'posts') class="active"  @elseif(empty(app('request')->input('type'))) class="active" @endif><a data-toggle="tab" href="#posts">Posts</a></li>
-                    <li @if(app('request')->input('type') == 'comments') class="active" @endif><a data-toggle="tab" href="#comments">Comments</a></li>
+                    <li @if(app('request')->input('type') == 'posts') class="active"  @elseif(empty(app('request')->input('type'))) class="active" @endif><a data-toggle="tab" href="#posts">{{ __('lang.posts') }}</a></li>
+                    <li @if(app('request')->input('type') == 'comments') class="active" @endif><a data-toggle="tab" href="#comments">{{ __('lang.comments') }}</a></li>
                 </ul>
 
                 <div class="tab-content">
                     <div id="posts" class="tab-pane fade @if(app('request')->input('type') == 'posts') in active  @elseif(empty(app('request')->input('type'))) in active @endif">
                         @if($posts->count() < 1)
-                            <p class="warning-msg">Sorry, ran out of posts for this user.</p>
+                            <p class="warning-msg">{{ __('lang.sorry-ran-out-of-posts-for-this-user') }}</p>
                         @endif
                         @foreach($posts as $post)
                             @php $postername = $user->select('username')->where('id', $post->poster_id)->first(); @endphp
@@ -114,19 +114,20 @@
                                         </div>
                                     </div>
                                     <div class="thread_info">
-                                        <a class="title" href="@if($post->link) {{$post->link}} @else {{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{str_slug($post->title)}} @endif">
+                                        <a class="title" href="{{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{str_slug($post->title)}}">
                                             <h3>{{$post->title}}</h3>
                                         </a>
                                         <p class="overflow description">
-                                            placed by
+                                            {{ __('lang.placed-by') }}
                                             <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
-                                            {{Carbon\Carbon::parse($post->created_at)->diffForHumans()}} in
+                                            {{Carbon\Carbon::parse($post->created_at)->diffForHumans()}}
+                                            {{ __('lang.in') }}
                                             <a href="/p/{{$subpabble->name}}">{{$subpabble->name}}</a>
                                             (<span class="upvote"> +{{$post->upvotes}}</span> | <span class="downvote"> -{{$post->downvotes}}</span> )
                                         </p>
                                         <a class="comment" href="{{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{$post->title}}">
                                             <p class="overflow">
-                                                <strong>{{$post->reply_count}} {{$post->reply_count < 1 ? 'reply' : str_plural('reply', $post->reply_count)}}</strong>
+                                                <strong>{{$post->reply_count}} {{$post->reply_count > 2 ? __("lang.replies") : __("lang.reply") }}</strong>
                                             </p>
                                         </a>
                                     </div>
@@ -135,20 +136,20 @@
                         @endforeach
 
                         @if(Request::input('page') > 1)
-                            <a href="?page={{Request::input('page')-1}}&type=posts">Previous</a> -
+                            <a href="?page={{Request::input('page')-1}}&type=posts">{{ __("lang.prev") }}</a> -
                         @endif
                         @if($posts->count() > 24)
                             @if(Request::input('page') !== null || !empty(Request::input('page')))
-                                <a href="?page={{$page + 1}}&type=posts">Next</a>
+                                <a href="?page={{$page + 1}}&type=posts">{{ __("lang.next") }}</a>
                             @else
-                                <a href="?page=2&type=posts">Next</a>
+                                <a href="?page=2&type=posts">{{ __("lang.next") }}</a>
                             @endif
                         @endif
                     </div>
 
                     <div id="comments" class="tab-pane fade @if(app('request')->input('type') == 'comments') in active @endif">
                         @if($comments->count() < 1)
-                            <p class="warning-msg">Sorry, ran out of posts for this user.</p>
+                            <p class="warning-msg">{{ __("lang.sorry-ran-out-of-posts-for-this-user") }}</p>
                         @endif
                         @foreach($comments as $comment)
                             @php $thread = \App\Models\Thread::select('code', 'sub_pabble_id')->where('id', $comment->thread_id)->first(); if(!$thread) { $thread->code = 'removed'; } @endphp
@@ -172,7 +173,7 @@
                                             {{Carbon\Carbon::parse($comment->created_at)->diffForHumans()}}
                                         </span>
                                         <p>{!! nl2br($comment->comment) !!}</p>
-                                        <div class="linkwrapper"><a href="/p/{{$subpabble->name}}/comments/{{$thread->code}}">thread</a></div>
+                                        <div class="linkwrapper"><a href="/p/{{$subpabble->name}}/comments/{{$thread->code}}">{{ __('lang.thread') }}</a></div>
                                         <div id="comment_box_app_{{$comment->id}}"></div>
                                     </div>
                                 </div>
@@ -180,13 +181,13 @@
                         @endforeach
 
                         @if(Request::input('page') > 1)
-                            <a href="?page={{Request::input('page')-1}}&type=comments">Previous</a> -
+                            <a href="?page={{Request::input('page')-1}}&type=comments">{{ __('lang.prev') }}</a> -
                         @endif
                         @if ($comments->count() > 24)
                             @if(Request::input('page') !== null || !empty(Request::input('page')))
-                                <a href="?page={{$page + 1}}&type=comments">Next</a>
+                                <a href="?page={{$page + 1}}&type=comments">{{ __('lang.next') }}</a>
                             @else
-                                <a href="?page=2&type=comments">Next</a>
+                                <a href="?page=2&type=comments">{{ __('lang.next') }}</a>
                             @endif
                         @endif
                     </div>
@@ -195,7 +196,7 @@
         </div>
 
         @else
-            <h1 class="thin">This user does not exist</h1>
+            <h1 class="thin">{{ __("lang.this-user-does-not-exist") }}</h1>
         @endif
     </div>
 

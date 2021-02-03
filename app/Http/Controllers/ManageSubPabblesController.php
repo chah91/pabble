@@ -105,7 +105,14 @@ class ManageSubPabblesController extends Controller
 
         $check = env('ADMIN_ID') == $user->id;
 
-        if (!$check && $pabble->owner_id !== $user->id) {
+        $moderators = $moderator->getBySubPabbleId($pabble->id);
+        $editable = false;
+        foreach($moderators as $item){
+            if ($item->user_id === Auth::user()->id){
+                $editable = true;
+            }
+        }
+        if (!$check && $pabble->owner_id !== $user->id && !$editable) {
             flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
@@ -129,8 +136,14 @@ class ManageSubPabblesController extends Controller
         }
 
         $check = env('ADMIN_ID') == $user->id;
-
-        if (!$check && $pabble->owner_id !== $user->id) {
+        $moderators = $moderator->getBySubPabbleId($pabble->id);
+        $editable = false;
+        foreach($moderators as $item){
+            if ($item->user_id === Auth::user()->id){
+                $editable = true;
+            }
+        }
+        if (!$check && $pabble->owner_id !== $user->id && !$editable) {
             flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
@@ -234,7 +247,7 @@ class ManageSubPabblesController extends Controller
         return redirect('/p/' . $pabble->name . '/edit');
     }
 
-    public function getEditPabbleCss($name, Request $request, SubPabble $subPabble)
+    public function getEditPabbleCss($name, Request $request, SubPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::user();
         $pabble = $subPabble->where('name', $name)->first();
@@ -243,8 +256,15 @@ class ManageSubPabblesController extends Controller
             return redirect('/');
         }
         $check = env('ADMIN_ID') == $user->id;
+        $moderators = $moderator->getBySubPabbleId($pabble->id);
+        $editable = false;
+        foreach($moderators as $item){
+            if ($item->user_id === Auth::user()->id){
+                $editable = true;
+            }
+        }
+        if (!$check && $pabble->owner_id !== $user->id && !$editable) {
 
-        if (!$check && $pabble->owner_id !== $user->id) {
             flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
@@ -252,7 +272,7 @@ class ManageSubPabblesController extends Controller
         return view('subPabbles.edit_css', array('pabble' => $pabble));
     }
 
-    public function postEditPabbleCss($name, Request $request, SubPabble $subPabble)
+    public function postEditPabbleCss($name, Request $request, SubPabble $subPabble, Moderator $moderator)
     {
         $user = Auth::user();
         $pabble = $subPabble->where('name', $name)->first();
@@ -261,8 +281,14 @@ class ManageSubPabblesController extends Controller
             return redirect('/');
         }
         $check = env('ADMIN_ID') == $user->id;
-
-        if (!$check && $pabble->owner_id !== $user->id) {
+        $moderators = $moderator->getBySubPabbleId($pabble->id);
+        $editable = false;
+        foreach($moderators as $item){
+            if ($item->user_id === Auth::user()->id){
+                $editable = true;
+            }
+        }
+        if (!$check && $pabble->owner_id !== $user->id && !$editable) {
             flash("You are not allowed to edit /p/".$pabble->name, 'danger');
             return redirect('/');
         }
