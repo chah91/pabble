@@ -62,9 +62,12 @@
             </div>
             <div id="profile" class="col-sm-4 col-md-3 pr-0 pl-0">
                 <div class="flex profile-manage-link">
-                    <a class="message-send ml-0" href="{{ route('messages.send') }}/{{ $user->username }}">{{ __('lang.message') }} {{ $user->username }}</a> |
+                    <a class="message-send ml-0" href="{{ route('messages.send') }}/{{ $user->username }}">{{ __('lang.message') }} {{ $user->username }}</a>
+                    @if(Auth::check())
+                    |
                     <a href="{{ route('resetPasswordShow') }}">{{ __('lang.change-password') }}</a> |
                     <a href="{{ route('resetEmailShow') }}" class="mr-0" href="">{{ __('lang.change-email') }}</a>
+                    @endif
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item text-right"><span class="pull-left"><strong>{{ __('lang.joined') }}</strong></span> {{\Carbon\Carbon::createFromTimeStamp(strtotime($user->created_at))->diffForHumans()}}</li>
