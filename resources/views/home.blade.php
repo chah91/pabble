@@ -99,13 +99,13 @@
                         </div>
                         <div class="image col-xs-1">
                             <div class="row">
-                                <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                <a href="@if(!$thread->media_type && $thread->type === 'link') {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
                                     <img src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}">
                                 </a>
                             </div>
                         </div>
                         <div class="thread_info">
-                            <a class="title" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
+                            <a class="title" href="@if(!$thread->media_type && $thread->type === 'link') {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
                                 <h3>{{$thread->title}}</h3>
                             </a>
                             <p class="overflow description">{{ __("lang.placed-by") }} <a href="/u/{{$postername->username}}">{{$postername->username}}</a>

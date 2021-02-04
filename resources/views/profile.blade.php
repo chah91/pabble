@@ -111,13 +111,13 @@
                                     </div>
                                     <div class="image col-xs-1">
                                         <div class="row">
-                                            <a href="@if($post->link) {{$post->link}} @else {{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{$post->title}} @endif">
+                                            <a href="@if(!$post->media_type && $post->type === 'link') {{$post->link}} @else {{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{str_slug($post->title)}} @endif">
                                                 <img src="@if($post->thumbnail !== null){{$post->thumbnail}} @elseif($post->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$post->title}}">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="thread_info">
-                                        <a class="title" href="{{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{str_slug($post->title)}}">
+                                        <a class="title" href="@if(!$post->media_type && $post->type === 'link') {{$post->link}} @else {{url('/')}}/p/{{$subpabble->name}}/comments/{{$post->code}}/{{str_slug($post->title)}} @endif">
                                             <h3>{{$post->title}}</h3>
                                         </a>
                                         <p class="overflow description">

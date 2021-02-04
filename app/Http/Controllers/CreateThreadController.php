@@ -222,6 +222,9 @@ class CreateThreadController extends Controller
                 if ($parse['host'] == 'www.vimeo.com' || $parse['host'] == 'vimeo.com') {
                     $thread->media_type = 'vimeo';
                 }
+                if ($parse['host'] == 'www.imgur.com' || $parse['host'] == 'imgur.com') {
+                    $thread->media_type = 'imgur';
+                }
             }
         }
 
