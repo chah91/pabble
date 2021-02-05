@@ -27,7 +27,7 @@
             }
         @else
             $('#loginModal').modal('show');
-            $('#loginModalMessage').html('to subscribe to <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a>');
+            $('#loginModalMessage').html('{{ __('lang.to-subscribe-to') }} <a href="/p/{{$subPabble->name}}">/p/{{$subPabble->name}}</a>');
         @endif
     });
 </script>

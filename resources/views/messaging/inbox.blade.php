@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Pabble: Messages inbox
+    Pabble: {{ __('lang.messages-inbox') }}
 @endsection
 
 
@@ -116,8 +116,8 @@
         <form action="{{ route('messages.mark_read') }}" method="post">
             {{ csrf_field()  }}
             <ul class="rightmenu mt-3">
-                <li class="selected tabmenu_bottom"><button id="submit" type="submit">Mark all as read</button></li>
-                <li class="selected tabmenu_bottom"><a href="{{ route('messages.send') }}">Send a pm</a></li>
+                <li class="selected tabmenu_bottom"><button id="submit" type="submit">{{ __('lang.mark-all-as-read') }}</button></li>
+                <li class="selected tabmenu_bottom"><a href="{{ route('messages.send') }}">{{ __('lang.send-pm') }}</a></li>
             </ul>
         </form>
     </div>
@@ -125,7 +125,7 @@
     <div class="container">
 
         @if(count($messages) < 1)
-            <p>Your inbox appears to be empty</p>
+            <p>{{ __('lang.your-inbox-appears-to-be-empty') }}</p>
         @endif
 
         @foreach($messages as $pm)
@@ -148,13 +148,13 @@
         @endforeach
 
         @if($messages->currentPage() > 1)
-            <a href="{{$messages->previousPageUrl()}}">Previous</a>
+            <a href="{{$messages->previousPageUrl()}}">{{ __('lang.prev') }}</a>
         @endif
         @if($messages->currentPage() > 1 && $messages->currentPage() !== $messages->lastPage())
             -
         @endif
         @if($messages->currentPage() > 0 && $messages->currentPage() !== $messages->lastPage())
-            <a href="{{$messages->nextPageUrl()}}">Next</a>
+            <a href="{{$messages->nextPageUrl()}}">{{ __('lang.next') }}</a>
         @endif
 
     </div>

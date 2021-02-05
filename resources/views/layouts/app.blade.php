@@ -59,8 +59,10 @@
         @include('layouts.partials.nav')
 
         @include('layouts.partials.flash')
-
-        @yield('content')
+        <div class="content">
+            @yield('content')
+        </div>
+        @include('layouts.partials.footer')
 
     </div>
 

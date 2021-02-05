@@ -62,3 +62,20 @@ Route::post('/messages/view/{code}', 'MessagesController@ReplyMessage');
 Route::post('/messages/markread', 'MessagesController@MarkAllRead')->name('messages.mark_read');
 
 Route::get('/alerts/{code}', 'AlertsController@index');
+
+Route::get('/subpabbles', 'SubPabblesController@index');
+
+Route::group(['middleware'=>'auth'],function(){
+    Route::get('/resetPassword', 'UserProfileController@resetPasswordShow')->name('resetPasswordShow');
+    Route::post('/resetPassword', 'UserProfileController@resetPassword')->name('resetPassword');
+
+    Route::get('/resetEmail', 'UserProfileController@resetEmailShow')->name('resetEmailShow');
+    Route::post('/resetEmail', 'UserProfileController@resetEmail')->name('resetEmail');
+});
+
+Route::post('/setLang', function(){
+    $locale = request()->query()['lang'];
+    App::setLocale($locale);
+    session(['locale' => $locale]);
+    return response()->json(['success'=>1]);
+});

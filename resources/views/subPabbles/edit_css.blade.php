@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Edit css of {{ $pabble->name }} @endsection
+@section('title') {{__('lang.edit-css-of').' '.$pabble->name }} @endsection
 
 @section('stylesheets')
     <style>
@@ -29,16 +29,16 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <p class="text-white mt-3">Allowed hosts for external resources: i.imgur.com, imgur.com, pabble.co <br>You may also not use import, charset, and namespace</p>
+                <p class="text-white mt-3">{{ __('lang.edit-css-page-description1') }} <br>{{ __('lang.edit-css-page-description2') }}</p>
             </div>
             <div class="col-xs-10">
-                <h1 class="text-white">Editing css of {{$pabble->name}}</h1>
+                <h1 class="text-white">{{__('lang.edit-css-of').' '.$pabble->name}}</h1>
             </div>
             <div class="col-xs-2">
                 <form id="save_css" method="post" action="">
                     {{csrf_field()}}
                     <textarea class="hidden" name="custom_css" id="custom_css" cols="30" rows="10"></textarea>
-                    <input id="click_me" type="submit" class="btn btn-primary pull-right mt-7" value="Save css">
+                    <input id="click_me" type="submit" class="btn btn-primary pull-right mt-7" value="{{ __('lang.save-css') }}">
                 </form>
             </div>
         </div>

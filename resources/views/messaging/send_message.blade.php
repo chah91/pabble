@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Pabble: Send private message
+    Pabble: {{ __('lang.send-private-message') }}
 @endsection
 
 
@@ -20,13 +20,13 @@
 @section('content')
 
     <div class="container">
-        <h2 id="header">Send a private message</h2>
+        <h2 id="header">{{ __('lang.send-private-message') }}</h2>
 
         <form id="link_form" action="{{ route('messages.send') }}" method="post" class="form-horizontal">
             {{ csrf_field() }}
             <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }}">
-                <div class="container">
-                    <h4>Subject <span class="red">*</span></h4>
+                <div class="container ml-0">
+                    <h4>{{ __('lang.subject') }} <span class="red">*</span></h4>
                 </div>
                 <div class="col-md-6">
                     <input type="text" id="subject" class="form-control" name="subject" placeholder="Subject" cols="30" rows="2" value="@if (!$errors->has('subject')){{old('subject')}}@endif" />
@@ -40,8 +40,8 @@
             </div>
 
             <div class="form-group{{ $errors->has('message') ? ' has-error' : '' }}">
-                <div class="container">
-                    <h4>Message <span class="red">*</span></h4>
+                <div class="container ml-0">
+                    <h4>{{ __('lang.message') }} <span class="red">*</span></h4>
                 </div>
                 <div class="col-md-6">
                     <textarea id="message" class="form-control" name="message" placeholder="Message" cols="30" rows="2">@if (!$errors->has('message')){{old('message')}}@endif</textarea>
@@ -56,8 +56,8 @@
 
 
             <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }}">
-                <div class="container">
-                    <h4>To <span class="red">*</span></h4>
+                <div class="container ml-0">
+                    <h4>{{ __('lang.to') }} <span class="red">*</span></h4>
                 </div>
                 <div class="col-md-6">
                     <input autocomplete="off" type="text" id="subpabble" class="form-control" name="to" placeholder="To" @if (!$errors->has('to') && $username) value="{{$username}}" @endif @if (!$errors->has('to')) value="{{old('to')}}"@endif>
@@ -72,7 +72,7 @@
 
             <div class="form-group mt-7">
                 <div class="col-md-6">
-                    <button id="submit_link" class="btn btn-primary pull-right">Send message</button>
+                    <button id="submit_link" class="btn btn-primary pull-right">{{ __('lang.send-message') }}</button>
                 </div>
             </div>
 

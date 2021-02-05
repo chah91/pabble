@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Pabble: Post stolen memes here @endsection
+@section('title') Pabble: {{ __('lang.post-stolen-memes-here') }} @endsection
 
 @section('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
@@ -27,9 +27,9 @@
                         </div>
                     </div>
                     <div class="col-xs-10 col-sm11">
-                        <span><a href="/u/'+res.post.user_display_name+'">{{$parent->user_display_name}}</a> {{Carbon\Carbon::parse($parent->created_at)->diffForHumans()}}  (your comment)</span>
-                        <p>{{ nl2br($parent->comment) }}</p>
-                        <div class="linkwrapper"><a href="javascript:reply('{{$parent->id}}');">Reply</a></div>
+                        <span><a href="/u/'+res.post.user_display_name+'">{{$parent->user_display_name}}</a> {{Carbon\Carbon::parse($parent->created_at)->diffForHumans()}}  ({{ __('lang.your-comment') }})</span>
+                        <p>{!! nl2br($parent->comment) !!}</p>
+                        <div class="linkwrapper"><a href="javascript:reply('{{$parent->id}}');" class="text-capitalize">{{ __('lang.reply') }}</a></div>
                         <div id="comment_box_app_{{$parent->id}}"></div>
                     </div>
                 </div>
@@ -52,8 +52,8 @@
                     </div>
                     <div class="col-xs-10 col-sm11">
                         <span><a href="/u/'+res.post.user_display_name+'">{{$reply->user_display_name}}</a> {{Carbon\Carbon::parse($reply->created_at)->diffForHumans()}} </span>
-                        <p>{{ nl2br($reply->comment) }}</p>
-                        <div class="linkwrapper"><a href="javascript:reply('{{$reply->id}}');">Reply</a></div>
+                        <p>{!! nl2br($reply->comment) !!}</p>
+                        <div class="linkwrapper"><a href="javascript:reply('{{$reply->id}}');" class="text-capitalize">{{ __('lang.reply') }}</a></div>
                         <div id="comment_box_app_{{$reply->id}}"></div>
                     </div>
                 </div>
@@ -77,8 +77,8 @@
                         </div>
                         <div class="col-xs-10 col-sm11">
                             <span><a href="/u/'+res.post.user_display_name+'">{{$user_reply->user_display_name}}</a> {{Carbon\Carbon::parse($user_reply->created_at)->diffForHumans()}} </span>
-                            <p>{{ nl2br($user_reply->comment) }}</p>
-                            <div class="linkwrapper"><a href="javascript:reply('{{$user_reply->id}}');">Reply</a></div>
+                            <p>{!! nl2br($user_reply->comment) !!}</p>
+                            <div class="linkwrapper"><a href="javascript:reply('{{$user_reply->id}}');" class="text-capitalize">{{ __('lang.reply') }}</a></div>
                             <div id="comment_box_app_{{$user_reply->id}}"></div>
                         </div>
                     </div>
@@ -123,15 +123,15 @@
             _this.append(
                 '         <div class="commentbox" id="comment_box_'+id+'">' +
                 '                <div class="panel-body">' +
-                '                        <textarea placeholder="comment" class="form-control" id="reply_text_'+id+'" cols="30" rows="3"></textarea>' +
+                '                        <textarea placeholder="{{ __('lang.comment') }}" class="form-control" id="reply_text_'+id+'" cols="30" rows="3"></textarea>' +
                 '                        <span class="red" id="comment_box_alert_'+id+'"></span>' +
-                '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" class="btn btn-primary submitpostbtn pull-right ladda-button xd mt-3" data-style="slide-up">Post comment</a>' +
-                '                        <a href="javascript:cancel_reply('+id+');" class="btn btn-primary submitpostbtn pull-right ladda-button mt-3 mr-3" data-style="slide-up">Cancel</a>' +
+                '                        <a id="post_reply_btn_'+id+'" href="javascript:submit_reply('+id+')" class="btn btn-primary submitpostbtn pull-right ladda-button xd mt-3" data-style="slide-up">{{ __('lang.post-comment') }}</a>' +
+                '                        <a href="javascript:cancel_reply('+id+');" class="btn btn-primary submitpostbtn pull-right ladda-button mt-3 mr-3" data-style="slide-up">{{ __('lang.cancel') }}</a>' +
                 '                </div>' +
                 '            </div>');
             @else
             $('#loginModal').modal('show');
-            $('#loginModalMessage').text('to reply');
+            $('#loginModalMessage').text('{{ __('lang.to-reply') }}');
             @endif
         }
 
@@ -148,7 +148,7 @@
             data = {'thread': thread, 'comment': comment, 'parent': id, 'api_token': '{{Auth::user()->api_token}}'};
             $.post( '/api/comments/add', data, function(res) {
                 if (res.warning) {
-                    $('#comment_box_alert_' + id).empty().append('<span>'+ res.warning +'</span>');
+                    $('#comment_box_alert_' + id).empty().append('<p>'+ res.warning +'</p>');
                     l.stop();
                 } else {
                     to_append = $('#post_panel_' + id);
@@ -173,7 +173,7 @@
                                 '                    <div class="col-xs-10 col-sm11">' +
                                 '                        <span><a href="/u/' + res.post.user_display_name + '">' + res.post.user_display_name + '</a> ' + ago + '</span>' +
                                 '                        <p>' + res.post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
-                                '                        <div class="linkwrapper"><a href="javascript:reply(' + res.post.id + ');">Reply</a></div>' +
+                                '                        <div class="linkwrapper"><a href="javascript:reply(' + res.post.id + ');" class="text-capitalize">{{ __('lang.reply') }}</a></div>' +
                                 '                        <div id="comment_box_app_' + res.post.id + '"></div>' +
                                 '                    </div>' +
                                 '                </div>' +

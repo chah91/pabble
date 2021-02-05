@@ -12,6 +12,7 @@ use App\Models\Thread;
 use App\Models\Vote;
 use App\Models\Post;
 use App\Models\Alert;
+use App\Models\User;
 
 class CommentsController extends Controller
 {
@@ -74,6 +75,7 @@ class CommentsController extends Controller
 
         $post = new Post();
         $post->user_id = $user->id;
+        $post->user_display_name = $user->username;
         $post->thread_id = $thread->id;
         if ($parent) {
             $post->parent_id = $parent->id;

@@ -269,7 +269,7 @@
     <div class="commentsHeader">
         <div id="post_count">
             <a href="{{ url('/') }}/p/{{$subPabble->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
-                {{$thread->reply_count}} {{str_plural('comment', $thread->reply_count)}}
+                {{$thread->reply_count}} {{$thread->reply_count > 2 ? __('lang.replies') : __('lang.reply')}}
             </a>
         </div>
         <div class="container">

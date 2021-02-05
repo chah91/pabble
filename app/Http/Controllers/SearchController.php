@@ -18,8 +18,9 @@ class SearchController extends Controller
             $page = 1;
         }
         $rpage = $page;
-
+        $sort = $request->input('sort');
         $query = $request->input('q');
+        $type = $request->input('searchType');
         if ($subpabble) {
             $take = 25;
             $skip = $page * $take - $take;
@@ -29,7 +30,12 @@ class SearchController extends Controller
             } else {
                 $subpabble_id = null;
             }
-            $threads = $thread->where('sub_pabble_id', $subpabble_id)->where('title', 'LIKE', '%' . $query . '%')->orderBy('title', 'asc')->skip($skip)->take($take)->get();
+            if (isset($sort) && $sort === 'new'){
+                $threads = $thread->where('sub_pabble_id', $subpabble_id)->where('title', 'LIKE', '%' . $query . '%')->orderBy('created_at', 'DESC')->skip($skip)->take($take)->get();
+            }
+            else{
+                $threads = $thread->where('sub_pabble_id', $subpabble_id)->where('title', 'LIKE', '%' . $query . '%')->orderBy('title', 'asc')->skip($skip)->take($take)->get();
+            }
             $userVotes = null;
             if (Auth::check()) {
                 $threads_ids_array = $threads->pluck('id')->toArray();
@@ -56,18 +62,32 @@ class SearchController extends Controller
             $take = 25;
         }
 
-        $type = $request->input('type');
-        if ($type !== 'posts' && $type !== 'subpabbles') {
-            $type = 'all';
-        }
-
-        if ($type == 'all' || $type == 'subpabbles') {
-            $subpabbles = $subPabble->select('id', 'name', 'title', 'created_at')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name', 'asc')->skip($skip)->take($take)->get();
+        if ($type == 'pabble') {
+            if (isset($sort) && $sort === 'new'){
+                $subpabbles = $subPabble->select('id', 'name', 'title', 'created_at')->where('name', 'LIKE', '%' . $query . '%')->orderBy('created_at', 'DESC')->skip($skip)->take($take)->get();
+            }
+            else $subpabbles = $subPabble->select('id', 'name', 'title', 'created_at')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name', 'asc')->skip($skip)->take($take)->get();
         } else {
             $subpabbles = collect(new SubPabble());
         }
-        if ($type == 'all' || $type == 'posts') {
-            $threads = $thread->where('title', 'LIKE', '%' . $query . '%')->orderBy('title', 'asc')->skip($skip)->take($take)->get();
+        if ($type == 'post') {
+            $threads = $thread->where('title', 'LIKE', '%' . $query . '%')->skip($skip)->take($take);
+            if (isset($sort)){
+                switch ($sort) {
+                    case 'popular':
+                        $threads = $threads->orderBy('score', 'DESC')->get();
+                        break;
+                    case 'new':
+                        $threads = $threads->orderBy('created_at', 'DESC')->get();
+                        break;
+                    case 'top':
+                        $threads = $threads->orderBy('score', 'DESC')->get();
+                        break;
+                }
+            }
+            else {
+                $threads = $threads->orderBy('title', 'asc')->get();
+            }
         } else {
             $threads = collect(new Thread());
         }
@@ -81,7 +101,8 @@ class SearchController extends Controller
             'subpabbles' => $subpabbles,
             'userVotes' => $userVotes,
             'page' => $rpage,
-            'q' => $query
+            'q' => $query,
+            'currentSearchType' => $type
         ]);
     }
 }

@@ -9,12 +9,12 @@
                 <ul class="nav navbar">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            MY SUBPABBLES <span class="caret"></span>
+                            {{ __('lang.my-subpabbles') }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li class="subscriptions">
                                 @if($subscribed->count() < 1)
-                                    <span>No subscriptions yet</span>
+                                    <span>{{ __('lang.no-subscribtion-yet') }}</span>
                                 @else
                                     @foreach($subscribed as $sub)
                                         <a class="sub" href="/p/{{$sub->name}}">{{$sub->name}}</a>
@@ -28,9 +28,9 @@
         </div>
         @endif
         <div class="main-links">
-            <a href="/">HOME</a>
-            <a href="/">POPULAR</a>
-            <a href="/">ALL</a>
+            <a href="/">{{ __('lang.home') }}</a>
+            <a href="/">{{ __('lang.popular') }}</a>
+            <a href="/">{{ __('lang.all') }}</a>
         </div>
         @php
         $allSubPabbles = \App\Models\SubPabble::get();
@@ -40,6 +40,7 @@
                 <a href="/p/{{$item->name}}">{{$item->name}}</a>
             @endforeach
         </div>
+        <a href="/subpabbles" class="pl-3 mr-3">{{ __('lang.more') }}&nbsp;»</a>
     </div>
     <div class="container">
         <div class="navbar-header">
@@ -103,19 +104,22 @@
                 </div>
             </a>
             <div class="flex pubble-manage">
-                <a href="/submit?type=link" class="btn btn-primary">Submit a Link</a>
-                <a href="/submit?type=text" class="btn btn-primary">Submit a Post</a>
+                <a href="/submit?type=link" class="btn btn-primary">{{ __('lang.submit-link') }}</a>
+                <a href="/submit?type=text" class="btn btn-primary">{{ __('lang.submit-post') }}</a>
             </div>
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
-
+            @php
+                $countries = trans('countries');
+                $locale = \App::currentLocale();
+            @endphp
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <div class="join-nav">
-                        Want to join? <a href="{{ route('login') }}">Login</a> or <a href="{{ route('register') }}">register</a> in seconds
+                        {{ __('lang.want-to-join') }} <a href="{{ route('login') }}">{{ __('lang.login') }}</a> {{ __('lang.or') }} <a href="{{ route('register') }}">{{ __('lang.register') }}</a> {{ __('lang.in-seconds') }}
                     </div>
                 @else
                     <li id="alerts_desktop" class="dropdown">
@@ -133,11 +137,11 @@
                                     @php $first = false; @endphp
                                     @if($alert['type'] == 'mention')
                                         <a class="mention" href="/alerts/{{$alert['code']}}">
-                                            <span><strong>{{$alert['user_display_name']}}</strong> replied <strong>{{substr($alert['comment'], 0, 43)}}</strong> on {{substr($alert['thread_title'], 0, 20)}}</span>
+                                            <span><strong>{{$alert['user_display_name']}}</strong> {{ __('lang.replied') }} <strong>{{substr($alert['comment'], 0, 43)}}</strong> {{ __('lang.on') }} {{substr($alert['thread_title'], 0, 20)}}</span>
                                         </a>
                                     @else
                                         <a href="{{ route('message.view', $alert['code']) }}">
-                                            <span>New private message from <strong>{{$alert['user_display_name']}}</strong></span>
+                                            <span>{{ __('lang.new-private-message-from') }} <strong>{{$alert['user_display_name']}}</strong></span>
                                         </a>
                                     @endif
                                 </li>
@@ -145,7 +149,7 @@
                             @if(count($alerts) < 1)
                                 <li>
                                     <a>
-                                        There are no new alerts
+                                        {{ __('lang.no-new-alerts') }}
                                     </a>
                                 </li>
                             @endif
@@ -159,15 +163,39 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="/u/{{Auth::user()->username}}">My profile</a></li>
-                            <li><a href="{{ route('messages.inbox') }}">Private messages</a></li>
-                            <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                            <li><a href="/u/{{Auth::user()->username}}">{{ __('lang.my-profile') }}</a></li>
+                            <li><a href="{{ route('messages.inbox') }}">{{ __("lang.private-messages") }}</a></li>
+                            <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __("lang.logout") }}</a></li>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST">{{ csrf_field() }}</form>
                         </ul>
                     </li>
                 @endif
             </ul>
+            <select class="form-control lang-select" name="lang" onchange="changeLang(this)">
+                @foreach(trans('countries') AS $key => $label)
+                <option {{ $locale === $key ? 'selected' : '' }} value={{ $key }}>
+                    {{ $label }}
+                </option>
+                @endforeach
+            </select>
         </div>
     </div>
 </nav>
+<script>
+    function changeLang(target){
+        let lang = target.value
+        $.ajax({
+            url: "/setLang?lang=" + lang,
+            type:"POST",
+            data:{
+                _token : $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(response){
+                if (response.success){
+                    window.location.reload()
+                }
+            }
+        })
+    }
+</script>

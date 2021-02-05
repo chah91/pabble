@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title') Pabble: search {{substr($q, 0, 140)}} @endsection
+@section('title') Pabble: {{ __('lang.search') }} {{substr($q, 0, 140)}} @endsection
 
-@php $twitter_title = 'Search pabble'; @endphp
+@php $twitter_title = 'Search '.__('lang.search'); @endphp
 @include('layouts.partials.twitter_cards')
 
 @section('stylesheets')
@@ -16,13 +16,37 @@
             <form class="mt-7" method="GET" action="/search">
                 <div id="custom-search-input">
                     <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                        <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="Search" />
+                        <div class="input-group-prepend">
+                            <select class="form-control" name="searchType">
+                                <option {{ $currentSearchType === 'post' ? 'selected' : '' }} value="post">{{ __('lang.post') }}</option>
+                                <option {{ $currentSearchType === 'pabble'? 'selected' : '' }} value="pabble">{{ __('lang.pabble') }}</option>
+                            </select>
+                        </div>
+                        <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query-global form-control" placeholder="{{ __('lang.search') }}" />
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">
                                 <span class="fa fa-search"></span>
                             </button>
                         </span>
                     </div>
+                </div>
+                <div class="tabmenu">
+                    @php
+                        $queries = request()->query();
+                        if (isset($queries['sort'])){
+                            unset($queries['sort']);
+                        }
+                        $current_url = url()->current().'?'.http_build_query($queries);
+                    @endphp
+                    <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'popular') class="selected" @endif>
+                        <a href="{{ $current_url.'&sort=popular' }}">{{ __('lang.popular') }}</a>
+                    </li>
+                    <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'new') class="selected" @endif>
+                        <a href="{{ $current_url.'&sort=new' }}">{{ __('lang.new') }}</a>
+                    </li>
+                    <li @if(isset(request()->query()['sort']) && request()->query()['sort'] == 'top') class="selected" @endif>
+                        <a href="{{ $current_url.'&sort=top' }}">{{ __('lang.top') }}</a>
+                    </li>
                 </div>
             </form>
 
@@ -33,12 +57,12 @@
             <div class="row">
                 @if($subpabbles->count() > 0)
                     <div class="col-sm-12">
-                        <h3>Subpabbles</h3>
+                        <h3>{{ __('lang.subpabbles') }}</h3>
                         @foreach($subpabbles as $pabble)
                             @php $readers = \App\Models\Subscription::where('sub_pabble_id', $pabble->id)->count(); @endphp
                             <div class="panel mb-3 pl-3">
                                 <h4><a href="/p/{{$pabble->name}}">{{$pabble->name}}</a></h4>
-                                <p class="-mt-3">{{$readers}} {{str_plural('subscriber', $readers)}}, this subpabble was created {{Carbon\Carbon::parse($pabble->created_at)->diffForHumans()}}</p>
+                                <p class="-mt-3">{{$readers}} {{ $readers > 2 ? __('lang.subscribers') : __('lang.subscriber')}}, {{ __('lang.this-subpabble-was-created') }} {{Carbon\Carbon::parse($pabble->created_at)->diffForHumans()}}</p>
                                 @if($pabble->title)
                                     <p class="-mt-3">{{substr($pabble->title, 0, 140)}}</p>
                                 @endif
@@ -46,22 +70,22 @@
                         @endforeach
                         @if($page == 1 && $subpabbles->count() > 4)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=2&type=subpabbles">next</a>
+                                <a href="/search?q={{$q}}&page=2&searchType=pabble">{{ __('lang.next') }}</a>
                             </div>
                         @endif
                         @if($page == 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=1">previous</a>
+                                <a href="/search?q={{$q}}&page=1&searchType=pabble">{{ __('lang.prev') }}</a>
                                 @if($threads->count() > 19)
-                                    - <a href="/search?q={{$q}}&page={{$page+1}}&type=subpabbles">next</a>
+                                    - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=pabble">{{ __('lang.next') }}</a>
                                 @endif
                             </div>
                         @endif
                         @if($page > 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page={{$page-1}}&type=subpabbles">previous</a>
+                                <a href="/search?q={{$q}}&page={{$page-1}}&searchType=pabble">{{ __('lang.prev') }}</a>
                                 @if($threads->count() > 24)
-                                    - <a href="/search?q={{$q}}&page={{$page+1}}&type=subpabbles">next</a>
+                                    - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=pabble">{{ __('lang.next') }}</a>
                                 @endif
                             </div>
                         @endif
@@ -71,7 +95,7 @@
 
                 @if($threads->count() > 0)
                     <div class="col-sm-12">
-                        <h3>Threads</h3>
+                        <h3>{{ __('lang.threads') }}</h3>
                         @foreach($threads as $thread)
                             @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
                             @php $pabble = \App\Models\subPabble::select('id', 'name')->where('id', $thread->sub_pabble_id)->first(); @endphp
@@ -90,25 +114,26 @@
                                     </div>
                                     <div class="image col-xs-1">
                                         <div class="row">
-                                            <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                            <a href="@if(!$thread->media_type && $thread->type === 'link') {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
                                                 <img src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="thread_info">
-                                        <a class="title" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
+                                        <a class="title" href="@if(!$thread->media_type && $thread->type === 'link') {{$thread->link}} @else {{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif">
                                             <h3>{{$thread->title}}</h3>
                                         </a>
                                         <p class="overflow description">
-                                            placed by
+                                            {{ __('lang.placed-by') }}
                                             <a href="/u/{{$postername->username}}">{{$postername->username}}</a>
-                                            {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                                            {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}
+                                            {{ __('lang.in') }}
                                             <a href="/p/{{$pabble->name}}">{{$pabble->name}}</a>
                                             (<span class="upvote"> +{{$thread->upvotes}}</span> | <span class="downvote"> -{{$thread->downvotes}}</span> )
                                         </p>
                                         <a class="comment" href="{{url('/')}}/p/{{$pabble->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">
                                             <p class="overflow">
-                                                <strong>{{$thread->reply_count}} {{$thread->reply_count < 1 ? 'reply' : str_plural('reply', $thread->reply_count)}}</strong>
+                                                <strong>{{$thread->reply_count}} {{$thread->reply_count < 2 ?  __('lang.reply') :  __('lang.replies')}}</strong>
                                             </p>
                                         </a>
                                     </div>
@@ -117,22 +142,22 @@
                         @endforeach
                         @if($page == 1 && $threads->count() > 4)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=2&type=posts">next</a>
+                                <a href="/search?q={{$q}}&page=2&searchType=post">{{  __('lang.next') }}</a>
                             </div>
                         @endif
                         @if($page == 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page=1">previous</a>
+                                <a href="/search?q={{$q}}&page=1&searchType=post">{{  __('lang.prev') }}</a>
                                 @if($threads->count() > 19)
-                                    - <a href="/search?q={{$q}}&page={{$page+1}}&type=posts">next</a>
+                                    - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=post">{{  __('lang.next') }}</a>
                                 @endif
                             </div>
                         @endif
                         @if($page > 2)
                             <div class="mt-0 mb-3">
-                                <a href="/search?q={{$q}}&page={{$page-1}}&type=posts">previous</a>
+                                <a href="/search?q={{$q}}&page={{$page-1}}&searchType=post">{{  __('lang.prev') }}</a>
                                 @if($threads->count() > 24)
-                                - <a href="/search?q={{$q}}&page={{$page+1}}&type=posts">next</a>
+                                - <a href="/search?q={{$q}}&page={{$page+1}}&searchType=post">{{  __('lang.next') }}</a>
                                 @endif
                             </div>
                         @endif
@@ -141,13 +166,14 @@
                 @endif
 
                 @if($threads->count() < 1 && $subpabbles->count() < 1 && !Request::input('page') && !Request::input('after'))
-                    <h2 id="looks_like" class="thin text-center mt-3">No results found</h2>
+                    <h2 id="looks_like" class="thin text-center mt-3">{{ __('lang.no-results-found') }}</h2>
                     @php $no_res = true; @endphp
                 @endif
 
 
             </div>
         </div>
+    </div>
 
         @include('layouts.partials.loginModal')
 
