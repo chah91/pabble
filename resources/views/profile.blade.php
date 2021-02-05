@@ -63,7 +63,7 @@
             <div id="profile" class="col-sm-4 col-md-3 pr-0 pl-0">
                 <div class="flex profile-manage-link">
                     <a class="message-send ml-0" href="{{ route('messages.send') }}/{{ $user->username }}">{{ __('lang.message') }} {{ $user->username }}</a>
-                    @if(Auth::check())
+                    @if(Auth::check() && Auth::user()->id === $user->id)
                     |
                     <a href="{{ route('resetPasswordShow') }}">{{ __('lang.change-password') }}</a> |
                     <a href="{{ route('resetEmailShow') }}" class="mr-0" href="">{{ __('lang.change-email') }}</a>
